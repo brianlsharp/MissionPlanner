@@ -1534,9 +1534,9 @@ namespace MissionPlanner.Log
 
 
 
-                                StreamWriter sw = new StreamWriter(Path.GetDirectoryName(logfile) + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(logfile) + "-" + wplists + ".txt");
+                                StreamWriter sw = new StreamWriter(Path.GetDirectoryName(logfile) + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(logfile) + "-" + wplists + ".waypoints");
 
-                                sw.WriteLine("QGC WPL 110");
+                                sw.WriteLine("QGC WPL 120");
                                 try
                                 {
                                     //get mission count info 
