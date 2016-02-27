@@ -308,8 +308,11 @@ namespace MissionPlanner
 
             giveComport = true;
 
-            // allow settings to settle - previous dtr 
-            System.Threading.Thread.Sleep(1000);
+            if (BaseStream is SerialPort)
+            {
+                // allow settings to settle - previous dtr 
+                System.Threading.Thread.Sleep(1000);
+            }
 
             Terrain = new TerrainFollow(this);
 
@@ -790,7 +793,7 @@ Please check the following
 
                         if (MAV.apname == MAV_AUTOPILOT.ARDUPILOTMEGA)
                         {
-                            MAV.param[st] = new MAVLinkParam(st, par.param_value, MAV_PARAM_TYPE.REAL32);
+                            MAV.param[st] = new MAVLinkParam(st, par.param_value, MAV_PARAM_TYPE.REAL32, (MAV_PARAM_TYPE) par.param_type);
                         }
                         else
                         {
@@ -984,7 +987,7 @@ Please check the following
 
                         if (MAV.apname == MAV_AUTOPILOT.ARDUPILOTMEGA)
                         {
-                            newparamlist[paramID] = new MAVLinkParam(paramID, par.param_value, MAV_PARAM_TYPE.REAL32);
+                            newparamlist[paramID] = new MAVLinkParam(paramID, par.param_value, MAV_PARAM_TYPE.REAL32, (MAV_PARAM_TYPE)par.param_type);
                         }
                         else
                         {
@@ -1148,7 +1151,7 @@ Please check the following
                         // update table
                         if (MAV.apname == MAV_AUTOPILOT.ARDUPILOTMEGA)
                         {
-                            MAV.param[st] = new MAVLinkParam(st, par.param_value, MAV_PARAM_TYPE.REAL32);
+                            MAV.param[st] = new MAVLinkParam(st, par.param_value, MAV_PARAM_TYPE.REAL32, (MAV_PARAM_TYPE) par.param_type);
                         }
                         else
                         {
@@ -1799,6 +1802,35 @@ Please check the following
                         loc.lng = ((wp.y));
 
                         log.InfoFormat("getWP {0} {1} {2} {3} {4} opt {5}", loc.id, loc.p1, loc.alt, loc.lat, loc.lng,
+                            loc.options);
+
+                        break;
+                    }
+                    else if (buffer[5] == (byte) MAVLINK_MSG_ID.MISSION_ITEM_INT)
+                    {
+                        //Console.WriteLine("getwp ans " + DateTime.Now.Millisecond);
+
+                        var wp = buffer.ByteArrayToStructure<mavlink_mission_item_int_t>(6);
+
+                        // received a packet, but not what we requested
+                        if (req.seq != wp.seq)
+                        {
+                            generatePacket((byte)MAVLINK_MSG_ID.MISSION_REQUEST, req);
+                            continue;
+                        }
+
+                        loc.options = (byte)(wp.frame);
+                        loc.id = (byte)(wp.command);
+                        loc.p1 = (wp.param1);
+                        loc.p2 = (wp.param2);
+                        loc.p3 = (wp.param3);
+                        loc.p4 = (wp.param4);
+
+                        loc.alt = ((wp.z));
+                        loc.lat = ((wp.x / 1.0e7));
+                        loc.lng = ((wp.y / 1.0e7));
+
+                        log.InfoFormat("getWPint {0} {1} {2} {3} {4} opt {5}", loc.id, loc.p1, loc.alt, loc.lat, loc.lng,
                             loc.options);
 
                         break;
@@ -2785,9 +2817,7 @@ Please check the following
 
                     if (buffer[5] == (byte) MAVLink.MAVLINK_MSG_ID.STATUSTEXT) // status text
                     {
-                        var msg =
-                            MAVlist[sysid, compid].packets[(byte) MAVLink.MAVLINK_MSG_ID.STATUSTEXT]
-                                .ByteArrayToStructure<MAVLink.mavlink_statustext_t>(6);
+                        var msg = buffer.ByteArrayToStructure<MAVLink.mavlink_statustext_t>(6);
 
                         byte sev = msg.severity;
 
@@ -2826,8 +2856,8 @@ Please check the following
 
                             if (MainV2.speechEngine != null &&
                                 MainV2.speechEngine.State == System.Speech.Synthesis.SynthesizerState.Ready &&
-                                MainV2.config["speechenable"] != null &&
-                                MainV2.config["speechenable"].ToString() == "True")
+                                Settings.Instance["speechenable"] != null &&
+                                Settings.Instance["speechenable"].ToString() == "True")
                             {
                                 MainV2.speechEngine.SpeakAsync(logdata);
                             }
@@ -3056,7 +3086,7 @@ Please check the following
 
                 if (MAV.apname == MAV_AUTOPILOT.ARDUPILOTMEGA)
                 {
-                    MAVlist[sysid, compid].param[st] = new MAVLinkParam(st, value.param_value, MAV_PARAM_TYPE.REAL32);
+                    MAVlist[sysid, compid].param[st] = new MAVLinkParam(st, value.param_value, MAV_PARAM_TYPE.REAL32, (MAV_PARAM_TYPE)value.param_type);
                 }
                 else
                 {
@@ -3639,9 +3669,12 @@ Please check the following
                 }
                 else
                 {
-                    date1 = date1.AddMilliseconds(dateint/1000);
+                    if ((dateint/1000/1000/60/60) < 9999999)
+                    {
+                        date1 = date1.AddMilliseconds(dateint/1000);
 
-                    lastlogread = date1.ToLocalTime();
+                        lastlogread = date1.ToLocalTime();
+                    }
                 }
             }
             catch
@@ -3776,13 +3809,13 @@ Please check the following
             switch (MAVlist[sysid, compid].cs.firmware)
             {
                 case MainV2.Firmwares.ArduCopter2:
-                    MAVlist[sysid, compid].Guid = MainV2.config["copter_guid"].ToString();
+                    MAVlist[sysid, compid].Guid = Settings.Instance["copter_guid"].ToString();
                     break;
                 case MainV2.Firmwares.ArduPlane:
-                    MAVlist[sysid, compid].Guid = MainV2.config["plane_guid"].ToString();
+                    MAVlist[sysid, compid].Guid = Settings.Instance["plane_guid"].ToString();
                     break;
                 case MainV2.Firmwares.ArduRover:
-                    MAVlist[sysid, compid].Guid = MainV2.config["rover_guid"].ToString();
+                    MAVlist[sysid, compid].Guid = Settings.Instance["rover_guid"].ToString();
                     break;
             }
         }
