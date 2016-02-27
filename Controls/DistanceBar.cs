@@ -46,15 +46,15 @@ namespace MissionPlanner.Controls
             get
             {
                 CreateParams parms = base.CreateParams;
-                parms.ExStyle |= 0x20;
+                //parms.ExStyle |= 0x20;
                 return parms;
             }
         }
 
         public DistanceBar()
         {
-            SetStyle(ControlStyles.SupportsTransparentBackColor, true);
-            SetStyle(ControlStyles.Opaque, true);
+            //SetStyle(ControlStyles.SupportsTransparentBackColor, true);
+            //SetStyle(ControlStyles.Opaque, true);
 
             this.DoubleBuffered = false;
 
@@ -62,9 +62,8 @@ namespace MissionPlanner.Controls
 
             totaldist = 100;
 
-            
 
-            this.BackColor = Color.Transparent;
+            //this.BackColor = Color.Transparent;
 
             ClearWPDist();
         }
@@ -90,7 +89,6 @@ namespace MissionPlanner.Controls
             {
                 using (Graphics etemp = Graphics.FromImage(buffer))
                 {
-
                     if (totaldist <= 0)
                         totaldist = 100;
 
@@ -104,7 +102,7 @@ namespace MissionPlanner.Controls
 
                     // draw bar traveled
 
-                    RectangleF bartrav = new RectangleF(bar.X, bar.Y, bar.Width * (traveleddist / totaldist), bar.Height);
+                    RectangleF bartrav = new RectangleF(bar.X, bar.Y, bar.Width*(traveleddist/totaldist), bar.Height);
 
                     etemp.FillRectangle(brushbar, bartrav);
                     etemp.FillRectangle(brushbar, bartrav);
@@ -116,7 +114,7 @@ namespace MissionPlanner.Controls
 
                     lock (locker)
                     {
-                        float iconwidth = this.Height / 4.0f;
+                        float iconwidth = this.Height/4.0f;
                         float trav = 0;
                         foreach (var disttrav in wpdist)
                         {
@@ -125,7 +123,8 @@ namespace MissionPlanner.Controls
                             if (trav > totaldist)
                                 trav = totaldist;
 
-                            etemp.FillPie(Brushes.Yellow, (bar.X + bar.Width * (trav / totaldist)) - iconwidth / 2, bar.Top, bar.Height / 2, bar.Height, 0, 360);
+                            etemp.FillPie(Brushes.Yellow, (bar.X + bar.Width*(trav/totaldist)) - iconwidth/2, bar.Top,
+                                bar.Height/2, bar.Height, 0, 360);
                             //e.Graphics.DrawImage(icon, (bar.X + bar.Width * (trav / totaldist)) - iconwidth / 2, 1, iconwidth, bar.Height);
                         }
                     }
@@ -134,14 +133,14 @@ namespace MissionPlanner.Controls
 
                     string dist = traveleddist.ToString("0");
 
-                    etemp.DrawString(dist, this.Font, new SolidBrush(this.ForeColor), bartrav.Right, bartrav.Bottom - this.Font.Height);
+                    etemp.DrawString(dist, this.Font, new SolidBrush(this.ForeColor), bartrav.Right,
+                        bartrav.Bottom - this.Font.Height);
 
                     e.Graphics.DrawImageUnscaled(buffer, 0, 0);
                 }
             }
-            catch (Exception ex) 
+            catch (Exception ex)
             {
-
             }
         }
 
@@ -152,13 +151,13 @@ namespace MissionPlanner.Controls
             if (this.Width == 0 || this.Height == 0)
                 return;
 
-            buffer = new Bitmap(this.Width,this.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
+            buffer = new Bitmap(this.Width, this.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb);
         }
 
         protected override void OnPaintBackground(PaintEventArgs e)
         {
             base.OnPaintBackground(e);
-           // base.OnParentBackColorChanged(e);
+            // base.OnParentBackColorChanged(e);
         }
     }
 }

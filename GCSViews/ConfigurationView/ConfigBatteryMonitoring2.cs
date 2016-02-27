@@ -52,11 +52,11 @@ namespace MissionPlanner.GCSViews.ConfigurationView
             //
 
             mavlinkComboBox1.setup(ParameterMetaDataRepository.GetParameterOptionsInt("BATT2_MONITOR",
-                    MainV2.comPort.MAV.cs.firmware.ToString()), "BATT2_MONITOR", MainV2.comPort.MAV.param);
+                MainV2.comPort.MAV.cs.firmware.ToString()), "BATT2_MONITOR", MainV2.comPort.MAV.param);
             mavlinkComboBox2.setup(ParameterMetaDataRepository.GetParameterOptionsInt("BATT2_VOLT_PIN",
-                    MainV2.comPort.MAV.cs.firmware.ToString()), "BATT2_VOLT_PIN", MainV2.comPort.MAV.param);
+                MainV2.comPort.MAV.cs.firmware.ToString()), "BATT2_VOLT_PIN", MainV2.comPort.MAV.param);
             mavlinkComboBox3.setup(ParameterMetaDataRepository.GetParameterOptionsInt("BATT2_CURR_PIN",
-                    MainV2.comPort.MAV.cs.firmware.ToString()), "BATT2_CURR_PIN", MainV2.comPort.MAV.param);
+                MainV2.comPort.MAV.cs.firmware.ToString()), "BATT2_CURR_PIN", MainV2.comPort.MAV.param);
 
             _startup = false;
 
@@ -66,6 +66,7 @@ namespace MissionPlanner.GCSViews.ConfigurationView
         public void Deactivate()
         {
             timer1.Stop();
+            _startup = true;
         }
 
         private void TXT_battcapacity_Validated(object sender, EventArgs e)
@@ -88,7 +89,7 @@ namespace MissionPlanner.GCSViews.ConfigurationView
                 CustomMessageBox.Show("Set BATT2_CAPACITY Failed", Strings.ERROR);
             }
         }
-        
+
         private void TXT_measuredvoltage_Validated(object sender, EventArgs e)
         {
             if (_startup || ((TextBox) sender).Enabled == false)
