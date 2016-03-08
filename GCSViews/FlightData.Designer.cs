@@ -1,4 +1,6 @@
-﻿namespace MissionPlanner.GCSViews
+﻿using System;
+
+namespace MissionPlanner.GCSViews
 {
     partial class FlightData
     {
@@ -1945,8 +1947,6 @@
             this.ResumeLayout(false);
 
         }
-
-
 
         private System.Windows.Forms.DataGridViewImageColumn dataGridViewImageColumn1;
         private System.Windows.Forms.DataGridViewImageColumn dataGridViewImageColumn2;

@@ -281,6 +281,7 @@ namespace MissionPlanner.GCSViews
             gMapControl1.Zoom = 3;
 
             gMapControl1.OnMapZoomChanged += gMapControl1_OnMapZoomChanged;
+            gMapControl1.KeyPress += GMapControl1_KeyPress;
 
             gMapControl1.DisableFocusOnMouseEnter = true;
 
@@ -322,6 +323,17 @@ namespace MissionPlanner.GCSViews
 
             // first run
             MainV2_AdvancedChanged(null, null);
+        }
+
+        private void GMapControl1_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
+        {
+            Debug.WriteLine("key pressed {0}", e.KeyChar);
+
+            if (e.KeyChar.ToString().ToUpper() == "W")
+            {
+                PointLatLng currentloc = new PointLatLng(MainV2.comPort.MAV.cs.lat, MainV2.comPort.MAV.cs.lng);
+                POI.POIAdd(currentloc);
+            }
         }
 
         void NoFly_NoFlyEvent(object sender, NoFly.NoFly.NoFlyEventArgs e)
