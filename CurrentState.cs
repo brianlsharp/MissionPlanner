@@ -8,6 +8,7 @@ using log4net;
 using MissionPlanner.Attributes;
 using MissionPlanner;
 using System.Collections;
+using System.Diagnostics;
 
 namespace MissionPlanner
 {
@@ -1635,6 +1636,23 @@ namespace MissionPlanner
                         }
                     }
 
+                    bytearray = MAV.packets[(byte)MAVLink.MAVLINK_MSG_ID.TERRAIN_DATA];
+                    if (bytearray != null)
+                    {
+                        MAVLink.mavlink_terrain_data_t lMsg = bytearray.ByteArrayToStructure<MAVLink.mavlink_terrain_data_t>(6);
+
+                        // the new arhs deadreckoning may send 0 alt and 0 long. check for and undo
+                        short[] lData = lMsg.data;
+
+                        for( int i =0; i < lData.Length; i++ )
+                        {
+                            short lDataVal = lData[i];
+                            if( lDataVal > 0 )
+                               Debug.WriteLine("data at {0} = {1}", i, lDataVal);
+                        }
+
+                    }
+
                     bytearray = MAV.packets[(byte) MAVLink.MAVLINK_MSG_ID.GPS_RAW_INT];
                     if (bytearray != null)
                     {
@@ -1950,6 +1968,10 @@ namespace MissionPlanner
                         //alt = vfr.alt; // this might include baro
 
                         ch3percent = vfr.throttle;
+                        if( ch3percent > 0 )
+                        {
+                            Debug.WriteLine("throttle = {0} ", ch3percent);
+                        }
 
                         if (sensors_present.revthrottle && sensors_enabled.revthrottle && sensors_health.revthrottle)
                             ch3percent *= -1;
