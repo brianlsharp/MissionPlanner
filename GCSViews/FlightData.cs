@@ -16,13 +16,14 @@ using GMap.NET.WindowsForms;
 using GMap.NET.WindowsForms.Markers;
 using log4net;
 using MissionPlanner.Controls;
-using MissionPlanner.Joystick;
+//using MissionPlanner.Joystick;
 using MissionPlanner.Log;
 using MissionPlanner.Utilities;
 using MissionPlanner.Warnings;
 using OpenTK;
 using ZedGraph;
 using LogAnalyzer = MissionPlanner.Utilities.LogAnalyzer;
+using TerrainFollow = MissionPlanner.Utilities.TerrainFollow;
 
 // written by michael oborne
 
@@ -323,6 +324,14 @@ namespace MissionPlanner.GCSViews
 
             // first run
             MainV2_AdvancedChanged(null, null);
+
+            TerrainFollow lFollow = new TerrainFollow(MainV2.comPort);
+        }
+
+        public void addPOIatLoc( double aLat, double aLon, string aLabel )
+        {
+            PointLatLng lLoc = new PointLatLng(aLat, aLon);
+            POI.POIAdd( lLoc, aLabel );
         }
 
         private void GMapControl1_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
@@ -2339,9 +2348,9 @@ namespace MissionPlanner.GCSViews
 
         private void BUT_joystick_Click(object sender, EventArgs e)
         {
-            Form joy = new JoystickSetup();
-            ThemeManager.ApplyThemeTo(joy);
-            joy.Show();
+            //Form joy = new JoystickSetup();
+            //ThemeManager.ApplyThemeTo(joy);
+            //joy.Show();
         }
 
         private void CMB_modes_Click(object sender, EventArgs e)
