@@ -1,9 +1,11 @@
 ﻿using log4net;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using FlightData = MissionPlanner.GCSViews.FlightData;
 
 namespace MissionPlanner.Utilities
 {
@@ -19,12 +21,16 @@ namespace MissionPlanner.Utilities
 
         private MAVLinkInterface _interface;
 
+        private FlightData mFlightData;
+
         public TerrainFollow(MAVLinkInterface inInterface)
         {
             _interface = inInterface;
 
             log.Info("Subscribe to packets");
-            subscription = _interface.SubscribeToPacketType(MAVLink.MAVLINK_MSG_ID.TERRAIN_REQUEST, ReceviedPacket);
+            subscription = _interface.SubscribeToPacketType(MAVLink.MAVLINK_MSG_ID.TERRAIN_DATA, ReceviedPacket);
+
+            mFlightData = FlightData.instance;
         }
 
         ~TerrainFollow()
@@ -35,20 +41,31 @@ namespace MissionPlanner.Utilities
 
         bool ReceviedPacket(byte[] rawpacket)
         {
-            if (rawpacket[5] == (byte) MAVLink.MAVLINK_MSG_ID.TERRAIN_REQUEST)
+            if (rawpacket[5] == (byte) MAVLink.MAVLINK_MSG_ID.TERRAIN_DATA)
             {
-                MAVLink.mavlink_terrain_request_t packet =
-                    rawpacket.ByteArrayToStructure<MAVLink.mavlink_terrain_request_t>();
+                MAVLink.mavlink_terrain_data_t packet =
+                    rawpacket.ByteArrayToStructure<MAVLink.mavlink_terrain_data_t>();
 
                 if (issending)
                     return false;
 
-                lastrequest = packet;
+                double lLat = packet.lat / Math.Pow(10, 7);
+                double lLon = packet.lon / Math.Pow(10, 7);
 
-                log.Info("received TERRAIN_REQUEST " + packet.lat/1e7 + " " + packet.lon/1e7 + " space " +
-                         packet.grid_spacing + " " + Convert.ToString((long) packet.mask, 2));
+                short[] lData = packet.data;
+                // bls: they will all have the same location so 
+                // just add one map marker. Perhaps labeled with
+                // the highest value or the range of values?
+                for (int i = 0; i < lData.Length; i++)
+                {
+                    short lDataVal = lData[i];
+                    if (lDataVal > 0)
+                    {
+                        Debug.WriteLine("data at {0} = {1}", i, lDataVal);          
 
-                System.Threading.ThreadPool.QueueUserWorkItem(QueueSendGrid);
+                        mFlightData.addPOIatLoc(lLat, lLon, lDataVal.ToString());
+                    }
+                }
             }
             else if (rawpacket[5] == (byte) MAVLink.MAVLINK_MSG_ID.TERRAIN_REPORT)
             {
