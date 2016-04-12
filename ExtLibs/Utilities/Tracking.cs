@@ -25,7 +25,7 @@ namespace MissionPlanner.Utilities
         // cd2 = fw version
         // cd3 = board
         // cd4 = processors
-        // cd5 = exception detail
+        // cd5 = exception Detail
 
         enum type
         {
@@ -54,7 +54,7 @@ namespace MissionPlanner.Utilities
 
         public static void AddEvent(string cat, string action, string label, string value)
         {
-            List<KeyValuePair<string, string>> param = new List<KeyValuePair<string, string>>();
+            List<KeyValuePair<string, string>> param = new List<KeyValuePair<string, string>>(); 
 
             param.Add(new KeyValuePair<string, string>("v", version));
             param.Add(new KeyValuePair<string, string>("tid", tid));
