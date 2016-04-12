@@ -72,10 +72,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PreBuildEvent>rd /s /q "$(ProjectDir)generator\Csharp"
-python $(ProjectDir)generator\mavgen.py --lang=csharp -o "$(ProjectDir)generator\Csharp" --wire-protocol=1.0 "$(ProjectDir)generator\message_definitions\ardupilotmega.xml"  
-copy /y "$(ProjectDir)generator\Csharp\ardupilotmega\mavlink.cs" "$(ProjectDir)Mavlink.cs"
-</PreBuildEvent>
+    <PreBuildEvent>
+    </PreBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

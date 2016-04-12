@@ -453,48 +453,6 @@
     <Compile Include="GeoRef\SingleLocation.cs" />
     <Compile Include="GeoRef\VehicleLocation.cs" />
     <Compile Include="HIL\QuadCopter.cs" />
-    <Compile Include="Joystick\Joy_Do_Repeat_Servo.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Joystick\Joy_Do_Repeat_Servo.Designer.cs">
-      <DependentUpon>Joy_Do_Repeat_Servo.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Joystick\Joy_Button_axis.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Joystick\Joy_Button_axis.Designer.cs">
-      <DependentUpon>Joy_Button_axis.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Joystick\Joy_Do_Set_Servo.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Joystick\Joy_Do_Set_Servo.Designer.cs">
-      <DependentUpon>Joy_Do_Set_Servo.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Joystick\Joy_Do_Repeat_Relay.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Joystick\Joy_Do_Repeat_Relay.Designer.cs">
-      <DependentUpon>Joy_Do_Repeat_Relay.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Joystick\Joy_ChangeMode.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Joystick\Joy_ChangeMode.Designer.cs">
-      <DependentUpon>Joy_ChangeMode.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Joystick\Joy_Do_Set_Relay.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Joystick\Joy_Do_Set_Relay.Designer.cs">
-      <DependentUpon>Joy_Do_Set_Relay.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Joystick\Joy_Mount_Mode.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Joystick\Joy_Mount_Mode.Designer.cs">
-      <DependentUpon>Joy_Mount_Mode.cs</DependentUpon>
-    </Compile>
     <Compile Include="L10N.cs" />
     <Compile Include="Log\CollectionBuffer.cs" />
     <Compile Include="Log\LogDownloadMavLink.cs">
@@ -1190,30 +1148,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GeoRef\georefimage.zh-TW.resx">
       <DependentUpon>georefimage.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\JoystickSetup.zh-Hant.resx">
-      <DependentUpon>JoystickSetup.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\Joy_ChangeMode.resx">
-      <DependentUpon>Joy_ChangeMode.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\Joy_Do_Repeat_Relay.resx">
-      <DependentUpon>Joy_Do_Repeat_Relay.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\Joy_Do_Repeat_Servo.resx">
-      <DependentUpon>Joy_Do_Repeat_Servo.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\Joy_Do_Set_Relay.resx">
-      <DependentUpon>Joy_Do_Set_Relay.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\Joy_Button_axis.resx">
-      <DependentUpon>Joy_Button_axis.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\Joy_Do_Set_Servo.resx">
-      <DependentUpon>Joy_Do_Set_Servo.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\Joy_Mount_Mode.resx">
-      <DependentUpon>Joy_Mount_Mode.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Log\LogBrowse.ja-JP.resx">
       <DependentUpon>LogBrowse.cs</DependentUpon>
@@ -2264,13 +2198,6 @@
     <Compile Include="GCSViews\FlightPlanner.Designer.cs">
       <DependentUpon>FlightPlanner.cs</DependentUpon>
     </Compile>
-    <Compile Include="Joystick\Joystick.cs" />
-    <Compile Include="Joystick\JoystickSetup.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Joystick\JoystickSetup.Designer.cs">
-      <DependentUpon>JoystickSetup.cs</DependentUpon>
-    </Compile>
     <Compile Include="Common.cs" />
     <Compile Include="paramcompare.cs">
       <SubType>Form</SubType>
@@ -2532,9 +2459,6 @@
     <EmbeddedResource Include="GeoRef\Georefimage.de-DE.resx">
       <DependentUpon>georefimage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\JoystickSetup.de-DE.resx">
-      <DependentUpon>JoystickSetup.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Log\LogDownload.de-DE.resx">
       <DependentUpon>LogDownload.cs</DependentUpon>
     </EmbeddedResource>
@@ -2699,9 +2623,6 @@
     <EmbeddedResource Include="GCSViews\Terminal.es-ES.resx">
       <DependentUpon>Terminal.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\JoystickSetup.es-ES.resx">
-      <DependentUpon>JoystickSetup.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Log\LogDownload.es-ES.resx">
       <DependentUpon>LogDownload.cs</DependentUpon>
     </EmbeddedResource>
@@ -2783,18 +2704,6 @@
     <EmbeddedResource Include="GeoRef\georefimage.resx">
       <DependentUpon>georefimage.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\JoystickSetup.fr.resx">
-      <DependentUpon>JoystickSetup.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\JoystickSetup.it-IT.resx">
-      <DependentUpon>JoystickSetup.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\JoystickSetup.pl.resx">
-      <DependentUpon>JoystickSetup.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\JoystickSetup.zh-TW.resx">
-      <DependentUpon>JoystickSetup.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Log\LogDownload.fr.resx">
       <DependentUpon>LogDownload.cs</DependentUpon>
     </EmbeddedResource>
@@ -2858,9 +2767,6 @@
     <EmbeddedResource Include="GCSViews\Terminal.ru-RU.resx">
       <DependentUpon>Terminal.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\JoystickSetup.ru-RU.resx">
-      <DependentUpon>JoystickSetup.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Log\LogDownload.zh-Hans.resx">
       <DependentUpon>LogDownload.cs</DependentUpon>
     </EmbeddedResource>
@@ -2905,13 +2811,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="GCSViews\Terminal.zh-Hans.resx">
       <DependentUpon>Terminal.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\JoystickSetup.resx">
-      <DependentUpon>JoystickSetup.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Joystick\JoystickSetup.zh-Hans.resx">
-      <DependentUpon>JoystickSetup.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainV2.resx">
       <DependentUpon>MainV2.cs</DependentUpon>

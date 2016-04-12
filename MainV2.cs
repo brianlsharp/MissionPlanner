@@ -298,7 +298,7 @@ namespace MissionPlanner
         /// <summary>
         /// joystick static class
         /// </summary>
-        public static Joystick.Joystick joystick = null;
+//        public static Joystick.Joystick joystick = null;
 
         /// <summary>
         /// track last joystick packet sent. used to control rate
@@ -1671,13 +1671,13 @@ namespace MissionPlanner
 
             Console.WriteLine("MainV2_FormClosed");
 
-            if (joystick != null)
-            {
-                while (!joysendThreadExited)
-                    Thread.Sleep(10);
+            //if (joystick != null)
+            //{
+            //    while (!joysendThreadExited)
+            //        Thread.Sleep(10);
 
-                joystick.Dispose(); //proper clean up of joystick.
-            }
+            //    joystick.Dispose(); //proper clean up of joystick.
+            //}
         }
 
         private void LoadConfig()
@@ -1749,80 +1749,80 @@ namespace MissionPlanner
                     {
                         //joystick stuff
 
-                        if (joystick != null && joystick.enabled)
-                        {
-                            MAVLink.mavlink_rc_channels_override_t rc = new MAVLink.mavlink_rc_channels_override_t();
+                        //if (joystick != null && joystick.enabled)
+                        //{
+                        //    MAVLink.mavlink_rc_channels_override_t rc = new MAVLink.mavlink_rc_channels_override_t();
 
-                            rc.target_component = comPort.MAV.compid;
-                            rc.target_system = comPort.MAV.sysid;
+                        //    rc.target_component = comPort.MAV.compid;
+                        //    rc.target_system = comPort.MAV.sysid;
 
-                            if (joystick.getJoystickAxis(1) != Joystick.Joystick.joystickaxis.None)
-                                rc.chan1_raw = MainV2.comPort.MAV.cs.rcoverridech1;
-                            if (joystick.getJoystickAxis(2) != Joystick.Joystick.joystickaxis.None)
-                                rc.chan2_raw = MainV2.comPort.MAV.cs.rcoverridech2;
-                            if (joystick.getJoystickAxis(3) != Joystick.Joystick.joystickaxis.None)
-                                rc.chan3_raw = MainV2.comPort.MAV.cs.rcoverridech3;
-                            if (joystick.getJoystickAxis(4) != Joystick.Joystick.joystickaxis.None)
-                                rc.chan4_raw = MainV2.comPort.MAV.cs.rcoverridech4;
-                            if (joystick.getJoystickAxis(5) != Joystick.Joystick.joystickaxis.None)
-                                rc.chan5_raw = MainV2.comPort.MAV.cs.rcoverridech5;
-                            if (joystick.getJoystickAxis(6) != Joystick.Joystick.joystickaxis.None)
-                                rc.chan6_raw = MainV2.comPort.MAV.cs.rcoverridech6;
-                            if (joystick.getJoystickAxis(7) != Joystick.Joystick.joystickaxis.None)
-                                rc.chan7_raw = MainV2.comPort.MAV.cs.rcoverridech7;
-                            if (joystick.getJoystickAxis(8) != Joystick.Joystick.joystickaxis.None)
-                                rc.chan8_raw = MainV2.comPort.MAV.cs.rcoverridech8;
+                        //    if (joystick.getJoystickAxis(1) != Joystick.Joystick.joystickaxis.None)
+                        //        rc.chan1_raw = MainV2.comPort.MAV.cs.rcoverridech1;
+                        //    if (joystick.getJoystickAxis(2) != Joystick.Joystick.joystickaxis.None)
+                        //        rc.chan2_raw = MainV2.comPort.MAV.cs.rcoverridech2;
+                        //    if (joystick.getJoystickAxis(3) != Joystick.Joystick.joystickaxis.None)
+                        //        rc.chan3_raw = MainV2.comPort.MAV.cs.rcoverridech3;
+                        //    if (joystick.getJoystickAxis(4) != Joystick.Joystick.joystickaxis.None)
+                        //        rc.chan4_raw = MainV2.comPort.MAV.cs.rcoverridech4;
+                        //    if (joystick.getJoystickAxis(5) != Joystick.Joystick.joystickaxis.None)
+                        //        rc.chan5_raw = MainV2.comPort.MAV.cs.rcoverridech5;
+                        //    if (joystick.getJoystickAxis(6) != Joystick.Joystick.joystickaxis.None)
+                        //        rc.chan6_raw = MainV2.comPort.MAV.cs.rcoverridech6;
+                        //    if (joystick.getJoystickAxis(7) != Joystick.Joystick.joystickaxis.None)
+                        //        rc.chan7_raw = MainV2.comPort.MAV.cs.rcoverridech7;
+                        //    if (joystick.getJoystickAxis(8) != Joystick.Joystick.joystickaxis.None)
+                        //        rc.chan8_raw = MainV2.comPort.MAV.cs.rcoverridech8;
 
-                            if (lastjoystick.AddMilliseconds(rate) < DateTime.Now)
-                            {
-                                /*
-                                if (MainV2.comPort.MAV.cs.rssi > 0 && MainV2.comPort.MAV.cs.remrssi > 0)
-                                {
-                                    if (lastratechange.Second != DateTime.Now.Second)
-                                    {
-                                        if (MainV2.comPort.MAV.cs.txbuffer > 90)
-                                        {
-                                            if (rate < 20)
-                                                rate = 21;
-                                            rate--;
+                        //    if (lastjoystick.AddMilliseconds(rate) < DateTime.Now)
+                        //    {
+                        //        /*
+                        //        if (MainV2.comPort.MAV.cs.rssi > 0 && MainV2.comPort.MAV.cs.remrssi > 0)
+                        //        {
+                        //            if (lastratechange.Second != DateTime.Now.Second)
+                        //            {
+                        //                if (MainV2.comPort.MAV.cs.txbuffer > 90)
+                        //                {
+                        //                    if (rate < 20)
+                        //                        rate = 21;
+                        //                    rate--;
 
-                                            if (MainV2.comPort.MAV.cs.linkqualitygcs < 70)
-                                                rate = 50;
-                                        }
-                                        else
-                                        {
-                                            if (rate > 100)
-                                                rate = 100;
-                                            rate++;
-                                        }
+                        //                    if (MainV2.comPort.MAV.cs.linkqualitygcs < 70)
+                        //                        rate = 50;
+                        //                }
+                        //                else
+                        //                {
+                        //                    if (rate > 100)
+                        //                        rate = 100;
+                        //                    rate++;
+                        //                }
 
-                                        lastratechange = DateTime.Now;
-                                    }
+                        //                lastratechange = DateTime.Now;
+                        //            }
                                  
-                                }
-                                */
-                                //                                Console.WriteLine(DateTime.Now.Millisecond + " {0} {1} {2} {3} {4}", rc.chan1_raw, rc.chan2_raw, rc.chan3_raw, rc.chan4_raw,rate);
+                        //        }
+                        //        */
+                        //        //                                Console.WriteLine(DateTime.Now.Millisecond + " {0} {1} {2} {3} {4}", rc.chan1_raw, rc.chan2_raw, rc.chan3_raw, rc.chan4_raw,rate);
 
-                                //Console.WriteLine("Joystick btw " + comPort.BaseStream.BytesToWrite);
+                        //        //Console.WriteLine("Joystick btw " + comPort.BaseStream.BytesToWrite);
 
-                                if (!comPort.BaseStream.IsOpen)
-                                    continue;
+                        //        if (!comPort.BaseStream.IsOpen)
+                        //            continue;
 
-                                if (comPort.BaseStream.BytesToWrite < 50)
-                                {
-                                    if (sitl)
-                                    {
-                                        MissionPlanner.Controls.SITL.rcinput();
-                                    }
-                                    else
-                                    {
-                                        comPort.sendPacket(rc);
-                                    }
-                                    count++;
-                                    lastjoystick = DateTime.Now;
-                                }
-                            }
-                        }
+                        //        if (comPort.BaseStream.BytesToWrite < 50)
+                        //        {
+                        //            if (sitl)
+                        //            {
+                        //                MissionPlanner.Controls.SITL.rcinput();
+                        //            }
+                        //            else
+                        //            {
+                        //                comPort.sendPacket(rc);
+                        //            }
+                        //            count++;
+                        //            lastjoystick = DateTime.Now;
+                        //        }
+                        //    }
+                        //}
                     }
                     Thread.Sleep(20);
                 }
