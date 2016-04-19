@@ -49,6 +49,11 @@ namespace MissionPlanner.Utilities
                 if (issending)
                     return false;
 
+                bool lNeedToAddPoint = false;
+                short lMin = short.MaxValue;
+                short lMax = short.MinValue;
+                float lSum = 0;
+
                 double lLat = packet.lat / Math.Pow(10, 7);
                 double lLon = packet.lon / Math.Pow(10, 7);
 
@@ -59,12 +64,24 @@ namespace MissionPlanner.Utilities
                 for (int i = 0; i < lData.Length; i++)
                 {
                     short lDataVal = lData[i];
+                    lSum += lDataVal;
                     if (lDataVal > 0)
                     {
-                        Debug.WriteLine("data at {0} = {1}", i, lDataVal);          
-
-                        mFlightData.addPOIatLoc(lLat, lLon, lDataVal.ToString());
+                        lNeedToAddPoint = true;
+                        if (lDataVal < lMin)
+                            lMin = lDataVal;
+                        if (lDataVal > lMax)
+                            lMax = lDataVal;
                     }
+                }
+                if (lNeedToAddPoint)
+                {
+                    float lAverage = lSum / lData.Count();
+                    string lLabel = "";
+                    lLabel += " Max: " + lMax.ToString();
+                    lLabel += " Avg: " + lAverage.ToString();
+                    lLabel += " Min: " + lMin.ToString();
+                    mFlightData.addPOIatLoc(lLat, lLon, lLabel);
                 }
             }
             else if (rawpacket[5] == (byte) MAVLink.MAVLINK_MSG_ID.TERRAIN_REPORT)
