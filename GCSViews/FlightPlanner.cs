@@ -190,10 +190,8 @@ namespace MissionPlanner.GCSViews
                                     double.Parse(celllon.Value.ToString())).alt)*CurrentState.multiplierdist);
                         int newsrtm = (int) ((srtm.getAltitude(lat, lng).alt)*CurrentState.multiplierdist);
                         int newh = (int) (ans + newsrtm - oldsrtm);
-                        if (newh > newsrtm)
-                            cell.Value = newh;
-                        else
-                            cell.Value = newsrtm + int.Parse(TXT_DefaultAlt.Text);
+
+                        cell.Value = newh;
 
                         cell.DataGridView.EndEdit();
                     }
@@ -1689,7 +1687,7 @@ namespace MissionPlanner.GCSViews
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        internal void BUT_read_Click(object sender, EventArgs e)
+        public void BUT_read_Click(object sender, EventArgs e)
         {
             if (Commands.Rows.Count > 0)
             {
@@ -1740,9 +1738,24 @@ namespace MissionPlanner.GCSViews
 
                 param = port.MAV.param;
 
-                log.Info("Getting WP #");
+                log.Info("Getting Home");
 
                 ((ProgressReporterDialogue) sender).UpdateProgressAndStatus(0, "Getting WP count");
+
+                if (port.MAV.apname == MAVLink.MAV_AUTOPILOT.PX4)
+                {
+                    try
+                    {
+                        cmds.Add(port.getHomePosition());
+                    }
+                    catch (TimeoutException ex)
+                    {
+                        // blank home
+                        cmds.Add(new Locationwp() { id = (byte)MAVLink.MAV_CMD.WAYPOINT });
+                    }
+                }
+
+                log.Info("Getting WP #");
 
                 int cmdcount = port.getWPCount();
 
@@ -1817,7 +1830,7 @@ namespace MissionPlanner.GCSViews
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void BUT_write_Click(object sender, EventArgs e)
+        public void BUT_write_Click(object sender, EventArgs e)
         {
             if ((altmode) CMB_altmode.SelectedValue == altmode.Absolute)
             {
@@ -2002,22 +2015,55 @@ namespace MissionPlanner.GCSViews
                     }
                 }
 
-                // set wp total
-                ((ProgressReporterDialogue) sender).UpdateProgressAndStatus(0, "Set total wps ");
+                bool use_int = (port.MAV.cs.capabilities & MAVLink.MAV_PROTOCOL_CAPABILITY.MISSION_INT) > 0;
 
-                ushort totalwpcountforupload = (ushort) (Commands.Rows.Count + 1);
+                // set wp total
+                ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(0, "Set total wps ");
+
+                ushort totalwpcountforupload = (ushort)(Commands.Rows.Count + 1);
+
+                if (port.MAV.apname == MAVLink.MAV_AUTOPILOT.PX4)
+                {
+                    totalwpcountforupload--;
+                }
 
                 port.setWPTotal(totalwpcountforupload); // + home
 
                 // set home location - overwritten/ignored depending on firmware.
-                ((ProgressReporterDialogue) sender).UpdateProgressAndStatus(0, "Set home");
+                ((ProgressReporterDialogue)sender).UpdateProgressAndStatus(0, "Set home");
 
-                var homeans = port.setWP(home, 0, MAVLink.MAV_FRAME.GLOBAL, 0);
+                // upload from wp0
+                a = 0;
 
-                if (homeans != MAVLink.MAV_MISSION_RESULT.MAV_MISSION_ACCEPTED)
+                if (port.MAV.apname != MAVLink.MAV_AUTOPILOT.PX4)
                 {
-                    CustomMessageBox.Show(Strings.ErrorRejectedByMAV, Strings.ERROR);
-                    return;
+                    try
+                    {
+                        var homeans = port.setWP(home, (ushort)a, MAVLink.MAV_FRAME.GLOBAL, 0, 1, use_int);
+                        if (homeans != MAVLink.MAV_MISSION_RESULT.MAV_MISSION_ACCEPTED)
+                        {
+                            CustomMessageBox.Show(Strings.ErrorRejectedByMAV, Strings.ERROR);
+                            return;
+                        }
+                        a++;
+                    }
+                    catch (TimeoutException ex)
+                    {
+                        use_int = false;
+                        // added here to prevent timeout errors
+                        port.setWPTotal(totalwpcountforupload);
+                        var homeans = port.setWP(home, (ushort)a, MAVLink.MAV_FRAME.GLOBAL, 0, 1, use_int);
+                        if (homeans != MAVLink.MAV_MISSION_RESULT.MAV_MISSION_ACCEPTED)
+                        {
+                            CustomMessageBox.Show(Strings.ErrorRejectedByMAV, Strings.ERROR);
+                            return;
+                        }
+                        a++;
+                    }
+                }
+                else
+                {
+                    use_int = false;
                 }
 
                 // define the default frame.
@@ -2026,8 +2072,6 @@ namespace MissionPlanner.GCSViews
                 // get the command list from the datagrid
                 var commandlist = GetCommandList();
 
-                // upload from wp1, as home is alreadey sent
-                a = 1;
                 // process commandlist to the mav
                 foreach (var temp in commandlist)
                 {
@@ -2057,7 +2101,7 @@ namespace MissionPlanner.GCSViews
                     }
 
                     // try send the wp
-                    MAVLink.MAV_MISSION_RESULT ans = port.setWP(temp, (ushort) (a), frame, 0);
+                    MAVLink.MAV_MISSION_RESULT ans = port.setWP(temp, (ushort)(a), frame, 0, 1, use_int);
 
                     // we timed out while uploading wps/ command wasnt replaced/ command wasnt added
                     if (ans == MAVLink.MAV_MISSION_RESULT.MAV_MISSION_ERROR)
@@ -2065,7 +2109,7 @@ namespace MissionPlanner.GCSViews
                         // resend for partial upload
                         port.setWPPartialUpdate((ushort) (a), totalwpcountforupload);
                         // reupload this point.
-                        ans = port.setWP(temp, (ushort) (a), frame, 0);
+                        ans = port.setWP(temp, (ushort) (a), frame, 0, 1, use_int);
                     }
 
                     if (ans == MAVLink.MAV_MISSION_RESULT.MAV_MISSION_NO_SPACE)
@@ -3048,6 +3092,33 @@ namespace MissionPlanner.GCSViews
                 return;
             }
 
+            // check if the mouse up happend over our button
+            if (polyicon.Rectangle.Contains(e.Location))
+            {
+                polyicon.IsSelected = !polyicon.IsSelected;
+
+                if (e.Button == MouseButtons.Right)
+                {
+                    polyicon.IsSelected = false;
+                    clearPolygonToolStripMenuItem_Click(this, null);
+
+                    contextMenuStrip1.Visible = false;
+
+                    return;
+                }
+
+                if (polyicon.IsSelected)
+                {
+                    polygongridmode = true;
+                }
+                else
+                {
+                    polygongridmode = false;
+                }
+
+                return;
+            }
+
             MouseDownEnd = MainMap.FromLocalToLatLng(e.X, e.Y);
 
             // Console.WriteLine("MainMap MU");
@@ -3954,6 +4025,23 @@ namespace MissionPlanner.GCSViews
 
                 CurrentRallyPt = null;
             }
+            else if (groupmarkers.Count > 0)
+            {
+                for (int a = Commands.Rows.Count; a > 0; a--)
+                {
+                    try
+                    {
+                        if (groupmarkers.Contains(a))
+                            Commands.Rows.RemoveAt(a - 1); // home is 0
+                    }
+                    catch
+                    {
+                        CustomMessageBox.Show("error selecting wp, please try again.");
+                    }
+                }
+
+                groupmarkers.Clear();
+            }
 
 
             if (currentMarker != null)
@@ -4641,7 +4729,7 @@ namespace MissionPlanner.GCSViews
             timer1.Start();
 
             if (MainV2.comPort.MAV.cs.firmware == MainV2.Firmwares.ArduCopter2 &&
-                MainV2.comPort.MAV.cs.version < new Version(3, 4))
+                MainV2.comPort.MAV.cs.version < new Version(3, 3))
             {
                 CMB_altmode.Visible = false;
             }
@@ -4989,7 +5077,7 @@ namespace MissionPlanner.GCSViews
             writeKML();
         }
 
-        public void AddCommand(MAVLink.MAV_CMD cmd, double p1, double p2, double p3, double p4, double x, double y,
+        public int AddCommand(MAVLink.MAV_CMD cmd, double p1, double p2, double p3, double p4, double x, double y,
             double z)
         {
             selectedrow = Commands.Rows.Add();
@@ -4997,6 +5085,8 @@ namespace MissionPlanner.GCSViews
             FillCommand(this.selectedrow, cmd, p1, p2, p3, p4, x, y, z);
 
             writeKML();
+
+            return selectedrow;
         }
 
         public void InsertCommand(int rowIndex, MAVLink.MAV_CMD cmd, double p1, double p2, double p3, double p4, double x, double y,
@@ -5257,6 +5347,16 @@ namespace MissionPlanner.GCSViews
             {
                 geoFenceToolStripMenuItem.Enabled = true;
             }
+
+            if (CurentRectMarker == null && CurrentRallyPt == null && groupmarkers.Count == 0)
+            {
+                deleteWPToolStripMenuItem.Enabled = false;
+            }
+            else
+            {
+                deleteWPToolStripMenuItem.Enabled = true;
+            }
+
             isMouseClickOffMenu = false; // Just incase
         }
 
@@ -5284,10 +5384,8 @@ namespace MissionPlanner.GCSViews
         private void MainMap_Paint(object sender, PaintEventArgs e)
         {
             // draw utm grid
+            if (grid)
             {
-                if (!grid)
-                    return;
-
                 if (MainMap.Zoom < 10)
                     return;
 
@@ -5296,7 +5394,9 @@ namespace MissionPlanner.GCSViews
                 var plla1 = new PointLatLngAlt(rect.LocationTopLeft);
                 var plla2 = new PointLatLngAlt(rect.LocationRightBottom);
 
-                var zone = plla1.GetUTMZone();
+                var center = new PointLatLngAlt(rect.LocationMiddle);
+
+                var zone = center.GetUTMZone();
 
                 var utm1 = plla1.ToUTM(zone);
                 var utm2 = plla2.ToUTM(zone);
@@ -5355,7 +5455,12 @@ namespace MissionPlanner.GCSViews
                     e.Graphics.DrawLine(new Pen(MainMap.SelectionPen.Color, 1), x1, y1, x2, y2);
                 }
             }
+            
+            polyicon.Location = new Point(10,100);
+            polyicon.Paint(e.Graphics);
         }
+
+        MissionPlanner.Controls.Icon.Polygon polyicon = new MissionPlanner.Controls.Icon.Polygon();
 
         private void chk_grid_CheckedChanged(object sender, EventArgs e)
         {

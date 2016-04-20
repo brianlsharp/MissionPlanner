@@ -786,7 +786,7 @@ namespace MissionPlanner
         {
             ParameterMetaDataParser.GetParameterInformation();
 
-            ParameterMetaDataRepository.Reload();
+            ParameterMetaDataRepositoryAPM.Reload();
         }
 
         private void myButton1_Click(object sender, EventArgs e)
@@ -1658,6 +1658,22 @@ namespace MissionPlanner
                     CustomMessageBox.Show(ex.ToString(), Strings.ERROR);
                 }
             }
+        }
+
+        private void but_gstream_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                if (GStreamer.checkGstLaunchExe())
+                {
+                    GStreamer.Start();
+                }
+            }
+            catch (Exception ex)
+            {
+                CustomMessageBox.Show(ex.ToString(), Strings.ERROR);
+            }
+
         }
     }
 }

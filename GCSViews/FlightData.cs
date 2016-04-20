@@ -5,11 +5,13 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Globalization;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
+using DirectShowLib;
 using GMap.NET;
 using GMap.NET.MapProviders;
 using GMap.NET.WindowsForms;
@@ -21,6 +23,7 @@ using MissionPlanner.Log;
 using MissionPlanner.Utilities;
 using MissionPlanner.Warnings;
 using OpenTK;
+using WebCamService;
 using ZedGraph;
 using LogAnalyzer = MissionPlanner.Utilities.LogAnalyzer;
 using TerrainFollow = MissionPlanner.Utilities.TerrainFollow;
@@ -74,7 +77,7 @@ namespace MissionPlanner.GCSViews
         internal static GMapOverlay rallypointoverlay;
         internal static GMapOverlay poioverlay = new GMapOverlay("POI"); // poi layer
 
-        Dictionary<Guid, Form> formguids = new Dictionary<Guid, Form>();
+        List<TabPage> TabListOriginal = new List<TabPage>();
 
         bool huddropout;
         bool huddropoutresize;
@@ -182,6 +185,9 @@ namespace MissionPlanner.GCSViews
             MainHcopy = MainH;
 
             mymap.Paint += mymap_Paint;
+
+            // populate the unmodified base list
+            tabControlactions.TabPages.ForEach(i => { TabListOriginal.Add((TabPage)i); });
 
             //  mymap.Manager.UseMemoryCache = false;
 
@@ -679,6 +685,9 @@ namespace MissionPlanner.GCSViews
 
             NoFly.NoFly.NoFlyEvent += NoFly_NoFlyEvent;
 
+            // update tabs displayed
+            loadTabControlActions();
+
             TRK_zoom.Minimum = gMapControl1.MapProvider.MinZoom;
             TRK_zoom.Maximum = 24;
             TRK_zoom.Value = (float) gMapControl1.Zoom;
@@ -1056,6 +1065,14 @@ namespace MissionPlanner.GCSViews
                     // update map
                     if (tracklast.AddSeconds(1.2) < DateTime.Now)
                     {
+                        // show disable joystick button
+                        if (MainV2.joystick != null && MainV2.joystick.enabled)
+                        {
+                            this.Invoke((MethodInvoker) delegate {
+                                but_disablejoystick.Visible = true;
+                            });
+                        }
+
                         if (Settings.Instance.GetBoolean("CHK_maprotation"))
                         {
                             // dont holdinvalidation here
@@ -2271,6 +2288,7 @@ namespace MissionPlanner.GCSViews
                 {
                     CMB_setwp.Items.Add(z.ToString());
                 }
+                return;
             }
 
             if (MainV2.comPort.MAV.param["WP_TOTAL"] != null)
@@ -2280,6 +2298,7 @@ namespace MissionPlanner.GCSViews
                 {
                     CMB_setwp.Items.Add(z.ToString());
                 }
+                return;
             }
 
             if (MainV2.comPort.MAV.param["MIS_TOTAL"] != null)
@@ -2289,6 +2308,17 @@ namespace MissionPlanner.GCSViews
                 {
                     CMB_setwp.Items.Add(z.ToString());
                 }
+                return;
+            }
+
+            if (MainV2.comPort.MAV.wps.Count > 0)
+            {
+                int wps = MainV2.comPort.MAV.wps.Count;
+                for (int z = 1; z <= wps; z++)
+                {
+                    CMB_setwp.Items.Add(z.ToString());
+                }
+                return;
             }
         }
 
@@ -3567,22 +3597,36 @@ namespace MissionPlanner.GCSViews
 
                             if (logfile.ToLower().EndsWith(".bin"))
                             {
-                                string tempfile = Path.GetTempFileName();
-                                BinaryLog.ConvertBin(logfile, tempfile);
+                                using (tr = new StreamReader(logfile))
+                                {
+                                    GC.Collect();
+                                    CollectionBuffer<string> temp = new CollectionBuffer<string>(tr.BaseStream);
 
-                                tr = new StreamReader(tempfile);
+                                    uint a = 0;
+                                    foreach (var line in temp)
+                                    {
+                                        lo.processLine(line);
+                                        a++;
+
+                                        if ((a % 100000) == 0)
+                                            Console.WriteLine(a);
+                                    }
+
+                                    temp.Dispose();
+                                }
                             }
                             else
                             {
-                                tr = new StreamReader(logfile);
-                            }
+                                using (tr = new StreamReader(logfile))
+                                {
+                                    while (!tr.EndOfStream)
+                                    {
+                                        lo.processLine(tr.ReadLine());
+                                    }
 
-                            while (!tr.EndOfStream)
-                            {
-                                lo.processLine(tr.ReadLine());
+                                    tr.Close();
+                                }
                             }
-
-                            tr.Close();
                         }
                         catch (Exception ex)
                         {
@@ -3928,6 +3972,123 @@ namespace MissionPlanner.GCSViews
                         poly.IsVisible = false;
                 }
             }
+        }
+
+        private void but_disablejoystick_Click(object sender, EventArgs e)
+        {
+            if (MainV2.joystick != null && MainV2.joystick.enabled)
+            {
+                MainV2.joystick.enabled = false;
+
+                MainV2.joystick.clearRCOverride();
+
+                but_disablejoystick.Visible = false;
+            }
+        }
+
+        private void startCameraToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (MainV2.MONO)
+                return;
+
+            try
+            {
+                MainV2.cam = new Capture(Settings.Instance.GetInt32("video_device"), new AMMediaType());
+
+                MainV2.cam.Start();
+
+                MainV2.cam.camimage += new CamImage(cam_camimage);
+            }
+            catch (Exception ex)
+            {
+                CustomMessageBox.Show("Camera Fail: " + ex.ToString(), Strings.ERROR);
+            }
+        }
+
+        private void customizeToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form customForm = new Form();
+            CheckedListBox left = new CheckedListBox();
+            left.Dock = DockStyle.Fill;
+            left.CheckOnClick = true;
+
+            customForm.Controls.Add(left);
+
+            string tabs = Settings.Instance["tabcontrolactions"];
+
+            // setup default if doesnt exist
+            if (tabs == null)
+            {
+                saveTabControlActions();
+                tabs = Settings.Instance["tabcontrolactions"];
+            }
+
+            string[] tabarray = tabs.Split(';');
+
+            foreach (TabPage tabPage in TabListOriginal)
+            {
+                if (tabarray.Contains(tabPage.Name))
+                    left.Items.Add(tabPage.Name,true);
+                else
+                    left.Items.Add(tabPage.Name, false);
+            }
+
+            ThemeManager.ApplyThemeTo(customForm);
+
+            customForm.ShowDialog();
+
+            string answer = "";
+            foreach (var tabPage in left.CheckedItems)
+            {
+                answer += tabPage + ";";
+            }
+
+            Settings.Instance["tabcontrolactions"] = answer;
+
+            loadTabControlActions();
+        }
+
+        private void loadTabControlActions()
+        {
+            string tabs = Settings.Instance["tabcontrolactions"];
+
+            if (String.IsNullOrEmpty(tabs) || TabListOriginal == null || TabListOriginal.Count == 0)
+                return;
+
+            string[] tabarray = tabs.Split(';');
+
+            if (tabarray.Length == 0)
+                return;
+
+            tabControlactions.TabPages.Clear();
+
+            foreach (var tabname in tabarray)
+            {
+                int a = 0;
+                foreach (TabPage tabPage in TabListOriginal)
+                {
+                    if (tabPage.Name == tabname)
+                    {
+                        tabControlactions.TabPages.Add(tabPage);
+                        break;
+                    }
+                    a++;
+                }
+            }
+
+            ThemeManager.ApplyThemeTo(tabControlactions);
+        }
+
+        private void saveTabControlActions()
+        {
+            string answer = "";
+
+            foreach (TabPage tabPage in tabControlactions.TabPages)
+            {
+                answer += tabPage.Name + ";";
+            }
+
+            Settings.Instance["tabcontrolactions"] = answer;
         }
     }
 }

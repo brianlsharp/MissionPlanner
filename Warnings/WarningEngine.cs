@@ -63,6 +63,7 @@ namespace MissionPlanner.Warnings
             if (run == false)
             {
                 thisthread = new Thread(MainLoop);
+                thisthread.Name = "Warning Engine";
                 thisthread.IsBackground = true;
                 thisthread.Start();
             }
@@ -95,8 +96,7 @@ namespace MissionPlanner.Warnings
                                 {
                                     if (MainV2.speechEnable)
                                     {
-                                        while (MainV2.speechEngine.State !=
-                                               System.Speech.Synthesis.SynthesizerState.Ready)
+                                        while (!MainV2.speechEngine.IsReady)
                                             System.Threading.Thread.Sleep(10);
 
                                         MainV2.speechEngine.SpeakAsync(item.SayText());

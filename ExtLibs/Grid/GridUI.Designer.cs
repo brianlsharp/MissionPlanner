@@ -30,6 +30,8 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GridUI));
             this.groupBox5 = new System.Windows.Forms.GroupBox();
+            this.lbl_gndelev = new System.Windows.Forms.Label();
+            this.label40 = new System.Windows.Forms.Label();
             this.lbl_turnrad = new System.Windows.Forms.Label();
             this.label36 = new System.Windows.Forms.Label();
             this.lbl_photoevery = new System.Windows.Forms.Label();
@@ -116,6 +118,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.NUM_Distance = new System.Windows.Forms.NumericUpDown();
             this.tabSimple = new System.Windows.Forms.TabPage();
+            this.label38 = new System.Windows.Forms.Label();
             this.groupBox6 = new System.Windows.Forms.GroupBox();
             this.label37 = new System.Windows.Forms.Label();
             this.NUM_split = new System.Windows.Forms.NumericUpDown();
@@ -142,7 +145,6 @@
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.map = new MissionPlanner.Controls.myGMAP();
             this.TRK_zoom = new MissionPlanner.Controls.MyTrackBar();
-            this.label38 = new System.Windows.Forms.Label();
             this.groupBox5.SuspendLayout();
             this.tabCamera.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -177,6 +179,8 @@
             // 
             // groupBox5
             // 
+            this.groupBox5.Controls.Add(this.lbl_gndelev);
+            this.groupBox5.Controls.Add(this.label40);
             this.groupBox5.Controls.Add(this.lbl_turnrad);
             this.groupBox5.Controls.Add(this.label36);
             this.groupBox5.Controls.Add(this.lbl_photoevery);
@@ -202,6 +206,16 @@
             resources.ApplyResources(this.groupBox5, "groupBox5");
             this.groupBox5.Name = "groupBox5";
             this.groupBox5.TabStop = false;
+            // 
+            // lbl_gndelev
+            // 
+            resources.ApplyResources(this.lbl_gndelev, "lbl_gndelev");
+            this.lbl_gndelev.Name = "lbl_gndelev";
+            // 
+            // label40
+            // 
+            resources.ApplyResources(this.label40, "label40");
+            this.label40.Name = "label40";
             // 
             // lbl_turnrad
             // 
@@ -340,6 +354,8 @@
             // chk_stopstart
             // 
             resources.ApplyResources(this.chk_stopstart, "chk_stopstart");
+            this.chk_stopstart.Checked = true;
+            this.chk_stopstart.CheckState = System.Windows.Forms.CheckState.Checked;
             this.chk_stopstart.Name = "chk_stopstart";
             this.chk_stopstart.UseVisualStyleBackColor = true;
             // 
@@ -801,7 +817,7 @@
             0,
             0,
             0});
-            this.num_overlap.ValueChanged += new System.EventHandler(this.NUM_ValueChanged);
+            this.num_overlap.ValueChanged += new System.EventHandler(this.domainUpDown1_ValueChanged);
             // 
             // num_sidelap
             // 
@@ -813,7 +829,7 @@
             0,
             0,
             0});
-            this.num_sidelap.ValueChanged += new System.EventHandler(this.NUM_ValueChanged);
+            this.num_sidelap.ValueChanged += new System.EventHandler(this.domainUpDown1_ValueChanged);
             // 
             // label5
             // 
@@ -867,6 +883,11 @@
             resources.ApplyResources(this.tabSimple, "tabSimple");
             this.tabSimple.Name = "tabSimple";
             this.tabSimple.UseVisualStyleBackColor = true;
+            // 
+            // label38
+            // 
+            resources.ApplyResources(this.label38, "label38");
+            this.label38.Name = "label38";
             // 
             // groupBox6
             // 
@@ -1008,7 +1029,7 @@
             0,
             0});
             this.NUM_altitude.Minimum = new decimal(new int[] {
-            5,
+            1,
             0,
             0,
             0});
@@ -1138,11 +1159,6 @@
             this.TRK_zoom.TickStyle = System.Windows.Forms.TickStyle.TopLeft;
             this.TRK_zoom.Value = 2F;
             this.TRK_zoom.Scroll += new System.EventHandler(this.trackBar1_Scroll);
-            // 
-            // label38
-            // 
-            resources.ApplyResources(this.label38, "label38");
-            this.label38.Name = "label38";
             // 
             // GridUI
             // 
@@ -1315,5 +1331,7 @@
         private System.Windows.Forms.NumericUpDown NUM_split;
         private System.Windows.Forms.CheckBox chk_stopstart;
         private System.Windows.Forms.Label label38;
+        private System.Windows.Forms.Label lbl_gndelev;
+        private System.Windows.Forms.Label label40;
     }
 }

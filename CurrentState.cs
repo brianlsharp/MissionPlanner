@@ -8,7 +8,7 @@ using log4net;
 using MissionPlanner.Attributes;
 using MissionPlanner;
 using System.Collections;
-using System.Diagnostics;
+using DirectShowLib;
 
 namespace MissionPlanner
 {
@@ -962,9 +962,9 @@ namespace MissionPlanner
 
         public float speedup { get; set; }
 
-        Mavlink_Sensors sensors_enabled = new Mavlink_Sensors();
-        Mavlink_Sensors sensors_health = new Mavlink_Sensors();
-        Mavlink_Sensors sensors_present = new Mavlink_Sensors();
+        internal Mavlink_Sensors sensors_enabled = new Mavlink_Sensors();
+        internal Mavlink_Sensors sensors_health = new Mavlink_Sensors();
+        internal Mavlink_Sensors sensors_present = new Mavlink_Sensors();
 
         internal bool MONO = false;
 
@@ -1174,7 +1174,6 @@ namespace MissionPlanner
                     {
                         var version = bytearray.ByteArrayToStructure<MAVLink.mavlink_autopilot_version_t>(6);
                         //#define FIRMWARE_VERSION 3,4,0,FIRMWARE_VERSION_TYPE_DEV
-
                         //		flight_sw_version	0x03040000	uint
 
                         byte main = (byte) (version.flight_sw_version >> 24);
@@ -1184,6 +1183,8 @@ namespace MissionPlanner
                             (MAVLink.FIRMWARE_VERSION_TYPE) (version.flight_sw_version & 0xff);
 
                         this.version = new Version(main, sub, (int) type, rev);
+
+                        capabilities = (MAVLink.MAV_PROTOCOL_CAPABILITY)version.capabilities;
 
                         MAV.packets[(byte) MAVLink.MAVLINK_MSG_ID.AUTOPILOT_VERSION] = null;
                     }
@@ -1420,6 +1421,13 @@ namespace MissionPlanner
                         {
                             armed = (hb.base_mode & (byte) MAVLink.MAV_MODE_FLAG.SAFETY_ARMED) ==
                                     (byte) MAVLink.MAV_MODE_FLAG.SAFETY_ARMED;
+
+                            // saftey switch
+                            if (armed && sensors_enabled.motor_control == false && sensors_enabled.seen)
+                            {
+                                messageHigh = "(SAFE)";
+                                messageHighTime = DateTime.Now;
+                            }
 
                             // for future use
                             landed = hb.system_status == (byte) MAVLink.MAV_STATE.STANDBY;
@@ -1974,7 +1982,8 @@ namespace MissionPlanner
                         }
 
                         if (sensors_present.revthrottle && sensors_enabled.revthrottle && sensors_health.revthrottle)
-                            ch3percent *= -1;
+                            if (ch3percent > 0)
+                                ch3percent *= -1;
 
                         //Console.WriteLine(alt);
 
@@ -2112,6 +2121,8 @@ namespace MissionPlanner
         {
             BitArray bitArray = new BitArray(32);
 
+            public bool seen = false;
+
             public Mavlink_Sensors()
             {
                 //var item = MAVLink.MAV_SYS_STATUS_SENSOR._3D_ACCEL;
@@ -2119,6 +2130,7 @@ namespace MissionPlanner
 
             public Mavlink_Sensors(uint p)
             {
+                seen = true;
                 bitArray = new BitArray(new int[] {(int) p});
             }
 
@@ -2286,7 +2298,11 @@ namespace MissionPlanner
                     bitArray.CopyTo(array, 0);
                     return (uint)array[0];
                 }
-                set { bitArray = new BitArray((int)value); }
+                set
+                {
+                    seen = true;
+                    bitArray = new BitArray(new int[] { (int)value });
+                }
             }
 
             public override string ToString()
@@ -2417,5 +2433,7 @@ namespace MissionPlanner
         public float rpm1 { get; set; }
 
         public float rpm2 { get; set; }
+
+        public MAVLink.MAV_PROTOCOL_CAPABILITY capabilities { get; set; }
     }
 }
