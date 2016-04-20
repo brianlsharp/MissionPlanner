@@ -109,7 +109,7 @@ namespace MissionPlanner.Utilities
                 }
             }
         }
-
+        //
         public static void UpdateOverlay(GMap.NET.WindowsForms.GMapOverlay poioverlay)
         {
             if (poioverlay == null)
