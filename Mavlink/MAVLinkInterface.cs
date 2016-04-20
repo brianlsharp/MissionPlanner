@@ -1798,17 +1798,18 @@ Please check the following
 
             if (use_int)
             {
-                mavlink_mission_request_int_t reqi = new mavlink_mission_request_int_t();
+                throw new Exception("I commented some stuff out\n");
+                //mavlink_mission_request_int_t reqi = new mavlink_mission_request_int_t();
 
-                reqi.target_system = MAV.sysid;
-                reqi.target_component = MAV.compid;
+                //reqi.target_system = MAV.sysid;
+                //reqi.target_component = MAV.compid;
 
-                reqi.seq = index;
+                //reqi.seq = index;
                 
-                // request
-                generatePacket((byte)MAVLINK_MSG_ID.MISSION_REQUEST_INT, reqi);
+                //// request
+                //generatePacket((byte)MAVLINK_MSG_ID.MISSION_REQUEST_INT, reqi);
 
-                req = reqi;
+                //req = reqi;
             }
             else
             {
@@ -1839,7 +1840,10 @@ Please check the following
                     {
                         log.Info("getWP Retry " + retrys);
                         if (use_int)
-                            generatePacket((byte)MAVLINK_MSG_ID.MISSION_REQUEST_INT, req);
+                        {
+                            throw new Exception("need to rerun the python script to create MAVLINK_MSG_ID.MISSION_REQUEST_INT . I had to comment it out\n");
+//                            generatePacket((byte)MAVLINK_MSG_ID.MISSION_REQUEST_INT, req);
+                        }
                         else
                             generatePacket((byte)MAVLINK_MSG_ID.MISSION_REQUEST, req);
                         start = DateTime.Now;
@@ -1892,7 +1896,8 @@ Please check the following
                         // received a packet, but not what we requested
                         if (index != wp.seq)
                         {
-                            generatePacket((byte)MAVLINK_MSG_ID.MISSION_REQUEST_INT, req);
+                            //generatePacket((byte)MAVLINK_MSG_ID.MISSION_REQUEST_INT, req);
+                            throw new Exception("need to rerun the python script to create MAVLINK_MSG_ID.MISSION_REQUEST_INT . I had to comment it out\n");
                             continue;
                         }
 

@@ -9,6 +9,7 @@ using MissionPlanner.Attributes;
 using MissionPlanner;
 using System.Collections;
 using DirectShowLib;
+using System.Diagnostics;
 
 namespace MissionPlanner
 {
@@ -1648,17 +1649,6 @@ namespace MissionPlanner
                     if (bytearray != null)
                     {
                         MAVLink.mavlink_terrain_data_t lMsg = bytearray.ByteArrayToStructure<MAVLink.mavlink_terrain_data_t>(6);
-
-                        // the new arhs deadreckoning may send 0 alt and 0 long. check for and undo
-                        short[] lData = lMsg.data;
-
-                        for( int i =0; i < lData.Length; i++ )
-                        {
-                            short lDataVal = lData[i];
-                            if( lDataVal > 0 )
-                               Debug.WriteLine("data at {0} = {1}", i, lDataVal);
-                        }
-
                     }
 
                     bytearray = MAV.packets[(byte) MAVLink.MAVLINK_MSG_ID.GPS_RAW_INT];

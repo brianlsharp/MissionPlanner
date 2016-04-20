@@ -1066,12 +1066,12 @@ namespace MissionPlanner.GCSViews
                     if (tracklast.AddSeconds(1.2) < DateTime.Now)
                     {
                         // show disable joystick button
-                        if (MainV2.joystick != null && MainV2.joystick.enabled)
-                        {
-                            this.Invoke((MethodInvoker) delegate {
-                                but_disablejoystick.Visible = true;
-                            });
-                        }
+                        //if (MainV2.joystick != null && MainV2.joystick.enabled)
+                        //{
+                        //    this.Invoke((MethodInvoker) delegate {
+                        //        but_disablejoystick.Visible = true;
+                        //    });
+                        //}
 
                         if (Settings.Instance.GetBoolean("CHK_maprotation"))
                         {
@@ -3976,14 +3976,14 @@ namespace MissionPlanner.GCSViews
 
         private void but_disablejoystick_Click(object sender, EventArgs e)
         {
-            if (MainV2.joystick != null && MainV2.joystick.enabled)
-            {
-                MainV2.joystick.enabled = false;
+            //if (MainV2.joystick != null && MainV2.joystick.enabled)
+            //{
+            //    MainV2.joystick.enabled = false;
 
-                MainV2.joystick.clearRCOverride();
+            //    MainV2.joystick.clearRCOverride();
 
-                but_disablejoystick.Visible = false;
-            }
+            //    but_disablejoystick.Visible = false;
+            //}
         }
 
         private void startCameraToolStripMenuItem_Click(object sender, EventArgs e)
