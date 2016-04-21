@@ -3803,6 +3803,7 @@ namespace MissionPlanner.GCSViews
 
         PointLatLng startmeasure;
 
+        // used to measure distance between points
         private void ContextMeasure_Click(object sender, EventArgs e)
         {
             if (startmeasure.IsEmpty)
