@@ -1,0 +1,4 @@
+27 April
+Well I changed it so that MissionPlanner's CurrentState.cs only updated its lat/lng when GPSStatus2 == 5. But I still got some big skips from the mission on 22 March. Not as many, but still some, and just as severe as the others. 
+
+Been noticing that in Mission Planner, the rover is bounching between Piksi GPS and crappy GPS. Sometimes, even when the Piksi Console says that it still has Fixed RTK. Going over the log files, it looks like FlightData.cs will be receving and updating its lat/lon based on EITHER messages received from either GPS1 or GPS2. So if the Piksi is supposed to work right out of the box, then the ardupilot embedded software shouldn't be transmitting that GPS info unless GPS2Status is less than 5. Perhaps there is an issue on the embedded side.

@@ -1,0 +1,2 @@
+- Add Button to clear pins.
+- Add Button to show/hide pins.
