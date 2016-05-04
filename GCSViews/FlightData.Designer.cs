@@ -28,6 +28,7 @@ namespace MissionPlanner.GCSViews
             this.bindingSourceHud = new System.Windows.Forms.BindingSource(this.components);
             this.tabControlactions = new System.Windows.Forms.TabControl();
             this.contextMenuStripactionstab = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.customizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabQuick = new System.Windows.Forms.TabPage();
             this.tableLayoutPanelQuick = new System.Windows.Forms.TableLayoutPanel();
             this.quickView6 = new MissionPlanner.Controls.QuickView();
@@ -143,6 +144,7 @@ namespace MissionPlanner.GCSViews
             this.gMapControl1 = new MissionPlanner.Controls.myGMAP();
             this.TRK_zoom = new MissionPlanner.Controls.MyTrackBar();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.chk_ShowRoute = new System.Windows.Forms.CheckBox();
             this.coords1 = new MissionPlanner.Controls.Coords();
             this.Zoomlevel = new System.Windows.Forms.NumericUpDown();
             this.label1 = new MissionPlanner.Controls.MyLabel();
@@ -156,7 +158,7 @@ namespace MissionPlanner.GCSViews
             this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
             this.Messagetabtimer = new System.Windows.Forms.Timer(this.components);
             this.bindingSourceStatusTab = new System.Windows.Forms.BindingSource(this.components);
-            this.customizeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.chk_ShowMarkers = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.MainH)).BeginInit();
             this.MainH.Panel1.SuspendLayout();
             this.MainH.Panel2.SuspendLayout();
@@ -417,6 +419,12 @@ namespace MissionPlanner.GCSViews
             this.customizeToolStripMenuItem});
             this.contextMenuStripactionstab.Name = "contextMenuStripactionstab";
             resources.ApplyResources(this.contextMenuStripactionstab, "contextMenuStripactionstab");
+            // 
+            // customizeToolStripMenuItem
+            // 
+            this.customizeToolStripMenuItem.Name = "customizeToolStripMenuItem";
+            resources.ApplyResources(this.customizeToolStripMenuItem, "customizeToolStripMenuItem");
+            this.customizeToolStripMenuItem.Click += new System.EventHandler(this.customizeToolStripMenuItem_Click);
             // 
             // tabQuick
             // 
@@ -1786,6 +1794,8 @@ namespace MissionPlanner.GCSViews
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.chk_ShowMarkers);
+            this.panel1.Controls.Add(this.chk_ShowRoute);
             this.panel1.Controls.Add(this.coords1);
             this.panel1.Controls.Add(this.Zoomlevel);
             this.panel1.Controls.Add(this.label1);
@@ -1793,6 +1803,14 @@ namespace MissionPlanner.GCSViews
             this.panel1.Controls.Add(this.CB_tuning);
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
+            // 
+            // chk_ShowRoute
+            // 
+            resources.ApplyResources(this.chk_ShowRoute, "chk_ShowRoute");
+            this.chk_ShowRoute.Checked = true;
+            this.chk_ShowRoute.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chk_ShowRoute.Name = "chk_ShowRoute";
+            this.chk_ShowRoute.UseVisualStyleBackColor = true;
             // 
             // coords1
             // 
@@ -1903,11 +1921,13 @@ namespace MissionPlanner.GCSViews
             // 
             this.bindingSourceStatusTab.DataSource = typeof(MissionPlanner.CurrentState);
             // 
-            // customizeToolStripMenuItem
+            // chk_ShowMarkers
             // 
-            this.customizeToolStripMenuItem.Name = "customizeToolStripMenuItem";
-            resources.ApplyResources(this.customizeToolStripMenuItem, "customizeToolStripMenuItem");
-            this.customizeToolStripMenuItem.Click += new System.EventHandler(this.customizeToolStripMenuItem_Click);
+            resources.ApplyResources(this.chk_ShowMarkers, "chk_ShowMarkers");
+            this.chk_ShowMarkers.Checked = true;
+            this.chk_ShowMarkers.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chk_ShowMarkers.Name = "chk_ShowMarkers";
+            this.chk_ShowMarkers.UseVisualStyleBackColor = true;
             // 
             // FlightData
             // 
@@ -2115,5 +2135,7 @@ namespace MissionPlanner.GCSViews
         private System.Windows.Forms.ToolStripMenuItem stopRecordToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem startCameraToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem customizeToolStripMenuItem;
+        private System.Windows.Forms.CheckBox chk_ShowRoute;
+        private System.Windows.Forms.CheckBox chk_ShowMarkers;
     }
 }

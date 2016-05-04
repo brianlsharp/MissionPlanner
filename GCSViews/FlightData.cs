@@ -295,6 +295,9 @@ namespace MissionPlanner.GCSViews
             gMapControl1.OnMarkerEnter += gMapControl1_OnMarkerEnter;
             gMapControl1.OnMarkerLeave += gMapControl1_OnMarkerLeave;
 
+            chk_ShowRoute.CheckedChanged += Chk_ShowRoute_CheckedChanged;
+            chk_ShowMarkers.CheckedChanged += Chk_ShowMarkers_CheckedChanged;
+
             gMapControl1.RoutesEnabled = true;
             gMapControl1.PolygonsEnabled = true;
 
@@ -334,6 +337,18 @@ namespace MissionPlanner.GCSViews
             TerrainFollow lFollow = new TerrainFollow(MainV2.comPort);
         }
 
+        private void Chk_ShowMarkers_CheckedChanged(object sender, EventArgs e)
+        {
+            gMapControl1.MarkersEnabled = chk_ShowRoute.Checked;
+            gMapControl1.Refresh();
+        }
+
+        private void Chk_ShowRoute_CheckedChanged(object sender, EventArgs e)
+        {
+            gMapControl1.RoutesEnabled = chk_ShowRoute.Checked;
+            gMapControl1.Refresh();
+        }
+
         public void addPOIatLoc( double aLat, double aLon, string aLabel )
         {
             PointLatLng lLoc = new PointLatLng(aLat, aLon);
@@ -348,6 +363,11 @@ namespace MissionPlanner.GCSViews
             {
                 PointLatLng currentloc = new PointLatLng(MainV2.comPort.MAV.cs.lat, MainV2.comPort.MAV.cs.lng);
                 POI.POIAdd(currentloc);
+            }
+            else if( e.KeyChar.ToString().ToUpper() == "R" )
+            {
+                gMapControl1.RoutesEnabled = !gMapControl1.RoutesEnabled;
+                gMapControl1.Refresh();
             }
         }
 
@@ -1109,6 +1129,7 @@ namespace MissionPlanner.GCSViews
                         {
                             // trackPoints.Add(currentloc);
                             route.Points.Add(currentloc);
+
                         }
 
 
