@@ -339,7 +339,7 @@ namespace MissionPlanner.GCSViews
 
         private void Chk_ShowMarkers_CheckedChanged(object sender, EventArgs e)
         {
-            gMapControl1.MarkersEnabled = chk_ShowRoute.Checked;
+            gMapControl1.MarkersEnabled = chk_ShowMarkers.Checked;
             gMapControl1.Refresh();
         }
 
