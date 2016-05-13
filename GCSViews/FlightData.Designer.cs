@@ -144,6 +144,8 @@ namespace MissionPlanner.GCSViews
             this.gMapControl1 = new MissionPlanner.Controls.myGMAP();
             this.TRK_zoom = new MissionPlanner.Controls.MyTrackBar();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btn_clearRoute = new System.Windows.Forms.Button();
+            this.btn_clearMarkers = new System.Windows.Forms.Button();
             this.chk_ShowMarkers = new System.Windows.Forms.CheckBox();
             this.chk_ShowRoute = new System.Windows.Forms.CheckBox();
             this.coords1 = new MissionPlanner.Controls.Coords();
@@ -159,8 +161,6 @@ namespace MissionPlanner.GCSViews
             this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
             this.Messagetabtimer = new System.Windows.Forms.Timer(this.components);
             this.bindingSourceStatusTab = new System.Windows.Forms.BindingSource(this.components);
-            this.btn_clearMarkers = new System.Windows.Forms.Button();
-            this.btn_clearRoute = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.MainH)).BeginInit();
             this.MainH.Panel1.SuspendLayout();
             this.MainH.Panel2.SuspendLayout();
@@ -1702,7 +1702,7 @@ namespace MissionPlanner.GCSViews
             this.windDir1.BackColor = System.Drawing.Color.Transparent;
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Direction", this.bindingSource1, "wind_dir", true, System.Windows.Forms.DataSourceUpdateMode.Never));
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Speed", this.bindingSource1, "wind_vel", true, System.Windows.Forms.DataSourceUpdateMode.Never));
-            this.windDir1.Direction = 360D;
+            this.windDir1.Direction = 180D;
             resources.ApplyResources(this.windDir1, "windDir1");
             this.windDir1.Name = "windDir1";
             this.windDir1.Speed = 0D;
@@ -1807,6 +1807,18 @@ namespace MissionPlanner.GCSViews
             this.panel1.Controls.Add(this.CB_tuning);
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
+            // 
+            // btn_clearRoute
+            // 
+            resources.ApplyResources(this.btn_clearRoute, "btn_clearRoute");
+            this.btn_clearRoute.Name = "btn_clearRoute";
+            this.btn_clearRoute.UseVisualStyleBackColor = true;
+            // 
+            // btn_clearMarkers
+            // 
+            resources.ApplyResources(this.btn_clearMarkers, "btn_clearMarkers");
+            this.btn_clearMarkers.Name = "btn_clearMarkers";
+            this.btn_clearMarkers.UseVisualStyleBackColor = true;
             // 
             // chk_ShowMarkers
             // 
@@ -1932,18 +1944,6 @@ namespace MissionPlanner.GCSViews
             // bindingSourceStatusTab
             // 
             this.bindingSourceStatusTab.DataSource = typeof(MissionPlanner.CurrentState);
-            // 
-            // btn_clearMarkers
-            // 
-            resources.ApplyResources(this.btn_clearMarkers, "btn_clearMarkers");
-            this.btn_clearMarkers.Name = "btn_clearMarkers";
-            this.btn_clearMarkers.UseVisualStyleBackColor = true;
-            // 
-            // btn_clearRoute
-            // 
-            resources.ApplyResources(this.btn_clearRoute, "btn_clearRoute");
-            this.btn_clearRoute.Name = "btn_clearRoute";
-            this.btn_clearRoute.UseVisualStyleBackColor = true;
             // 
             // FlightData
             // 

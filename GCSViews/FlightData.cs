@@ -296,7 +296,9 @@ namespace MissionPlanner.GCSViews
             gMapControl1.OnMarkerLeave += gMapControl1_OnMarkerLeave;
 
             chk_ShowRoute.CheckedChanged += Chk_ShowRoute_CheckedChanged;
+            btn_clearRoute.Click += Btn_clearRoute_Click;
             chk_ShowMarkers.CheckedChanged += Chk_ShowMarkers_CheckedChanged;
+            btn_clearMarkers.Click += Btn_clearMarkers_Click;
 
             gMapControl1.RoutesEnabled = true;
             gMapControl1.PolygonsEnabled = true;
@@ -335,6 +337,25 @@ namespace MissionPlanner.GCSViews
             MainV2_AdvancedChanged(null, null);
 
             TerrainFollow lFollow = new TerrainFollow(MainV2.comPort);
+        }
+
+        private void Btn_clearRoute_Click(object sender, EventArgs e)
+        {
+            if (CustomMessageBox.Show("Are you sure you want to do delete all Route History?", "Action", MessageBoxButtons.YesNo)
+                == DialogResult.Yes)
+            {
+                route.Points.Clear();
+                gMapControl1.Refresh();
+            }
+        }
+
+        private void Btn_clearMarkers_Click(object sender, EventArgs e)
+        {
+            if ( CustomMessageBox.Show("Are you sure you want to do delete all Markers?", "Action", MessageBoxButtons.YesNo)
+                == DialogResult.Yes)
+            {
+                POI.POIDeleteAll();
+            }
         }
 
         private void Chk_ShowMarkers_CheckedChanged(object sender, EventArgs e)
@@ -1131,7 +1152,6 @@ namespace MissionPlanner.GCSViews
                         {
                             // trackPoints.Add(currentloc);
                             route.Points.Add(currentloc);
-
                         }
 
 
