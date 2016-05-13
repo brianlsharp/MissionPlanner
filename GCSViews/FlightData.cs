@@ -366,6 +366,8 @@ namespace MissionPlanner.GCSViews
             }
             else if( e.KeyChar.ToString().ToUpper() == "R" )
             {
+                POI.POIDeleteAll();
+
                 gMapControl1.RoutesEnabled = !gMapControl1.RoutesEnabled;
                 gMapControl1.Refresh();
             }

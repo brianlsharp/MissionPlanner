@@ -21,6 +21,13 @@ namespace MissionPlanner.Utilities
 
         public static event EventHandler POIModified;
 
+        public static void POIDeleteAll()
+        {
+            POIs.Clear();
+            if (POIModified != null)
+                POIModified(null, null);
+        }
+
         public static void POIAdd(PointLatLngAlt Point, string tag)
         {
             // local copy
