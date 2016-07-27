@@ -3862,7 +3862,6 @@ namespace MissionPlanner.GCSViews
 
             polygongridmode = true;
 
-            List<PointLatLng> polygonPoints = new List<PointLatLng>();
             if (drawnpolygonsoverlay.Polygons.Count == 0)
             {
                 drawnpolygon.Points.Clear();

@@ -76,6 +76,8 @@ namespace MissionPlanner.GCSViews
         internal static GMapOverlay geofence;
         internal static GMapOverlay rallypointoverlay;
         internal static GMapOverlay poioverlay = new GMapOverlay("POI"); // poi layer
+        GMapOverlay drawnpolygonsoverlay = new GMapOverlay("drawnpolygons");
+        GMapPolygon drawnpolygon;
 
         List<TabPage> TabListOriginal = new List<TabPage>();
 
@@ -322,6 +324,7 @@ namespace MissionPlanner.GCSViews
             gMapControl1.Overlays.Add(rallypointoverlay);
 
             gMapControl1.Overlays.Add(poioverlay);
+            gMapControl1.Overlays.Add(drawnpolygonsoverlay);
 
             float gspeedMax = Settings.Instance.GetFloat("GspeedMAX");
             if (gspeedMax != 0)
@@ -380,19 +383,61 @@ namespace MissionPlanner.GCSViews
         {
             Debug.WriteLine("key pressed {0}", e.KeyChar);
 
+            PointLatLng currentloc = new PointLatLng(MainV2.comPort.MAV.cs.lat, MainV2.comPort.MAV.cs.lng);
             if (e.KeyChar.ToString().ToUpper() == "W")
             {
-                PointLatLng currentloc = new PointLatLng(MainV2.comPort.MAV.cs.lat, MainV2.comPort.MAV.cs.lng);
                 POI.POIAdd(currentloc);
             }
             else if( e.KeyChar.ToString().ToUpper() == "R" )
             {
-                POI.POIDeleteAll();
+                if (drawnpolygonsoverlay.Polygons.Count == 0)
+                {
+                    drawnpolygon.Points.Clear();
+                    drawnpolygonsoverlay.Polygons.Add(drawnpolygon);
+                }
 
-                gMapControl1.RoutesEnabled = !gMapControl1.RoutesEnabled;
-                gMapControl1.Refresh();
+                drawnpolygon.Fill = Brushes.Transparent;
+
+                // remove full loop is exists
+                if (drawnpolygon.Points.Count > 1 &&
+                    drawnpolygon.Points[0] == drawnpolygon.Points[drawnpolygon.Points.Count - 1])
+                    drawnpolygon.Points.RemoveAt(drawnpolygon.Points.Count - 1); // unmake a full loop
+
+                drawnpolygon.Points.Add(new PointLatLng(currentloc.Lat, currentloc.Lng));
+
+                addpolygonmarkergrid(drawnpolygon.Points.Count.ToString(), currentloc.Lng, currentloc.Lat, 0);
+
+                gMapControl1.UpdatePolygonLocalPosition(drawnpolygon);
+
+                gMapControl1.Invalidate();
+
             }
         }
+
+        private void addpolygonmarkergrid(string tag, double lng, double lat, int alt)
+        {
+            try
+            {
+                PointLatLng point = new PointLatLng(lat, lng);
+                GMarkerGoogle m = new GMarkerGoogle(point, GMarkerGoogleType.red);
+                m.ToolTipMode = MarkerTooltipMode.Never;
+                m.ToolTipText = "grid" + tag;
+                m.Tag = "grid" + tag;
+
+                GMapMarkerRect mBorders = new GMapMarkerRect(point);
+                {
+                    mBorders.InnerMarker = m;
+                }
+
+                drawnpolygonsoverlay.Markers.Add(m);
+                drawnpolygonsoverlay.Markers.Add(mBorders);
+            }
+            catch (Exception ex)
+            {
+                log.Info(ex.ToString());
+            }
+        }
+
 
         void NoFly_NoFlyEvent(object sender, NoFly.NoFly.NoFlyEventArgs e)
         {
@@ -768,6 +813,13 @@ namespace MissionPlanner.GCSViews
             }
 
             hud1.doResize();
+
+            //setup drawnpolgon
+            List<PointLatLng> polygonPoints2 = new List<PointLatLng>();
+            drawnpolygon = new GMapPolygon(polygonPoints2, "drawnpoly");
+            drawnpolygon.Stroke = new Pen(Color.Blue, 2);
+            drawnpolygon.Fill = Brushes.Transparent;
+
 
             thisthread = new Thread(mainloop);
             thisthread.Name = "FD Mainloop";
