@@ -302,6 +302,9 @@ namespace MissionPlanner.GCSViews
             chk_ShowMarkers.CheckedChanged += Chk_ShowMarkers_CheckedChanged;
             btn_clearMarkers.Click += Btn_clearMarkers_Click;
 
+            savePolygonToolStripMenuItem.Click += savePolygonToolStripMenuItem_Click;
+            loadPolygonToolStripMenuItem.Click += loadPolygonToolStripMenuItem_Click;
+
             gMapControl1.RoutesEnabled = true;
             gMapControl1.PolygonsEnabled = true;
 
@@ -340,6 +343,63 @@ namespace MissionPlanner.GCSViews
             MainV2_AdvancedChanged(null, null);
 
             TerrainFollow lFollow = new TerrainFollow(MainV2.comPort);
+        }
+
+        void loadPolygonToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (OpenFileDialog fd = new OpenFileDialog())
+            {
+                fd.Filter = "Polygon (*.poly)|*.poly";
+                fd.ShowDialog();
+                if (File.Exists(fd.FileName))
+                {
+                    StreamReader sr = new StreamReader(fd.OpenFile());
+
+                    drawnpolygonsoverlay.Markers.Clear();
+                    drawnpolygonsoverlay.Polygons.Clear();
+                    drawnpolygon.Points.Clear();
+
+                    int a = 0;
+
+                    while (!sr.EndOfStream)
+                    {
+                        string line = sr.ReadLine();
+                        if (line.StartsWith("#"))
+                        {
+                        }
+                        else
+                        {
+                            string[] items = line.Split(new[] { ' ', '\t' }, StringSplitOptions.RemoveEmptyEntries);
+
+                            drawnpolygon.Points.Add(new PointLatLng(double.Parse(items[0]), double.Parse(items[1])));
+                            addpolygonmarkergrid(drawnpolygon.Points.Count.ToString(), double.Parse(items[1]),
+                                double.Parse(items[0]), 0);
+
+                            a++;
+                        }
+                    }
+
+                    // remove loop close
+                    if (drawnpolygon.Points.Count > 1 &&
+                        drawnpolygon.Points[0] == drawnpolygon.Points[drawnpolygon.Points.Count - 1])
+                    {
+                        drawnpolygon.Points.RemoveAt(drawnpolygon.Points.Count - 1);
+                    }
+
+                    drawnpolygonsoverlay.Polygons.Add(drawnpolygon);
+
+                    gMapControl1.UpdatePolygonLocalPosition(drawnpolygon);
+
+                    gMapControl1.Invalidate();
+
+                    gMapControl1.ZoomAndCenterMarkers(drawnpolygonsoverlay.Id);
+                }
+            }
+        }
+
+        void savePolygonToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FlightPlanner.savePolygon(drawnpolygon);
         }
 
         private void Btn_clearRoute_Click(object sender, EventArgs e)

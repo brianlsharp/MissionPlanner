@@ -131,6 +131,7 @@ namespace MissionPlanner.GCSViews
             this.flightPlannerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.setHomeHereToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.takeOffToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.savePolygonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.but_disablejoystick = new MissionPlanner.Controls.MyButton();
             this.distanceBar1 = new MissionPlanner.Controls.DistanceBar();
             this.windDir1 = new MissionPlanner.Controls.WindDir();
@@ -161,6 +162,7 @@ namespace MissionPlanner.GCSViews
             this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
             this.Messagetabtimer = new System.Windows.Forms.Timer(this.components);
             this.bindingSourceStatusTab = new System.Windows.Forms.BindingSource(this.components);
+            this.loadPolygonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.MainH)).BeginInit();
             this.MainH.Panel1.SuspendLayout();
             this.MainH.Panel2.SuspendLayout();
@@ -1615,7 +1617,9 @@ namespace MissionPlanner.GCSViews
             this.triggerCameraToolStripMenuItem,
             this.flightPlannerToolStripMenuItem,
             this.setHomeHereToolStripMenuItem,
-            this.takeOffToolStripMenuItem});
+            this.takeOffToolStripMenuItem,
+            this.savePolygonToolStripMenuItem,
+            this.loadPolygonToolStripMenuItem});
             this.contextMenuStripMap.Name = "contextMenuStrip1";
             resources.ApplyResources(this.contextMenuStripMap, "contextMenuStripMap");
             // 
@@ -1681,6 +1685,11 @@ namespace MissionPlanner.GCSViews
             this.takeOffToolStripMenuItem.Name = "takeOffToolStripMenuItem";
             resources.ApplyResources(this.takeOffToolStripMenuItem, "takeOffToolStripMenuItem");
             this.takeOffToolStripMenuItem.Click += new System.EventHandler(this.takeOffToolStripMenuItem_Click);
+            // 
+            // savePolygonToolStripMenuItem
+            // 
+            this.savePolygonToolStripMenuItem.Name = "savePolygonToolStripMenuItem";
+            resources.ApplyResources(this.savePolygonToolStripMenuItem, "savePolygonToolStripMenuItem");
             // 
             // but_disablejoystick
             // 
@@ -1945,6 +1954,11 @@ namespace MissionPlanner.GCSViews
             // 
             this.bindingSourceStatusTab.DataSource = typeof(MissionPlanner.CurrentState);
             // 
+            // loadPolygonToolStripMenuItem
+            // 
+            this.loadPolygonToolStripMenuItem.Name = "loadPolygonToolStripMenuItem";
+            resources.ApplyResources(this.loadPolygonToolStripMenuItem, "loadPolygonToolStripMenuItem");
+            // 
             // FlightData
             // 
             resources.ApplyResources(this, "$this");
@@ -2155,5 +2169,7 @@ namespace MissionPlanner.GCSViews
         private System.Windows.Forms.CheckBox chk_ShowMarkers;
         private System.Windows.Forms.Button btn_clearRoute;
         private System.Windows.Forms.Button btn_clearMarkers;
+        private System.Windows.Forms.ToolStripMenuItem savePolygonToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem loadPolygonToolStripMenuItem;
     }
 }

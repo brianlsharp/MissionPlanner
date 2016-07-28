@@ -1,2 +1,6 @@
 - Add Button to clear pins.
 - Add Button to show/hide pins.
+- Make drawnPolygon line thicker
+- save / load drawnPolygon
+- change icon for corner points of polygon
+- try a build in release mode. don't want to be running it in debugger on competition day

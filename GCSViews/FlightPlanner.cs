@@ -5243,9 +5243,9 @@ namespace MissionPlanner.GCSViews
             }
         }
 
-        private void savePolygonToolStripMenuItem_Click(object sender, EventArgs e)
+        public static void savePolygon( GMapPolygon aPolygon)
         {
-            if (drawnpolygon.Points.Count == 0)
+            if (aPolygon.Points.Count == 0)
             {
                 return;
             }
@@ -5263,14 +5263,14 @@ namespace MissionPlanner.GCSViews
 
                         sw.WriteLine("#saved by Mission Planner " + Application.ProductVersion);
 
-                        if (drawnpolygon.Points.Count > 0)
+                        if (aPolygon.Points.Count > 0)
                         {
-                            foreach (var pll in drawnpolygon.Points)
+                            foreach (var pll in aPolygon.Points)
                             {
                                 sw.WriteLine(pll.Lat + " " + pll.Lng);
                             }
 
-                            PointLatLng pll2 = drawnpolygon.Points[0];
+                            PointLatLng pll2 = aPolygon.Points[0];
 
                             sw.WriteLine(pll2.Lat + " " + pll2.Lng);
                         }
@@ -5283,6 +5283,11 @@ namespace MissionPlanner.GCSViews
                     }
                 }
             }
+        }
+
+        private void savePolygonToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            savePolygon( drawnpolygon );
         }
 
         private void loadPolygonToolStripMenuItem_Click(object sender, EventArgs e)
