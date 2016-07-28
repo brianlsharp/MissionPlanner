@@ -3773,7 +3773,7 @@ namespace MissionPlanner.GCSViews
         /// <param name="distInKM">distance in kilometers</param>
         /// <param name="toMeterOrFeet">convert distance to meter or feet if true, covert to km or miles if false</param>
         /// <returns>formatted distance with unit</returns>
-        private string FormatDistance(double distInKM, bool toMeterOrFeet)
+        public static string FormatDistance(double distInKM, bool toMeterOrFeet)
         {
             string sunits = Settings.Instance["distunits"];
             Common.distances units = Common.distances.Meters;

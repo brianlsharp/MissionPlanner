@@ -118,6 +118,13 @@ namespace MissionPlanner.GCSViews
         //whether or not the output console has already started
         bool outputwindowstarted;
 
+        enum MainWindowMode
+        {
+            UNKNOWN = 0,
+            MEASURE,
+        }
+
+        MainWindowMode mMode = MainWindowMode.UNKNOWN;
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -295,12 +302,15 @@ namespace MissionPlanner.GCSViews
             gMapControl1.DisableFocusOnMouseEnter = true;
 
             gMapControl1.OnMarkerEnter += gMapControl1_OnMarkerEnter;
-            gMapControl1.OnMarkerLeave += gMapControl1_OnMarkerLeave;
+            gMapControl1.OnMarkerLeave += gMapControl1_OnMarkerLeave; 
+            gMapControl1.OnMarkerClick += gMapControl1_OnMarkerClick;
 
             chk_ShowRoute.CheckedChanged += Chk_ShowRoute_CheckedChanged;
             btn_clearRoute.Click += Btn_clearRoute_Click;
             chk_ShowMarkers.CheckedChanged += Chk_ShowMarkers_CheckedChanged;
             btn_clearMarkers.Click += Btn_clearMarkers_Click;
+
+            measureToolStripMenuItem.Click += measureToolStripMenuItem_Click;
 
             savePolygonToolStripMenuItem.Click += savePolygonToolStripMenuItem_Click;
             loadPolygonToolStripMenuItem.Click += loadPolygonToolStripMenuItem_Click;
@@ -343,6 +353,36 @@ namespace MissionPlanner.GCSViews
             MainV2_AdvancedChanged(null, null);
 
             TerrainFollow lFollow = new TerrainFollow(MainV2.comPort);
+        }
+
+        void measureToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            mMode = MainWindowMode.MEASURE;
+            mMeasureModeFirstClick = null;
+        }
+
+        void gMapControl1_OnMarkerClick(GMapMarker item, MouseEventArgs e)
+        {
+            if (mMode == MainWindowMode.MEASURE)
+            {
+                if (mMeasureModeFirstClick == null) // then it's the first point we're selecting
+                    mMeasureModeFirstClick = item;
+                else // show the distance
+                {
+                    CustomMessageBox.Show("Distance: " +
+                                          FlightPlanner.FormatDistance(
+                                              gMapControl1.MapProvider.Projection.GetDistance( mMeasureModeFirstClick.Position, item.Position), true) +
+                                          " AZ: " +
+                                          (gMapControl1.MapProvider.Projection.GetBearing(mMeasureModeFirstClick.Position, item.Position)
+                                              .ToString("0")));
+
+                    mMeasureModeFirstClick = null;
+                    mMode = MainWindowMode.UNKNOWN;
+                }
+            }
+            else // still indicate that it was clicked so that we can delete it if they so choose
+                mMeasureModeFirstClick = item;
+
         }
 
         void loadPolygonToolStripMenuItem_Click(object sender, EventArgs e)
@@ -479,10 +519,10 @@ namespace MissionPlanner.GCSViews
             try
             {
                 PointLatLng point = new PointLatLng(lat, lng);
-                GMarkerGoogle m = new GMarkerGoogle(point, GMarkerGoogleType.red);
-                m.ToolTipMode = MarkerTooltipMode.Never;
-                m.ToolTipText = "grid" + tag;
-                m.Tag = "grid" + tag;
+                GMarkerGoogle m = new GMarkerGoogle(point, GMarkerGoogleType.blue);
+                //m.ToolTipMode = MarkerTooltipMode.Never;
+                m.ToolTipText = tag + ":\n" + lat.ToString() + "\n" + lng.ToString() ;
+                m.Tag = m.ToolTipText; 
 
                 GMapMarkerRect mBorders = new GMapMarkerRect(point);
                 {
@@ -516,6 +556,7 @@ namespace MissionPlanner.GCSViews
         }
 
         internal GMapMarker CurrentGMapMarker;
+        GMapMarker mMeasureModeFirstClick;
 
         void gMapControl1_OnMarkerLeave(GMapMarker item)
         {
@@ -526,6 +567,7 @@ namespace MissionPlanner.GCSViews
         {
             CurrentGMapMarker = item;
         }
+
 
         void tabStatus_Resize(object sender, EventArgs e)
         {

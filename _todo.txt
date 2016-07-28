@@ -4,3 +4,4 @@
 - save / load drawnPolygon
 - change icon for corner points of polygon
 - try a build in release mode. don't want to be running it in debugger on competition day
+- draw line while measuring
