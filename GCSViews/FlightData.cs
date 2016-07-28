@@ -144,6 +144,23 @@ namespace MissionPlanner.GCSViews
             POI.POISave();
         }
 
+        MainWindowMode mode() { return mMode; }
+
+        private void setMode( MainWindowMode aMode )
+        {
+            if ( mode() != aMode )
+            {
+                mMode = aMode;
+                if( mode() == MainWindowMode.UNKNOWN )
+                {
+
+                }
+                else if( mode() == MainWindowMode.MEASURE )
+                {
+                    mMeasureModeFirstClick = null;
+                }
+            }
+        }
 
         protected override void Dispose(bool disposing)
         {
@@ -357,13 +374,12 @@ namespace MissionPlanner.GCSViews
 
         void measureToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            mMode = MainWindowMode.MEASURE;
-            mMeasureModeFirstClick = null;
+            setMode(MainWindowMode.MEASURE);
         }
 
         void gMapControl1_OnMarkerClick(GMapMarker item, MouseEventArgs e)
         {
-            if (mMode == MainWindowMode.MEASURE)
+            if (mode() == MainWindowMode.MEASURE)
             {
                 if (mMeasureModeFirstClick == null) // then it's the first point we're selecting
                     mMeasureModeFirstClick = item;
@@ -388,8 +404,10 @@ namespace MissionPlanner.GCSViews
                                               .ToString("0")));
 
                     drawnpolygonsoverlay.Polygons.Remove(line);
+
+                    // transition out of this mode
                     mMeasureModeFirstClick = null;
-                    mMode = MainWindowMode.UNKNOWN;
+                    setMode(MainWindowMode.UNKNOWN);
                 }
             }
             else // still indicate that it was clicked so that we can delete it if they so choose
@@ -523,6 +541,10 @@ namespace MissionPlanner.GCSViews
 
                 gMapControl1.Invalidate();
 
+            }
+            else if( e.KeyChar.ToString().ToUpper() == "M" )
+            {
+                setMode(MainWindowMode.MEASURE);
             }
         }
 
