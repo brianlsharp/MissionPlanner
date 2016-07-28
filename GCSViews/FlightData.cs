@@ -369,6 +369,17 @@ namespace MissionPlanner.GCSViews
                     mMeasureModeFirstClick = item;
                 else // show the distance
                 {
+                    List<PointLatLng> polygonPoints = new List<PointLatLng>();
+                    polygonPoints.Add(mMeasureModeFirstClick.Position);
+                    polygonPoints.Add(item.Position);
+
+                    GMapPolygon line = new GMapPolygon(polygonPoints, "measure dist");
+                    line.Stroke.Color = Color.Green;
+
+                    drawnpolygonsoverlay.Polygons.Add(line);
+                    gMapControl1.Invalidate();
+
+
                     CustomMessageBox.Show("Distance: " +
                                           FlightPlanner.FormatDistance(
                                               gMapControl1.MapProvider.Projection.GetDistance( mMeasureModeFirstClick.Position, item.Position), true) +
@@ -376,6 +387,7 @@ namespace MissionPlanner.GCSViews
                                           (gMapControl1.MapProvider.Projection.GetBearing(mMeasureModeFirstClick.Position, item.Position)
                                               .ToString("0")));
 
+                    drawnpolygonsoverlay.Polygons.Remove(line);
                     mMeasureModeFirstClick = null;
                     mMode = MainWindowMode.UNKNOWN;
                 }
