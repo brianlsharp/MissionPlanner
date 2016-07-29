@@ -1,3 +1,11 @@
+28 July 
+Good resource for info on the map stuff:
+http://www.independent-software.com/gmap-net-tutorial-maps-markers-and-polygons/
+http://geekswithblogs.net/saifkhan/archive/2011/08/03/using-gmap.net-ndash-great-maps-for-windows-forms-amp-presentation.aspx
+
+27 July
+Working on getting user-defined polygons in there. The functionality already exists in "Flight pLanner" screen. And you can even view it with live data, by right clicking on the map while in the "Flight Data" tab. It is much slower to respond though. Will be wanting to port that ability to draw polygons over to the Flight Data screen. Ideally, the user could push a button to mark a corner, or load a saved polygon from disk. Even better, we may want it to where the user presses a button, the current location is grabbed, and then the user can define a polygon based on distance offsets from it.
+
 27 April
 Well I changed it so that MissionPlanner's CurrentState.cs only updated its lat/lng when GPSStatus2 == 5. But I still got some big skips from the mission on 22 March. Not as many, but still some, and just as severe as the others. 
 
