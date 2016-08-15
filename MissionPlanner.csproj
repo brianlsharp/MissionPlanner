@@ -630,6 +630,7 @@
     <Compile Include="GCSViews\FlightPlanner.Designer.cs">
       <DependentUpon>FlightPlanner.cs</DependentUpon>
     </Compile>
+    <Compile Include="GCSViews\GridExporter.cs" />
     <Compile Include="GCSViews\Help.cs">
       <SubType>UserControl</SubType>
     </Compile>

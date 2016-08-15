@@ -122,9 +122,12 @@ namespace MissionPlanner.GCSViews
         {
             UNKNOWN = 0,
             MEASURE,
+            EXPORT
         }
 
         MainWindowMode mMode = MainWindowMode.UNKNOWN;
+
+        GridExporter mGridExporter;
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -158,6 +161,10 @@ namespace MissionPlanner.GCSViews
                 else if( mode() == MainWindowMode.MEASURE )
                 {
                     mMeasureModeFirstClick = null;
+                }
+                else if( mode() == MainWindowMode.EXPORT )
+                {
+                    CustomMessageBox.Show("Select marker to use as origin.");
                 }
             }
         }
@@ -332,6 +339,8 @@ namespace MissionPlanner.GCSViews
             savePolygonToolStripMenuItem.Click += savePolygonToolStripMenuItem_Click;
             loadPolygonToolStripMenuItem.Click += loadPolygonToolStripMenuItem_Click;
 
+            exportToolStripMenuItem.Click += ExportToolStripMenuItem_Click;
+
             gMapControl1.RoutesEnabled = true;
             gMapControl1.PolygonsEnabled = true;
 
@@ -372,6 +381,11 @@ namespace MissionPlanner.GCSViews
             TerrainFollow lFollow = new TerrainFollow(MainV2.comPort);
         }
 
+        private void ExportToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            setMode(MainWindowMode.EXPORT);
+        }
+
         void measureToolStripMenuItem_Click(object sender, EventArgs e)
         {
             setMode(MainWindowMode.MEASURE);
@@ -409,6 +423,26 @@ namespace MissionPlanner.GCSViews
                     mMeasureModeFirstClick = null;
                     setMode(MainWindowMode.UNKNOWN);
                 }
+            }
+            else if( mode() == MainWindowMode.EXPORT )
+            {
+                if (mGridExporter == null)
+                {
+                    mGridExporter = new GridExporter();
+                    mGridExporter.OriginMarker = item;
+
+                    // now that they've selected the first ref point, prompt them for the other one
+                    CustomMessageBox.Show("Please select other reference point.");
+                }
+                else // second click
+                {
+                    mGridExporter.OtherReferencePoint = item;
+
+                    // they've selected them both. now reset
+                    mGridExporter = null;
+                    setMode(MainWindowMode.UNKNOWN);
+                }
+
             }
             else // still indicate that it was clicked so that we can delete it if they so choose
                 mMeasureModeFirstClick = item;
