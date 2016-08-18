@@ -18,6 +18,11 @@ namespace MissionPlanner.Utilities
         /// Store points of interest
         /// </summary>
         static ObservableCollection<PointLatLngAlt> POIs = new ObservableCollection<PointLatLngAlt>();
+        
+        public static ObservableCollection<PointLatLngAlt> pois()
+        {
+            return POIs;
+        }
 
         public static event EventHandler POIModified;
 

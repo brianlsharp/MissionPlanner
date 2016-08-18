@@ -438,6 +438,10 @@ namespace MissionPlanner.GCSViews
                 {
                     mGridExporter.OtherReferencePoint = item;
 
+                    mGridExporter.export( );
+
+
+
                     // they've selected them both. now reset
                     mGridExporter = null;
                     setMode(MainWindowMode.UNKNOWN);

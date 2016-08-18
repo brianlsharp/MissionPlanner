@@ -4,6 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.IO;
+using MissionPlanner.Utilities;
+using System.Globalization;
 
 namespace MissionPlanner.GCSViews
 {
@@ -33,8 +37,34 @@ namespace MissionPlanner.GCSViews
 
         public GridExporter()
         {
-            mOriginMarker = null;
+            OriginMarker = null;
             OtherReferencePoint = null;
+        }
+
+        public void export()
+        {
+            using (SaveFileDialog sfd = new SaveFileDialog())
+            {
+                sfd.Filter = "Poi File|*.txt";
+
+                if (sfd.ShowDialog() == DialogResult.OK)
+                {
+                    using (Stream file = sfd.OpenFile())
+                    {
+                        foreach (var item in POI.pois())
+                        {
+                            string line = item.Lat.ToString(CultureInfo.InvariantCulture) + "\t" +
+                                          item.Lng.ToString(CultureInfo.InvariantCulture) + "\t";
+                            string lLabel = item.Tag.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None).First() + "\r\n";
+                            line += lLabel;
+                            
+                            
+                            byte[] buffer = ASCIIEncoding.ASCII.GetBytes(line);
+                            file.Write(buffer, 0, buffer.Length);
+                        }
+                    }
+                }
+            }
         }
     }
 }
