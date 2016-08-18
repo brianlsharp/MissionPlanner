@@ -8,6 +8,8 @@ using System.Windows.Forms;
 using System.IO;
 using MissionPlanner.Utilities;
 using System.Globalization;
+using GMap.NET;
+using System.Diagnostics;
 
 namespace MissionPlanner.GCSViews
 {
@@ -34,15 +36,25 @@ namespace MissionPlanner.GCSViews
             }
         }
 
+        private double distanceFromOriginToRef()
+        {
+            double lRet =  mProjection.GetDistance(OriginMarker.Position, OtherReferencePoint.Position);
+            Debug.WriteLine("distance between points = {0}", lRet);
+            return lRet;
+        }
 
-        public GridExporter()
+        PureProjection mProjection;
+
+        public GridExporter(PureProjection aProjection)
         {
             OriginMarker = null;
             OtherReferencePoint = null;
+            mProjection = aProjection;
         }
 
         public void export()
         {
+            double Bx = distanceFromOriginToRef();
             using (SaveFileDialog sfd = new SaveFileDialog())
             {
                 sfd.Filter = "Poi File|*.txt";
@@ -57,6 +69,13 @@ namespace MissionPlanner.GCSViews
                                           item.Lng.ToString(CultureInfo.InvariantCulture) + "\t";
                             string lLabel = item.Tag.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None).First() + "\r\n";
                             line += lLabel;
+
+
+                            double Br = mProjection.GetDistance(OtherReferencePoint.Position, item);
+                            double Ar = mProjection.GetDistance(mOriginMarker.Position, item);
+
+                            double Cx = (Math.Pow(Bx, 2) - Math.Pow(Br, 2) + Math.Pow(Ar, 2)) / (2 * Bx);
+
                             
                             
                             byte[] buffer = ASCIIEncoding.ASCII.GetBytes(line);

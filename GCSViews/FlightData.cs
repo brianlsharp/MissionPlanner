@@ -409,7 +409,6 @@ namespace MissionPlanner.GCSViews
                     drawnpolygonsoverlay.Polygons.Add(line);
                     gMapControl1.Invalidate();
 
-
                     CustomMessageBox.Show("Distance: " +
                                           FlightPlanner.FormatDistance(
                                               gMapControl1.MapProvider.Projection.GetDistance( mMeasureModeFirstClick.Position, item.Position), true) +
@@ -428,7 +427,7 @@ namespace MissionPlanner.GCSViews
             {
                 if (mGridExporter == null)
                 {
-                    mGridExporter = new GridExporter();
+                    mGridExporter = new GridExporter(gMapControl1.MapProvider.Projection );
                     mGridExporter.OriginMarker = item;
 
                     // now that they've selected the first ref point, prompt them for the other one
