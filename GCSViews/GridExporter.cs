@@ -92,7 +92,7 @@ namespace MissionPlanner.GCSViews
                             double Cy = Math.Sqrt(Math.Pow(Ar, 2) - Math.Pow(Cx, 2));
 
                             line += Cx.ToString() + "\t";
-                            line += "+/-" + Cy.ToString() + "\t";
+                            line += Cy.ToString() + "\t";
 
                             line += item.Lat.ToString(CultureInfo.InvariantCulture) + "\t" +
                                     item.Lng.ToString(CultureInfo.InvariantCulture) + "\t";
