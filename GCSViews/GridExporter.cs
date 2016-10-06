@@ -72,8 +72,28 @@ namespace MissionPlanner.GCSViews
                 {
                     using (Stream file = sfd.OpenFile())
                     {
+                        string titleLine = "Origin Marker: " + OriginMarker.Tag.ToString().Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None).First().Trim(':');
+                        titleLine += "\r\n";
+
+                        titleLine += "Other reference Marker: " + OtherReferencePoint.Tag.ToString().Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None).First().Trim(':');
+                        titleLine += "\r\n";
+
+                        titleLine += "Ratio of Paper map to real life" + "\t" + ".0001";
+                        titleLine += "\r\n";
+
+                        // a blank line
+                        titleLine += "\r\n";
+
+                        titleLine += "Marker name" + "\t" + "x value" + "\t" + "y value" + "\t" + "lat"+ "\t" + "lon" + "\t" + "\t" + "scaled x" + "\t" + "scaled y";
+                        titleLine += "\r\n";
+
+                        byte[] titlebuffer = ASCIIEncoding.ASCII.GetBytes(titleLine);
+                        file.Write(titlebuffer, 0, titlebuffer.Length);
+
+                        int i = 0;
                         foreach (var item in POI.pois())
                         {                           
+                            // grab the first part of the tag (aka label). The rest of the tag is lat\lon which we don't want to display in the first cell
                             string line = item.Tag.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None).First() + "\t";
 
                             /*Trilateration will be used to solve for the coordinates of a given point (called item in this case).
@@ -91,15 +111,30 @@ namespace MissionPlanner.GCSViews
                             double Cx = (Math.Pow(Bx, 2) - Math.Pow(Br, 2) + Math.Pow(Ar, 2)) / (2 * Bx);
                             double Cy = Math.Sqrt(Math.Pow(Ar, 2) - Math.Pow(Cx, 2));
 
+                            Cx = Cx * 1000; // we had been working in kilometers
+                            Cy = Cy * 1000; 
+
+
                             line += Cx.ToString() + "\t";
                             line += Cy.ToString() + "\t";
 
                             line += item.Lat.ToString(CultureInfo.InvariantCulture) + "\t" +
                                     item.Lng.ToString(CultureInfo.InvariantCulture) + "\t";
 
+                            if (i == 0)
+                            {
+                                line += "\t";
+                                line += "=B6*(1/$B$3)";
+
+                                line += "\t";
+                                line += "=C6*(1/$B$3)";
+                            }
+                            // new line and write out
                             line += "\r\n";
                             byte[] buffer = ASCIIEncoding.ASCII.GetBytes(line);
                             file.Write(buffer, 0, buffer.Length);
+
+                            i++;
                         }
                     }
                 }
