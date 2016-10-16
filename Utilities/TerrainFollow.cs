@@ -65,9 +65,9 @@ namespace MissionPlanner.Utilities
                 {
                     short lDataVal = lData[i];
                     lSum += lDataVal;
-                    Debug.WriteLine("value {0} = {1} ", i, lDataVal);
                     if (lDataVal > 100)
                     {
+                        Debug.WriteLine("value {0} = {1} ", i, lDataVal);
                         lNeedToAddPoint = true;
                         if (lDataVal < lMin)
                             lMin = lDataVal;
