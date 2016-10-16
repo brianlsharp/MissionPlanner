@@ -6,3 +6,6 @@
 - try a build in release mode. don't want to be running it in debugger on competition day
 - draw line while measuring
 - "suspect readings" button
+- faster way to delete pins
+- user determined pin color, or way user-added pins are different color.
+- edit label for existing pin
