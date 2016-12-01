@@ -9,3 +9,5 @@
 - faster way to delete pins
 - user determined pin color, or way user-added pins are different color.
 - edit label for existing pin
+- feet
+- degraded metal detector interference
