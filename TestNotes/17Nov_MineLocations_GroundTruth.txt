@@ -1,0 +1,13 @@
+- easier way to mark corner points, like if you do one incorrectly. how to fix it.
+
+First mine
+35' 7" radius from cone 1 
+33' 6" y value cone 1
+
+41' 6" radius from cone 2
+
+Second mine
+56' 10" radius cone 1
+50' 8" y value cone 1
+
+50' 8" radius cone 2
