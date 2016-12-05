@@ -1,3 +1,4 @@
+- mark pins for export
 - colored bar for bad gps connection
 - colored bar for detection
 - user determined pin color, or way user-added pins are different color.
