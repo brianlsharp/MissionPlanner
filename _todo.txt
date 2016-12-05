@@ -1,13 +1,12 @@
+- colored bar for bad gps connection
+- colored bar for detection
+- user determined pin color, or way user-added pins are different color.
+- remove rover icon
+- Import saved contacts from file.
 - Add Button to clear pins.
 - Add Button to show/hide pins.
-- Make drawnPolygon line thicker
-- save / load drawnPolygon
-- change icon for corner points of polygon
 - try a build in release mode. don't want to be running it in debugger on competition day
-- draw line while measuring
 - "suspect readings" button
-- faster way to delete pins
-- user determined pin color, or way user-added pins are different color.
 - edit label for existing pin
 - feet
-- degraded metal detector interference
+- faster way to delete pins
