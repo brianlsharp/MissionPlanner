@@ -142,6 +142,15 @@ namespace MissionPlanner.GCSViews
             POI.POIAdd(MouseDownStart);
         }
 
+        private void exportPoiToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (CurrentGMapMarker == null)
+                return;
+
+            POI.toggleExportStatus(CurrentGMapMarker.Position);
+        }
+
+
         private void saveFileToolStripMenuItem_Click(object sender, EventArgs e)
         {
             POI.POISave();
@@ -4358,5 +4367,6 @@ namespace MissionPlanner.GCSViews
 
             Settings.Instance["tabcontrolactions"] = answer;
         }
+
     }
 }

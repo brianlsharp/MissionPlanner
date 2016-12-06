@@ -100,6 +100,24 @@ namespace MissionPlanner.Utilities
             }
         }
 
+        public static void toggleExportStatus(PointLatLngAlt Point)
+        {
+            if (Point == null)
+                return;
+
+            for (int a = 0; a < POI.POIs.Count; a++)
+            {
+                if (POI.POIs[a].Point() == Point)
+                {
+                    POI.POIs[a].export = !POI.POIs[a].export;
+                    if (POIModified != null)
+                        POIModified(null, null);
+                    return;
+                }
+            }
+        }
+
+
         public static void POISave()
         {
             using (SaveFileDialog sfd = new SaveFileDialog())
@@ -131,12 +149,26 @@ namespace MissionPlanner.Utilities
 
             foreach (var pnt in POIs)
             {
-                poioverlay.Markers.Add(new GMarkerGoogle(pnt, GMarkerGoogleType.red_dot)
+                if (pnt.export)
                 {
+                    GMarkerGoogle marker = new GMarkerGoogle(pnt, GMarkerGoogleType.red_dot)
+                    {
+                        ToolTipMode = MarkerTooltipMode.OnMouseOver,
+                        ToolTipText = pnt.Tag
+                    };
+                    poioverlay.Markers.Add(marker);
+                }
+                else // not exporting this poi
+                {
+                    GMarkerGoogle marker = new GMarkerGoogle(pnt, GMarkerGoogleType.blue_dot)
+                    {
                     ToolTipMode = MarkerTooltipMode.OnMouseOver,
                     ToolTipText = pnt.Tag
-                });
+                    };
+                    poioverlay.Markers.Add(marker);
+                }
             }
         }
+
     }
 }
