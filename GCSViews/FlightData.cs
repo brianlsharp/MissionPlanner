@@ -448,8 +448,6 @@ namespace MissionPlanner.GCSViews
 
                     mGridExporter.export( );
 
-
-
                     // they've selected them both. now reset
                     mGridExporter = null;
                     setMode(MainWindowMode.UNKNOWN);
@@ -599,7 +597,7 @@ namespace MissionPlanner.GCSViews
             try
             {
                 PointLatLng point = new PointLatLng(lat, lng);
-                GMarkerGoogle m = new GMarkerGoogle(point, GMarkerGoogleType.blue);
+                GMarkerGoogle m = new GMarkerGoogle(point, GMarkerGoogleType.green);
                 //m.ToolTipMode = MarkerTooltipMode.Never;
                 m.ToolTipText = tag + ":\n" + lat.ToString() + "\n" + lng.ToString() ;
                 m.Tag = m.ToolTipText; 

@@ -1,3 +1,4 @@
+- create a README file that explains the basics. Like which color contacts will be exported. What the unknown hotkeys are (like using R to make the corners of the poly) and some pitfalls (like remember that you have to save the poly).
 - have some other way to know if a marker is set for export. Edit tooltip text or menu item (but when the menu pops up, don't know which marker we're over top. That is determined after ).
 - remove some tabs in the lower left pane
 - right now, if you mark some items for export. That info is not being saved out in anyway. If we're out in the field testing and mark some for export, we can export them and that's all great... until we want to post process that data and just have the raw points. Need to have that export property saved out somehow.

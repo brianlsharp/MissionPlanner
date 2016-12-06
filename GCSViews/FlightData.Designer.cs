@@ -124,6 +124,7 @@ namespace MissionPlanner.GCSViews
             this.addPoiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportPoiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.savePolygonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadPolygonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.measureToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -162,7 +163,6 @@ namespace MissionPlanner.GCSViews
             this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
             this.Messagetabtimer = new System.Windows.Forms.Timer(this.components);
             this.bindingSourceStatusTab = new System.Windows.Forms.BindingSource(this.components);
-            this.exportPoiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.MainH)).BeginInit();
             this.MainH.Panel1.SuspendLayout();
             this.MainH.Panel2.SuspendLayout();
@@ -1644,6 +1644,12 @@ namespace MissionPlanner.GCSViews
             resources.ApplyResources(this.saveFileToolStripMenuItem, "saveFileToolStripMenuItem");
             this.saveFileToolStripMenuItem.Click += new System.EventHandler(this.saveFileToolStripMenuItem_Click);
             // 
+            // exportPoiToolStripMenuItem
+            // 
+            this.exportPoiToolStripMenuItem.Name = "exportPoiToolStripMenuItem";
+            resources.ApplyResources(this.exportPoiToolStripMenuItem, "exportPoiToolStripMenuItem");
+            this.exportPoiToolStripMenuItem.Click += new System.EventHandler(this.exportPoiToolStripMenuItem_Click);
+            // 
             // savePolygonToolStripMenuItem
             // 
             this.savePolygonToolStripMenuItem.Name = "savePolygonToolStripMenuItem";
@@ -1708,7 +1714,7 @@ namespace MissionPlanner.GCSViews
             this.windDir1.BackColor = System.Drawing.Color.Transparent;
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Direction", this.bindingSource1, "wind_dir", true, System.Windows.Forms.DataSourceUpdateMode.Never));
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Speed", this.bindingSource1, "wind_vel", true, System.Windows.Forms.DataSourceUpdateMode.Never));
-            this.windDir1.Direction = 360D;
+            this.windDir1.Direction = 180D;
             resources.ApplyResources(this.windDir1, "windDir1");
             this.windDir1.Name = "windDir1";
             this.windDir1.Speed = 0D;
@@ -1950,12 +1956,6 @@ namespace MissionPlanner.GCSViews
             // bindingSourceStatusTab
             // 
             this.bindingSourceStatusTab.DataSource = typeof(MissionPlanner.CurrentState);
-            // 
-            // exportPoiToolStripMenuItem
-            // 
-            this.exportPoiToolStripMenuItem.Name = "exportPoiToolStripMenuItem";
-            resources.ApplyResources(this.exportPoiToolStripMenuItem, "exportPoiToolStripMenuItem");
-            this.exportPoiToolStripMenuItem.Click += new System.EventHandler(this.exportPoiToolStripMenuItem_Click);
             // 
             // FlightData
             // 

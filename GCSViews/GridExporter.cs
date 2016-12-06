@@ -61,9 +61,14 @@ namespace MissionPlanner.GCSViews
          * 
          * 
          */
-        public void export()
+        public void export( )
         {
-            double Bx = distanceFromOriginToRef();
+            DialogResult lResult = MessageBox.Show("Do you wish to export ALL contacts? Clicking 'No' will export only the contacts that were marked for export.", "Export", MessageBoxButtons.YesNoCancel);
+            if (lResult == DialogResult.Cancel)
+                return;
+
+            bool exportAll = (lResult == DialogResult.Yes);
+
             using (SaveFileDialog sfd = new SaveFileDialog())
             {
                 sfd.Filter = "Poi File|*.txt";
@@ -72,6 +77,7 @@ namespace MissionPlanner.GCSViews
                 {
                     using (Stream file = sfd.OpenFile())
                     {
+                        double Bx = distanceFromOriginToRef();
                         string titleLine = "Origin Marker: " + OriginMarker.Tag.ToString().Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None).First().Trim(':');
                         titleLine += "\r\n";
 
@@ -92,49 +98,52 @@ namespace MissionPlanner.GCSViews
 
                         int i = 0;
                         foreach (var item in POI.pois())
-                        {                           
-                            // grab the first part of the tag (aka label). The rest of the tag is lat\lon which we don't want to display in the first cell
-                            string line = item.Tag.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None).First() + "\t";
-
-                            /*Trilateration will be used to solve for the coordinates of a given point (called item in this case).
-                             * Knowing A and B, we use the map's distance formula to calculate the distance between A and 
-                             * item. This number is Ar. Think of it as defining a circle with radius Ar, that is centered at A.
-                             * Do the same also for Br. Knowing these two distances and making use of the old fashioned distance formula
-                             * (this means we're assuming a flat earth) then we can solve for the coordinates of item in our 
-                             * previously defined coordinate system. Keep in mind that with only this info, there are 2 possible points
-                             * for Cy. 
-                             */ 
-
-                            double Br = mProjection.GetDistance(OtherReferencePoint.Position, item);
-                            double Ar = mProjection.GetDistance(mOriginMarker.Position, item);
-
-                            double Cx = (Math.Pow(Bx, 2) - Math.Pow(Br, 2) + Math.Pow(Ar, 2)) / (2 * Bx);
-                            double Cy = Math.Sqrt(Math.Pow(Ar, 2) - Math.Pow(Cx, 2));
-
-                            Cx = Cx * 1000; // we had been working in kilometers
-                            Cy = Cy * 1000; 
-
-
-                            line += Cx.ToString() + "\t";
-                            line += Cy.ToString() + "\t";
-
-                            line += item.Lat.ToString(CultureInfo.InvariantCulture) + "\t" +
-                                    item.Lng.ToString(CultureInfo.InvariantCulture) + "\t";
-
-                            if (i == 0)
+                        {
+                            if (exportAll || item.export)
                             {
-                                line += "\t";
-                                line += "=B6*(1/$B$3)";
+                                // grab the first part of the tag (aka label). The rest of the tag is lat\lon which we don't want to display in the first cell
+                                string line = item.Tag.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None).First() + "\t";
 
-                                line += "\t";
-                                line += "=C6*(1/$B$3)";
+                                /*Trilateration will be used to solve for the coordinates of a given point (called item in this case).
+                                 * Knowing A and B, we use the map's distance formula to calculate the distance between A and 
+                                 * item. This number is Ar. Think of it as defining a circle with radius Ar, that is centered at A.
+                                 * Do the same also for Br. Knowing these two distances and making use of the old fashioned distance formula
+                                 * (this means we're assuming a flat earth) then we can solve for the coordinates of item in our 
+                                 * previously defined coordinate system. Keep in mind that with only this info, there are 2 possible points
+                                 * for Cy. 
+                                 */
+
+                                double Br = mProjection.GetDistance(OtherReferencePoint.Position, item);
+                                double Ar = mProjection.GetDistance(mOriginMarker.Position, item);
+
+                                double Cx = (Math.Pow(Bx, 2) - Math.Pow(Br, 2) + Math.Pow(Ar, 2)) / (2 * Bx);
+                                double Cy = Math.Sqrt(Math.Pow(Ar, 2) - Math.Pow(Cx, 2));
+
+                                Cx = Cx * 1000; // we had been working in kilometers
+                                Cy = Cy * 1000;
+
+
+                                line += Cx.ToString() + "\t";
+                                line += Cy.ToString() + "\t";
+
+                                line += item.Lat.ToString(CultureInfo.InvariantCulture) + "\t" +
+                                        item.Lng.ToString(CultureInfo.InvariantCulture) + "\t";
+
+                                if (i == 0)
+                                {
+                                    line += "\t";
+                                    line += "=B6*(1/$B$3)";
+
+                                    line += "\t";
+                                    line += "=C6*(1/$B$3)";
+                                }
+                                // new line and write out
+                                line += "\r\n";
+                                byte[] buffer = ASCIIEncoding.ASCII.GetBytes(line);
+                                file.Write(buffer, 0, buffer.Length);
+
+                                i++;
                             }
-                            // new line and write out
-                            line += "\r\n";
-                            byte[] buffer = ASCIIEncoding.ASCII.GetBytes(line);
-                            file.Write(buffer, 0, buffer.Length);
-
-                            i++;
                         }
                     }
                 }
