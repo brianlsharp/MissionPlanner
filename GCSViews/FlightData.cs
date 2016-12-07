@@ -2395,6 +2395,7 @@ namespace MissionPlanner.GCSViews
                 fd.DefaultExt = ".tlog";
                 DialogResult result = fd.ShowDialog();
                 string file = fd.FileName;
+                MainV2.LogFilename = file;
                 LoadLogFile(file);
             }
         }

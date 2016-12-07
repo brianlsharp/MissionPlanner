@@ -205,6 +205,13 @@ namespace MissionPlanner
             }
         }
 
+        static string mLogFilename = "";
+        public static string LogFilename
+        {
+            get { return mLogFilename; }
+            set { mLogFilename = value; }
+        }
+
         public static bool ShowAirports { get; set; }
         public static bool ShowTFR { get; set; }
 
@@ -1222,11 +1229,12 @@ namespace MissionPlanner
                 try
                 {
                     Directory.CreateDirectory(Settings.Instance.LogDir);
-                    comPort.logfile =
+                    LogFilename = DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss") + ".tlog";
+                    comPort.logfile = 
                         new BufferedStream(
                             File.Open(
-                                Settings.Instance.LogDir + Path.DirectorySeparatorChar +
-                                DateTime.Now.ToString("yyyy-MM-dd HH-mm-ss") + ".tlog", FileMode.CreateNew,
+                                Settings.Instance.LogDir + Path.DirectorySeparatorChar + LogFilename
+                                , FileMode.CreateNew,
                                 FileAccess.ReadWrite, FileShare.None));
 
                     comPort.rawlogfile =

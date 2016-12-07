@@ -16,7 +16,6 @@ namespace MissionPlanner.GCSViews
     public class GridExporter
     {
         GMapMarker mOriginMarker;
-
         public GMapMarker OriginMarker
         {
             get { return mOriginMarker; }
@@ -52,14 +51,13 @@ namespace MissionPlanner.GCSViews
             mProjection = aProjection;
         }
 
+
         /* A little bit about this calculation... We are assuming the following:
          * that we know the relative distance between points (as defined by thier lat/longs)
          * to a high degree of accuracy. The user has provided us with an "origin" point that we
          * shall refer to as A. The user has provided another reference point, B. Using these two 
          * points, we construct a coordinate system with A at the orign and B somewhere along the x
          * axis. That distance A and B is Bx. 
-         * 
-         * 
          */
         public void export( )
         {
@@ -72,13 +70,15 @@ namespace MissionPlanner.GCSViews
             using (SaveFileDialog sfd = new SaveFileDialog())
             {
                 sfd.Filter = "Poi File|*.txt";
-
                 if (sfd.ShowDialog() == DialogResult.OK)
                 {
                     using (Stream file = sfd.OpenFile())
                     {
+                        string titleLine = "Report generated from file: \t" + MainV2.LogFilename;
+                        titleLine += "\r\n";
+
                         double Bx = distanceFromOriginToRef();
-                        string titleLine = "Origin Marker: " + OriginMarker.Tag.ToString().Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None).First().Trim(':');
+                        titleLine += "Origin Marker: " + OriginMarker.Tag.ToString().Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None).First().Trim(':');
                         titleLine += "\r\n";
 
                         titleLine += "Other reference Marker: " + OtherReferencePoint.Tag.ToString().Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None).First().Trim(':');
