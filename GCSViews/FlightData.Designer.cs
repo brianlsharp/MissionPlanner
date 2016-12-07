@@ -164,6 +164,7 @@ namespace MissionPlanner.GCSViews
             this.bindingSourceGaugesTab = new System.Windows.Forms.BindingSource(this.components);
             this.bindingSource1 = new System.Windows.Forms.BindingSource(this.components);
             this.bindingSourceStatusTab = new System.Windows.Forms.BindingSource(this.components);
+            this.btn_ClearPolys = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.MainH)).BeginInit();
             this.MainH.Panel1.SuspendLayout();
             this.MainH.Panel2.SuspendLayout();
@@ -1628,7 +1629,7 @@ namespace MissionPlanner.GCSViews
             this.windDir1.BackColor = System.Drawing.Color.Transparent;
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Direction", this.bindingSource1, "wind_dir", true, System.Windows.Forms.DataSourceUpdateMode.Never));
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Speed", this.bindingSource1, "wind_vel", true, System.Windows.Forms.DataSourceUpdateMode.Never));
-            this.windDir1.Direction = 360D;
+            this.windDir1.Direction = 180D;
             resources.ApplyResources(this.windDir1, "windDir1");
             this.windDir1.Name = "windDir1";
             this.windDir1.Speed = 0D;
@@ -1718,6 +1719,7 @@ namespace MissionPlanner.GCSViews
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btn_ClearPolys);
             this.panel1.Controls.Add(this.progressBar1);
             this.panel1.Controls.Add(this.btn_clearRoute);
             this.panel1.Controls.Add(this.btn_clearMarkers);
@@ -1965,6 +1967,13 @@ namespace MissionPlanner.GCSViews
             // 
             this.bindingSourceStatusTab.DataSource = typeof(MissionPlanner.CurrentState);
             // 
+            // btn_ClearPolys
+            // 
+            resources.ApplyResources(this.btn_ClearPolys, "btn_ClearPolys");
+            this.btn_ClearPolys.Name = "btn_ClearPolys";
+            this.btn_ClearPolys.UseVisualStyleBackColor = true;
+            this.btn_ClearPolys.Click += new System.EventHandler(this.btn_ClearPolys_Click);
+            // 
             // FlightData
             // 
             resources.ApplyResources(this, "$this");
@@ -2178,5 +2187,6 @@ namespace MissionPlanner.GCSViews
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportPoiToolStripMenuItem;
         private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.Button btn_ClearPolys;
     }
 }

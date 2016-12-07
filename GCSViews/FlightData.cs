@@ -535,6 +535,17 @@ namespace MissionPlanner.GCSViews
             }
         }
 
+        private void btn_ClearPolys_Click(object sender, EventArgs e)
+        {
+            if (CustomMessageBox.Show("Are you sure you want to do delete all Polygons?", "Action", MessageBoxButtons.YesNo)
+                == DialogResult.Yes)
+            {
+                drawnpolygonsoverlay.Markers.Clear();
+                drawnpolygon.Points.Clear();
+                gMapControl1.Refresh();
+            }
+        }
+
         private void Chk_ShowMarkers_CheckedChanged(object sender, EventArgs e)
         {
             gMapControl1.MarkersEnabled = chk_ShowMarkers.Checked;
@@ -4365,6 +4376,5 @@ namespace MissionPlanner.GCSViews
 
             Settings.Instance["tabcontrolactions"] = answer;
         }
-
     }
 }
