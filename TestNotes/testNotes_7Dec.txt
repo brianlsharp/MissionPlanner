@@ -1,0 +1,12 @@
+9:05 - power up
+0909 - 27 solutions
+0910 - FIxed RTK
+
+09:28 - power up
+
+had to use the other corner point as a reference because it was seleting 2 at the same time. It was trying to export when I hadn't selected the other corner point.
+had trouble indicating which points to export. when i checked one for export, 
+way to delete polygon
+report in decimal feet
+record the name of the logfile in the export
+FOr the poly, record the name of the logfile in the poly

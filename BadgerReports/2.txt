@@ -1,0 +1,6 @@
+Origin Marker: 2
+Other reference Marker: 1
+Ratio of Paper map to real life	.0001
+
+Marker name	x value	y value	lat	lon		scaled x	scaled y
+ Max: 397 Avg: 127.375 Min: 121	15.9075512381938	16.4613400012947	30.1687911	-85.7540519		=B6*(1/$B$3)	=C6*(1/$B$3)
