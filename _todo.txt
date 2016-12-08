@@ -1,3 +1,4 @@
+- be able to read in a BadgerReport so that we can get ground truth data, read it in, and compare on screen.
 - faster way to delete pins
 - "suspect readings" button
 - toggle rover icon
