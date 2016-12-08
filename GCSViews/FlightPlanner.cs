@@ -5262,6 +5262,7 @@ namespace MissionPlanner.GCSViews
                         StreamWriter sw = new StreamWriter(sf.OpenFile());
 
                         sw.WriteLine("#saved by Mission Planner " + Application.ProductVersion);
+                        sw.WriteLine("#from file " + MainV2.LogFilename );
 
                         if (aPolygon.Points.Count > 0)
                         {
