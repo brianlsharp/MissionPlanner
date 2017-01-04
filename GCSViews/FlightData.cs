@@ -163,6 +163,7 @@ namespace MissionPlanner.GCSViews
             if ( mode() != aMode )
             {
                 mMode = aMode;
+                lbl_mode.Text = mMode.ToString();
                 if( mode() == MainWindowMode.UNKNOWN )
                 {
 
