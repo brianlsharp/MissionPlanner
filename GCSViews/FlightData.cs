@@ -122,7 +122,8 @@ namespace MissionPlanner.GCSViews
         {
             UNKNOWN = 0,
             MEASURE,
-            EXPORT
+            EXPORT,
+            ADD_GROUND_TRUTH
         }
 
         MainWindowMode mMode = MainWindowMode.UNKNOWN;
@@ -162,6 +163,10 @@ namespace MissionPlanner.GCSViews
         {
             if ( mode() != aMode )
             {
+                // if switching away from ground truth importer, make sure we delete it
+                if (mode() == MainWindowMode.ADD_GROUND_TRUTH)
+                    mGroundTruthImporter = null;
+
                 mMode = aMode;
                 lbl_mode.Text = mMode.ToString();
                 if( mode() == MainWindowMode.UNKNOWN )
@@ -176,6 +181,11 @@ namespace MissionPlanner.GCSViews
                 {
                     CustomMessageBox.Show("Select marker to use as origin.");
                 }
+                else if( mode() == MainWindowMode.ADD_GROUND_TRUTH )
+                {
+                    CustomMessageBox.Show("Select marker to use as origin for ground truth.");
+                }
+
             }
         }
 
@@ -455,10 +465,76 @@ namespace MissionPlanner.GCSViews
                 }
 
             }
+            else if (mode() == MainWindowMode.ADD_GROUND_TRUTH )
+            {
+                // pick the origin
+                if( mGroundTruthImporter == null )
+                {
+                    mGroundTruthImporter = new GroundTruthImporter(gMapControl1.MapProvider.Projection);
+                    mGroundTruthImporter.OriginMarker = item;
+                    // now that they've selected the first ref point, prompt them for the other one
+                    CustomMessageBox.Show("Please select other reference point for ground truth.");
+                }
+
+                // pick the other ref point
+                else if( mGroundTruthImporter.OtherReferencePoint == null )
+                {
+                    mGroundTruthImporter.OtherReferencePoint = item;
+
+                    //PointLatLngAlt lNewPoint = item.Position;
+                    //lNewPoint = lNewPoint.newpos(90, 5);
+                    //POI.POIAdd(lNewPoint, "label");               
+
+                    // define distance from origin to marker
+                    string output = "";
+                    if (DialogResult.OK == InputBox.Show("Ground Truth Importer", "Enter distance from origin to marker", ref output))
+                    {
+                        double parsed = double.NaN;
+                        bool lSuccess = double.TryParse(output, out parsed);
+                        if (lSuccess)
+                            mGroundTruthImporter.DistanceFromOriginToMarker = parsed;
+                    }
+
+                    // define distance from other ref to marker
+                    if (mGroundTruthImporter.DistanceFromOriginToMarker != double.NaN)
+                    {
+                        if (DialogResult.OK == InputBox.Show("Ground Truth Importer", "Enter distance from other ref to marker", ref output))
+                        {
+                            double parsed = double.NaN;
+                            bool lSuccess = double.TryParse(output, out parsed);
+                            if (lSuccess)
+                                mGroundTruthImporter.DistanceFromOtherRefToMarker = parsed;
+                        }
+                    }
+
+                    // compute 
+                    if (mGroundTruthImporter.DistanceFromOtherRefToMarker != double.NaN)
+                    {
+                        double bearing = mGroundTruthImporter.getBearing();
+                        if( bearing == double.NaN )
+                        {
+                            MessageBox.Show("invalid bearing ");
+                        }
+                        else
+                        {
+                            PointLatLngAlt lNewPoint = mGroundTruthImporter.OriginMarker.Position;
+                            lNewPoint = lNewPoint.newpos(rad2deg * bearing, mGroundTruthImporter.DistanceFromOriginToMarker * 1000);
+                            POI.POIAdd(lNewPoint, "label");               
+                        }
+                    }
+
+                    // delete everything
+                    mGroundTruthImporter = null;
+                    setMode(MainWindowMode.UNKNOWN);
+                }
+
+            }
             else // still indicate that it was clicked so that we can delete it if they so choose
                 mMeasureModeFirstClick = item;
 
         }
+
+        GroundTruthImporter mGroundTruthImporter = null;
 
         void loadPolygonToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -564,6 +640,12 @@ namespace MissionPlanner.GCSViews
             PointLatLng lLoc = new PointLatLng(aLat, aLon);
             POI.POIAdd( lLoc, aLabel );
         }
+
+        private void btn_addGroundTruth_Click(object sender, EventArgs e)
+        {
+            setMode(MainWindowMode.ADD_GROUND_TRUTH);
+        }
+
 
         private void GMapControl1_KeyPress(object sender, System.Windows.Forms.KeyPressEventArgs e)
         {
