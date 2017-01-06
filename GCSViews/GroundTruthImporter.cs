@@ -10,6 +10,7 @@ using MissionPlanner.Utilities;
 using System.Globalization;
 using GMap.NET;
 using System.Diagnostics;
+using MissionPlanner.Controls;
 
 namespace MissionPlanner.GCSViews
 {
@@ -81,6 +82,55 @@ namespace MissionPlanner.GCSViews
         {
             double bearing = getGamma(DistanceFromOriginToMarker, distanceFromOriginToRef(), DistanceFromOtherRefToMarker);
             return bearing;
+        }
+
+        public double getDoubleFromMessageBox( string aPrompt )
+        {
+            // define distance from origin to marker
+            string output = "";
+            double parsed = double.NaN;
+            if (DialogResult.OK == InputBox.Show("Ground Truth Importer", aPrompt, ref output))
+                double.TryParse(output, out parsed);
+
+            return parsed;
+        }
+
+        public bool promptAndGetDistances()
+        {
+            //// define distance from origin to marker
+            //string output = "";
+            //if (DialogResult.OK == InputBox.Show("Ground Truth Importer", "Enter distance from origin to marker", ref output))
+            //{
+            //    double parsed = double.NaN;
+            //    bool lSuccess = double.TryParse(output, out parsed);
+            //    if (lSuccess)
+            //        DistanceFromOriginToMarker = parsed;
+            //}
+
+            // they will enter the number in Meters, but we want it in km
+            DistanceFromOriginToMarker =   .001 * getDoubleFromMessageBox("Enter distance (in meters) from origin to marker ");
+            DistanceFromOtherRefToMarker = .001 * getDoubleFromMessageBox("Enter distance (in meters) from other ref point to marker ");
+
+            //// define distance from other ref to marker
+            //if (DistanceFromOriginToMarker != double.NaN)
+            //{
+            //    if (DialogResult.OK == InputBox.Show("Ground Truth Importer", "Enter distance from other ref to marker", ref output))
+            //    {
+            //        double parsed = double.NaN;
+            //        bool lSuccess = double.TryParse(output, out parsed);
+            //        if (lSuccess)
+            //        {
+            //            DistanceFromOtherRefToMarker = parsed;
+            //            return true;
+            //        }
+            //    }
+            //}
+
+            if (DistanceFromOriginToMarker == double.NaN ||
+                DistanceFromOtherRefToMarker == double.NaN)
+                return false;
+            else
+                return true;
         }
     }
 }

@@ -475,51 +475,30 @@ namespace MissionPlanner.GCSViews
                     // now that they've selected the first ref point, prompt them for the other one
                     CustomMessageBox.Show("Please select other reference point for ground truth.");
                 }
-
                 // pick the other ref point
                 else if( mGroundTruthImporter.OtherReferencePoint == null )
                 {
                     mGroundTruthImporter.OtherReferencePoint = item;
 
-                    //PointLatLngAlt lNewPoint = item.Position;
-                    //lNewPoint = lNewPoint.newpos(90, 5);
-                    //POI.POIAdd(lNewPoint, "label");               
-
-                    // define distance from origin to marker
-                    string output = "";
-                    if (DialogResult.OK == InputBox.Show("Ground Truth Importer", "Enter distance from origin to marker", ref output))
+                    if( mGroundTruthImporter.promptAndGetDistances() )
                     {
-                        double parsed = double.NaN;
-                        bool lSuccess = double.TryParse(output, out parsed);
-                        if (lSuccess)
-                            mGroundTruthImporter.DistanceFromOriginToMarker = parsed;
-                    }
+                        double bearingFromOriginToOtherRef = new PointLatLngAlt(mGroundTruthImporter.OriginMarker.Position).GetBearing(mGroundTruthImporter.OtherReferencePoint.Position);
+                        double internalAngleOfTriangle = (mGroundTruthImporter.getBearing()) * rad2deg;
 
-                    // define distance from other ref to marker
-                    if (mGroundTruthImporter.DistanceFromOriginToMarker != double.NaN)
-                    {
-                        if (DialogResult.OK == InputBox.Show("Ground Truth Importer", "Enter distance from other ref to marker", ref output))
-                        {
-                            double parsed = double.NaN;
-                            bool lSuccess = double.TryParse(output, out parsed);
-                            if (lSuccess)
-                                mGroundTruthImporter.DistanceFromOtherRefToMarker = parsed;
-                        }
-                    }
+                        List<double> bearings = new List<double>();
+                        bearings.Add(bearingFromOriginToOtherRef - internalAngleOfTriangle);
+                        bearings.Add(bearingFromOriginToOtherRef + internalAngleOfTriangle);
 
-                    // compute 
-                    if (mGroundTruthImporter.DistanceFromOtherRefToMarker != double.NaN)
-                    {
-                        double bearing = mGroundTruthImporter.getBearing();
-                        if( bearing == double.NaN )
+                        for (int i = 0; i < bearings.Count(); i++ )
                         {
-                            MessageBox.Show("invalid bearing ");
-                        }
-                        else
-                        {
-                            PointLatLngAlt lNewPoint = mGroundTruthImporter.OriginMarker.Position;
-                            lNewPoint = lNewPoint.newpos(rad2deg * bearing, mGroundTruthImporter.DistanceFromOriginToMarker * 1000);
-                            POI.POIAdd(lNewPoint, "label");               
+                            if( bearings[i] == double.NaN )
+                                MessageBox.Show("invalid bearing ");
+                            else
+                            {
+                                PointLatLngAlt lNewPoint = mGroundTruthImporter.OriginMarker.Position;
+                                lNewPoint = lNewPoint.newpos(bearings[i], mGroundTruthImporter.DistanceFromOriginToMarker * 1000);
+                                POI.POIAdd(lNewPoint, "mine " + i.ToString() );
+                            }
                         }
                     }
 
@@ -527,7 +506,6 @@ namespace MissionPlanner.GCSViews
                     mGroundTruthImporter = null;
                     setMode(MainWindowMode.UNKNOWN);
                 }
-
             }
             else // still indicate that it was clicked so that we can delete it if they so choose
                 mMeasureModeFirstClick = item;

@@ -1,3 +1,4 @@
+- once you click the "export" menu item, there's no way to cancel. CLicking on the "x" in the prompt windows should do that.
 - edit label for existing pin
 - MOve the items in the "Add POI" menu item into the top level menu - no longer as a subitem of "Add POI".
 - be able to read in a BadgerReport so that we can get ground truth data, read it in, and compare on screen.
