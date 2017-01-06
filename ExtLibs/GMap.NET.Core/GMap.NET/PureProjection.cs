@@ -507,28 +507,6 @@ namespace GMap.NET
          Lng /= (Math.PI / 180);
       }
 
-      // public PointLatLng addOffsetToPoint( PointLatLng aPoint )
-      //{
-      //    //Position, decimal degrees
-      //    float lat = 51.0F;
-      //    float lon = 0.0F;
-
-      //    //Earth’s radius, sphere
-      //    R = 6378137;
-
-      //    //offsets in meters
-      //    dn = 100;
-      //    de = 100;
-
-      //    //Coordinate offsets in radians
-      //    dLat = dn / R;
-      //    dLon = de / (R * Cos(Pi * lat / 180));
-
-      //    //OffsetPosition, decimal degrees
-      //    latO = lat + dLat * 180 / Pi;
-      //    lonO = lon + dLon * 180 / Pi;
-      //}
-
       #endregion
    }
 }
