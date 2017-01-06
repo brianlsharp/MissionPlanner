@@ -16,14 +16,12 @@ namespace MissionPlanner.GCSViews
 {
     public class GroundTruthImporter
     {
-        double mDistanceFromOriginToMarker = double.NaN;
         public double DistanceFromOriginToMarker
         {
             get;
             set;
         }
 
-        double mDistanceFromOtherRefToMarker = double.NaN;
         public double DistanceFromOtherRefToMarker
         {
             get;
@@ -54,7 +52,6 @@ namespace MissionPlanner.GCSViews
         private double distanceFromOriginToRef()
         {
             double lRet = mProjection.GetDistance(OriginMarker.Position, OtherReferencePoint.Position);
-            Debug.WriteLine("distance between points = {0}", lRet);
             return lRet;
         }
 
@@ -68,7 +65,6 @@ namespace MissionPlanner.GCSViews
         }
 
         // law of cosines. Get the unknown angle opposite side c
-
         public static double getGamma( double a, double b, double c )
         {
             double middleTerm = Math.Pow(a, 2) + Math.Pow(b, 2) - Math.Pow(c, 2);
@@ -78,7 +74,8 @@ namespace MissionPlanner.GCSViews
             return gamma;
         }
 
-        public double getBearing()
+        // find the angle of the
+        public double getInternalAngleOfTriangle()
         {
             double bearing = getGamma(DistanceFromOriginToMarker, distanceFromOriginToRef(), DistanceFromOtherRefToMarker);
             return bearing;
@@ -97,40 +94,39 @@ namespace MissionPlanner.GCSViews
 
         public bool promptAndGetDistances()
         {
-            //// define distance from origin to marker
-            //string output = "";
-            //if (DialogResult.OK == InputBox.Show("Ground Truth Importer", "Enter distance from origin to marker", ref output))
-            //{
-            //    double parsed = double.NaN;
-            //    bool lSuccess = double.TryParse(output, out parsed);
-            //    if (lSuccess)
-            //        DistanceFromOriginToMarker = parsed;
-            //}
-
             // they will enter the number in Meters, but we want it in km
             DistanceFromOriginToMarker =   .001 * getDoubleFromMessageBox("Enter distance (in meters) from origin to marker ");
             DistanceFromOtherRefToMarker = .001 * getDoubleFromMessageBox("Enter distance (in meters) from other ref point to marker ");
-
-            //// define distance from other ref to marker
-            //if (DistanceFromOriginToMarker != double.NaN)
-            //{
-            //    if (DialogResult.OK == InputBox.Show("Ground Truth Importer", "Enter distance from other ref to marker", ref output))
-            //    {
-            //        double parsed = double.NaN;
-            //        bool lSuccess = double.TryParse(output, out parsed);
-            //        if (lSuccess)
-            //        {
-            //            DistanceFromOtherRefToMarker = parsed;
-            //            return true;
-            //        }
-            //    }
-            //}
 
             if (DistanceFromOriginToMarker == double.NaN ||
                 DistanceFromOtherRefToMarker == double.NaN)
                 return false;
             else
                 return true;
+        }
+
+        public List<PointLatLngAlt> mineLocations()
+        {
+            List<PointLatLngAlt> lRet = new List<PointLatLngAlt>();
+
+            double bearingFromOriginToOtherRef = new PointLatLngAlt(OriginMarker.Position).GetBearing(OtherReferencePoint.Position);
+            double internalAngleOfTriangle = (getInternalAngleOfTriangle()) * FlightData.rad2deg;
+
+            if (bearingFromOriginToOtherRef == double.NaN || internalAngleOfTriangle == double.NaN)
+                MessageBox.Show("invalid bearing ");
+            else
+            {
+                PointLatLngAlt lNewPoint = OriginMarker.Position;
+                lNewPoint = lNewPoint.newpos(bearingFromOriginToOtherRef - internalAngleOfTriangle, DistanceFromOriginToMarker * 1000);
+                lRet.Add(lNewPoint);
+
+                PointLatLngAlt lNewPoint2 = OriginMarker.Position;
+                lNewPoint2 = lNewPoint2.newpos(bearingFromOriginToOtherRef + internalAngleOfTriangle, DistanceFromOriginToMarker * 1000);
+                lRet.Add(lNewPoint2);
+
+            }
+
+            return lRet;
         }
     }
 }

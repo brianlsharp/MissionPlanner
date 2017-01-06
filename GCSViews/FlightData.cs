@@ -90,9 +90,9 @@ namespace MissionPlanner.GCSViews
 
         List<PointLatLng> trackPoints = new List<PointLatLng>();
 
-        const float rad2deg = (float) (180/Math.PI);
+        public const float rad2deg = (float) (180/Math.PI);
 
-        const float deg2rad = (float) (1.0/rad2deg);
+        public const float deg2rad = (float) (1.0/rad2deg);
 
         public static HUD myhud;
         public static GMapControl mymap;
@@ -482,24 +482,9 @@ namespace MissionPlanner.GCSViews
 
                     if( mGroundTruthImporter.promptAndGetDistances() )
                     {
-                        double bearingFromOriginToOtherRef = new PointLatLngAlt(mGroundTruthImporter.OriginMarker.Position).GetBearing(mGroundTruthImporter.OtherReferencePoint.Position);
-                        double internalAngleOfTriangle = (mGroundTruthImporter.getBearing()) * rad2deg;
-
-                        List<double> bearings = new List<double>();
-                        bearings.Add(bearingFromOriginToOtherRef - internalAngleOfTriangle);
-                        bearings.Add(bearingFromOriginToOtherRef + internalAngleOfTriangle);
-
-                        for (int i = 0; i < bearings.Count(); i++ )
-                        {
-                            if( bearings[i] == double.NaN )
-                                MessageBox.Show("invalid bearing ");
-                            else
-                            {
-                                PointLatLngAlt lNewPoint = mGroundTruthImporter.OriginMarker.Position;
-                                lNewPoint = lNewPoint.newpos(bearings[i], mGroundTruthImporter.DistanceFromOriginToMarker * 1000);
-                                POI.POIAdd(lNewPoint, "mine " + i.ToString() );
-                            }
-                        }
+                        List<PointLatLngAlt> lMineLocations = mGroundTruthImporter.mineLocations();
+                        for (int i = 0; i < lMineLocations.Count(); i++)
+                            POI.POIAdd(lMineLocations[i], "mine " + i.ToString());
                     }
 
                     // delete everything
