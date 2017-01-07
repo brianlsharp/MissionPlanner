@@ -147,6 +147,7 @@ namespace MissionPlanner.GCSViews
             this.gMapControl1 = new MissionPlanner.Controls.myGMAP();
             this.TRK_zoom = new MissionPlanner.Controls.MyTrackBar();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.btn_MultiDelete = new System.Windows.Forms.CheckBox();
             this.btn_addGroundTruth = new System.Windows.Forms.Button();
             this.btn_ClearPolys = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
@@ -1819,6 +1820,7 @@ namespace MissionPlanner.GCSViews
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btn_MultiDelete);
             this.panel1.Controls.Add(this.btn_addGroundTruth);
             this.panel1.Controls.Add(this.btn_ClearPolys);
             this.panel1.Controls.Add(this.progressBar1);
@@ -1834,6 +1836,13 @@ namespace MissionPlanner.GCSViews
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             this.tableMap.SetRowSpan(this.panel1, 3);
+            // 
+            // btn_MultiDelete
+            // 
+            resources.ApplyResources(this.btn_MultiDelete, "btn_MultiDelete");
+            this.btn_MultiDelete.Name = "btn_MultiDelete";
+            this.btn_MultiDelete.UseVisualStyleBackColor = true;
+            this.btn_MultiDelete.CheckedChanged += new System.EventHandler(this.btn_MultiDelete_CheckedChanged_1);
             // 
             // btn_addGroundTruth
             // 
@@ -2207,5 +2216,6 @@ namespace MissionPlanner.GCSViews
         private System.Windows.Forms.Button btn_ClearPolys;
         private System.Windows.Forms.Label lbl_mode;
         private System.Windows.Forms.Button btn_addGroundTruth;
+        private System.Windows.Forms.CheckBox btn_MultiDelete;
     }
 }

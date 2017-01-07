@@ -123,7 +123,8 @@ namespace MissionPlanner.GCSViews
             UNKNOWN = 0,
             MEASURE,
             EXPORT,
-            ADD_GROUND_TRUTH
+            ADD_GROUND_TRUTH,
+            MULTI_DELETE
         }
 
         MainWindowMode mMode = MainWindowMode.UNKNOWN;
@@ -166,10 +167,12 @@ namespace MissionPlanner.GCSViews
                 // if switching away from ground truth importer, make sure we delete it
                 if (mode() == MainWindowMode.ADD_GROUND_TRUTH)
                     mGroundTruthImporter = null;
-                else if( mode() == MainWindowMode.MEASURE )
+                else if (mode() == MainWindowMode.MEASURE)
                     mMeasureModeFirstClick = null;
-                else if( mode() == MainWindowMode.EXPORT )
+                else if (mode() == MainWindowMode.EXPORT)
                     mGridExporter = null;
+                else if (mode() == MainWindowMode.MULTI_DELETE)
+                    btn_MultiDelete.Checked = false;
 
 
                 // dealing with the new mode
@@ -491,9 +494,12 @@ namespace MissionPlanner.GCSViews
                     }
 
                     // delete everything
-                    mGroundTruthImporter = null;
                     setMode(MainWindowMode.UNKNOWN);
                 }
+            }
+            else if( mode() == MainWindowMode.MULTI_DELETE)
+            {
+                POI.POIDelete(item.Position);
             }
             else // still indicate that it was clicked so that we can delete it if they so choose
                 mMeasureModeFirstClick = item;
@@ -4429,6 +4435,25 @@ namespace MissionPlanner.GCSViews
             }
 
             Settings.Instance["tabcontrolactions"] = answer;
+        }
+
+        private void btn_MultiDelete_CheckedChanged(object sender, EventArgs e)
+        {
+            Debug.WriteLine("multi delet check changed = " + btn_MultiDelete.Checked);
+            if (btn_MultiDelete.Checked)
+                setMode(MainWindowMode.MULTI_DELETE);
+            else
+                setMode(MainWindowMode.UNKNOWN);
+        }
+
+        private void btn_MultiDelete_CheckedChanged_1(object sender, EventArgs e)
+        {
+            Debug.WriteLine("multi delet check changed = " + btn_MultiDelete.Checked);
+            if (btn_MultiDelete.Checked)
+                setMode(MainWindowMode.MULTI_DELETE);
+            else
+                setMode(MainWindowMode.UNKNOWN);
+
         }
     }
 }
