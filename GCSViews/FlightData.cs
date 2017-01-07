@@ -2269,6 +2269,8 @@ namespace MissionPlanner.GCSViews
         {
             MouseDownStart = gMapControl1.FromLocalToLatLng(e.X, e.Y);
 
+            if (e.Button == MouseButtons.Right)
+                setMode(MainWindowMode.UNKNOWN);
             if (ModifierKeys == Keys.Control)
             {
                 goHereToolStripMenuItem_Click(null, null);
