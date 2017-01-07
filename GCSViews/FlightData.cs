@@ -174,7 +174,6 @@ namespace MissionPlanner.GCSViews
                 else if (mode() == MainWindowMode.MULTI_DELETE)
                     btn_MultiDelete.Checked = false;
 
-
                 // dealing with the new mode
                 mMode = aMode;
                 lbl_mode.Text = mMode.ToString();
