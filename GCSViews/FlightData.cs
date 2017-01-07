@@ -166,7 +166,13 @@ namespace MissionPlanner.GCSViews
                 // if switching away from ground truth importer, make sure we delete it
                 if (mode() == MainWindowMode.ADD_GROUND_TRUTH)
                     mGroundTruthImporter = null;
+                else if( mode() == MainWindowMode.MEASURE )
+                    mMeasureModeFirstClick = null;
+                else if( mode() == MainWindowMode.EXPORT )
+                    mGridExporter = null;
 
+
+                // dealing with the new mode
                 mMode = aMode;
                 lbl_mode.Text = mMode.ToString();
                 if( mode() == MainWindowMode.UNKNOWN )
@@ -185,7 +191,6 @@ namespace MissionPlanner.GCSViews
                 {
                     CustomMessageBox.Show("Select marker to use as origin for ground truth.");
                 }
-
             }
         }
 
@@ -439,7 +444,6 @@ namespace MissionPlanner.GCSViews
                     drawnpolygonsoverlay.Polygons.Remove(line);
 
                     // transition out of this mode
-                    mMeasureModeFirstClick = null;
                     setMode(MainWindowMode.UNKNOWN);
                 }
             }
@@ -460,7 +464,6 @@ namespace MissionPlanner.GCSViews
                     mGridExporter.export( );
 
                     // they've selected them both. now reset
-                    mGridExporter = null;
                     setMode(MainWindowMode.UNKNOWN);
                 }
 
@@ -646,6 +649,10 @@ namespace MissionPlanner.GCSViews
             else if( e.KeyChar.ToString().ToUpper() == "M" )
             {
                 setMode(MainWindowMode.MEASURE);
+            }
+            else if( e.KeyChar == (char)27 )
+            {
+                setMode(MainWindowMode.UNKNOWN);
             }
         }
 
