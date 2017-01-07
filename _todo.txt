@@ -1,8 +1,12 @@
-- once you click the "export" menu item, there's no way to cancel. CLicking on the "x" in the prompt windows should do that.
+- work on cheat sheet doc
+- what if we screw up making the polygon? Way to delete them? or individual points of it?
+- some way to indicate scale
+- shorten context menu by adding buttons
+- perhaps the "Create Report" dialog should feature a series of checkboxes that allows the user to select which things they want to export. Options would be "marked for export", "suspect readings", "not suspect, not marked for export"(regular)
+- "suspect readings" button and mode
 - edit label for existing pin
 - MOve the items in the "Add POI" menu item into the top level menu - no longer as a subitem of "Add POI".
 - be able to read in a BadgerReport so that we can get ground truth data, read it in, and compare on screen.
-- faster way to delete pins
 - "suspect readings" button
 - toggle rover icon
 - generate reports in decimal feet, or at least with a column in decimal feet
@@ -19,6 +23,10 @@
 - try a build in release mode. don't want to be running it in debugger on competition day
 
 
++ faster way to delete pins
++ right click exits current mode
++ button that enters "Multi-delete" button mode where you click to delete pin
++ once you click the "export" menu item, there's no way to cancel. CLicking on the "x" in the prompt windows should do that.
 + mark pins for export
 + Add Button to clear pins.
 + Add Button to show/hide pins.

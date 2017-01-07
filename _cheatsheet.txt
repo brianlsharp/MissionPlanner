@@ -1,0 +1,8 @@
+======= Hot Keys =====
+In code, look in FlightData.cs, GMapControl1_KeyPress()
+Note that focus has to be on the map to make use of these
+
+"R" drops a corner point for a polygon. All the same polygon.
+"W" drops a pin at the current location
+"M" enters measuring mode
+"escape" exits current mode
