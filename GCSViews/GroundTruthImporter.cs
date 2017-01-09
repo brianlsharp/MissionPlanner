@@ -89,11 +89,11 @@ namespace MissionPlanner.GCSViews
         public bool promptAndGetDistances()
         {
             // they will enter the number in Meters, but we want it in km
-            DistanceFromOriginToMarker =   .001 * getDoubleFromMessageBox("Enter distance (in meters) from origin to marker ");
+            DistanceFromOriginToMarker = 0.0003048 * getDoubleFromMessageBox("Enter distance (in decimal feet) from origin to marker ");
             if (double.IsNaN(DistanceFromOriginToMarker))
                 return false;
 
-            DistanceFromOtherRefToMarker = .001 * getDoubleFromMessageBox("Enter distance (in meters) from other ref point to marker ");
+            DistanceFromOtherRefToMarker = 0.0003048 * getDoubleFromMessageBox("Enter distance (in decimal feet) from other ref point to marker ");
             if (double.IsNaN(DistanceFromOtherRefToMarker))
                 return false;
 

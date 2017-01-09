@@ -1,4 +1,4 @@
-- accept inputs in feet
+- accept ground truth inputs in feet
 - when loading ground truth, be able to do multiple points at the same time without selecting new origin and ref
 - work on cheat sheet doc
 - what if we screw up making the polygon? Way to delete them? or individual points of it?
