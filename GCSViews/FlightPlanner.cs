@@ -3787,18 +3787,28 @@ namespace MissionPlanner.GCSViews
                 {
                 }
 
+            string lRet = string.Empty;
             switch (units)
             {
                 case Common.distances.Feet:
-                    return toMeterOrFeet
-                        ? string.Format((distInKM*3280.8399).ToString("0.00 ft"))
-                        : string.Format((distInKM*0.621371).ToString("0.0000 miles"));
+                    if (toMeterOrFeet)
+                        lRet = string.Format((distInKM * 3280.8399).ToString("0.00 ft"));
+                    else
+                        lRet = string.Format((distInKM * 0.621371).ToString("0.0000 miles"));
+                    break;
                 case Common.distances.Meters:
                 default:
-                    return toMeterOrFeet
-                        ? string.Format((distInKM*1000).ToString("0.00 m"))
-                        : string.Format(distInKM.ToString("0.0000 km"));
+                    if (toMeterOrFeet)
+                    {
+                        lRet = string.Format((distInKM * 1000).ToString("0.00 m"));
+                        lRet += "\n";
+                        lRet += string.Format((distInKM * 3280.8399).ToString("0.00 ft"));
+                    }
+                    else
+                        lRet = string.Format(distInKM.ToString("0.0000 km"));
+                    break;
             }
+            return lRet;
         }
 
         PointLatLng startmeasure;
