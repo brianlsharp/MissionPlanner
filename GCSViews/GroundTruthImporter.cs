@@ -1,15 +1,9 @@
 ﻿using GMap.NET.WindowsForms;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.IO;
 using MissionPlanner.Utilities;
-using System.Globalization;
 using GMap.NET;
-using System.Diagnostics;
 using MissionPlanner.Controls;
 
 namespace MissionPlanner.GCSViews
@@ -96,13 +90,14 @@ namespace MissionPlanner.GCSViews
         {
             // they will enter the number in Meters, but we want it in km
             DistanceFromOriginToMarker =   .001 * getDoubleFromMessageBox("Enter distance (in meters) from origin to marker ");
-            DistanceFromOtherRefToMarker = .001 * getDoubleFromMessageBox("Enter distance (in meters) from other ref point to marker ");
-
-            if (DistanceFromOriginToMarker == double.NaN ||
-                DistanceFromOtherRefToMarker == double.NaN)
+            if (double.IsNaN(DistanceFromOriginToMarker))
                 return false;
-            else
-                return true;
+
+            DistanceFromOtherRefToMarker = .001 * getDoubleFromMessageBox("Enter distance (in meters) from other ref point to marker ");
+            if (double.IsNaN(DistanceFromOtherRefToMarker))
+                return false;
+
+            return true;
         }
 
         public List<PointLatLngAlt> mineLocations()
@@ -112,7 +107,7 @@ namespace MissionPlanner.GCSViews
             double bearingFromOriginToOtherRef = new PointLatLngAlt(OriginMarker.Position).GetBearing(OtherReferencePoint.Position);
             double internalAngleOfTriangle = (getInternalAngleOfTriangle()) * FlightData.rad2deg;
 
-            if (bearingFromOriginToOtherRef == double.NaN || internalAngleOfTriangle == double.NaN)
+            if ( double.IsNaN( bearingFromOriginToOtherRef ) || double.IsNaN( internalAngleOfTriangle ))
                 MessageBox.Show("invalid bearing ");
             else
             {

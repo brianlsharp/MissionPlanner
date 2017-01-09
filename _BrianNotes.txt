@@ -1,3 +1,7 @@
+8 Jan
+69.1 @ 21, 66.32
+68.8, 43.77
+
 28 July 
 Good resource for info on the map stuff:
 http://www.independent-software.com/gmap-net-tutorial-maps-markers-and-polygons/

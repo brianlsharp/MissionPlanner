@@ -485,7 +485,7 @@ namespace MissionPlanner.GCSViews
                 {
                     mGroundTruthImporter.OtherReferencePoint = item;
 
-                    if( mGroundTruthImporter.promptAndGetDistances() )
+                    while( mGroundTruthImporter.promptAndGetDistances() )
                     {
                         List<PointLatLngAlt> lMineLocations = mGroundTruthImporter.mineLocations();
                         for (int i = 0; i < lMineLocations.Count(); i++)
