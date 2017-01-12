@@ -114,10 +114,12 @@ namespace MissionPlanner.GCSViews
                 PointLatLngAlt lNewPoint = OriginMarker.Position;
                 lNewPoint = lNewPoint.newpos(bearingFromOriginToOtherRef - internalAngleOfTriangle, DistanceFromOriginToMarker * 1000);
                 lRet.Add(lNewPoint);
+                lNewPoint.color = System.Drawing.Color.Yellow;
 
                 PointLatLngAlt lNewPoint2 = OriginMarker.Position;
                 lNewPoint2 = lNewPoint2.newpos(bearingFromOriginToOtherRef + internalAngleOfTriangle, DistanceFromOriginToMarker * 1000);
                 lRet.Add(lNewPoint2);
+                lNewPoint2.color = System.Drawing.Color.Yellow;
 
             }
 

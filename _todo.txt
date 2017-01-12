@@ -1,3 +1,4 @@
+- Bug: after the popup to select the other reference point, it was immediatly moving on to the next step. Wouldn't give you a chance to select it. Happened for ground truth and export, trackpad and external mouse.
 - when detecting mines, have the color indicate the GPS fix quality
 - keep measuring distances until the user exits that mode.
 - accept ground truth inputs in feet

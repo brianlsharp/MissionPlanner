@@ -37,7 +37,7 @@ namespace MissionPlanner.Utilities
         {
             // local copy
             PointLatLngAlt pnt = Point;
-
+            pnt.color = Point.color;
             pnt.Tag = tag + "\n" + pnt.ToString();
 
             POI.POIs.Add(pnt);
@@ -160,13 +160,27 @@ namespace MissionPlanner.Utilities
                 }
                 else // not exporting this poi
                 {
-                    GMarkerGoogle marker = new GMarkerGoogle(pnt, GMarkerGoogleType.blue_dot)
+                    if (pnt.color == System.Drawing.Color.Yellow)
                     {
-                    ToolTipMode = MarkerTooltipMode.OnMouseOver,
-                    ToolTipText = pnt.Tag
-                    };
-                    poioverlay.Markers.Add(marker);
+                        GMarkerGoogle marker = new GMarkerGoogle(pnt, GMarkerGoogleType.yellow_dot)
+                        {
+                            ToolTipMode = MarkerTooltipMode.OnMouseOver,
+                            ToolTipText = pnt.Tag
+                        };
+                        poioverlay.Markers.Add(marker);
+
+                    }
+                    else
+                    {
+                        GMarkerGoogle marker = new GMarkerGoogle(pnt, GMarkerGoogleType.blue_dot)
+                        {
+                            ToolTipMode = MarkerTooltipMode.OnMouseOver,
+                            ToolTipText = pnt.Tag
+                        };
+                        poioverlay.Markers.Add(marker);
+                    }
                 }
+
             }
         }
 
