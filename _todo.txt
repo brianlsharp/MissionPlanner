@@ -1,3 +1,4 @@
+- when detecting mines, have the color indicate the GPS fix quality
 - keep measuring distances until the user exits that mode.
 - accept ground truth inputs in feet
 - when loading ground truth, be able to do multiple points at the same time without selecting new origin and ref
