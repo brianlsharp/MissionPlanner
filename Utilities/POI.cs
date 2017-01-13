@@ -149,38 +149,20 @@ namespace MissionPlanner.Utilities
 
             foreach (var pnt in POIs)
             {
+                GMarkerGoogle marker = null;
                 if (pnt.export)
-                {
-                    GMarkerGoogle marker = new GMarkerGoogle(pnt, GMarkerGoogleType.red_dot)
-                    {
-                        ToolTipMode = MarkerTooltipMode.OnMouseOver,
-                        ToolTipText = pnt.Tag
-                    };
-                    poioverlay.Markers.Add(marker);
-                }
+                    marker = new GMarkerGoogle(pnt, GMarkerGoogleType.red_dot);
                 else // not exporting this poi
                 {
                     if (pnt.color == System.Drawing.Color.Yellow)
-                    {
-                        GMarkerGoogle marker = new GMarkerGoogle(pnt, GMarkerGoogleType.yellow_dot)
-                        {
-                            ToolTipMode = MarkerTooltipMode.OnMouseOver,
-                            ToolTipText = pnt.Tag
-                        };
-                        poioverlay.Markers.Add(marker);
-
-                    }
+                        marker = new GMarkerGoogle(pnt, GMarkerGoogleType.yellow_dot);
                     else
-                    {
-                        GMarkerGoogle marker = new GMarkerGoogle(pnt, GMarkerGoogleType.blue_dot)
-                        {
-                            ToolTipMode = MarkerTooltipMode.OnMouseOver,
-                            ToolTipText = pnt.Tag
-                        };
-                        poioverlay.Markers.Add(marker);
-                    }
+                        marker = new GMarkerGoogle(pnt, GMarkerGoogleType.blue_dot);
                 }
 
+                marker.ToolTipMode = MarkerTooltipMode.OnMouseOver;
+                marker.ToolTipText = pnt.Tag;
+                poioverlay.Markers.Add(marker);                              
             }
         }
 
