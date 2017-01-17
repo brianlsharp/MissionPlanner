@@ -61,10 +61,10 @@ namespace MissionPlanner.Utilities
             POIAdd(Point, output);
         }
 
-        public static void POIDelete(PointLatLngAlt Point)
+        public static bool POIDelete(PointLatLngAlt Point)
         {
             if (Point == null)
-                return;
+                return false;
 
             for (int a = 0; a < POI.POIs.Count; a++)
             {
@@ -73,9 +73,11 @@ namespace MissionPlanner.Utilities
                     POI.POIs.RemoveAt(a);
                     if (POIModified != null)
                         POIModified(null, null);
-                    return;
+                    return true;
                 }
             }
+
+            return false;
         }
 
         public static void POIEdit(PointLatLngAlt Point)

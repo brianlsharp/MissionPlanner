@@ -498,7 +498,15 @@ namespace MissionPlanner.GCSViews
             }
             else if( mode() == MainWindowMode.MULTI_DELETE)
             {
-                POI.POIDelete(item.Position);
+                if (!POI.POIDelete(item.Position))
+                {
+                    int lIndex = drawnpolygon.Points.FindIndex(x => x.Lat == item.Position.Lat && x.Lng == item.Position.Lng);
+                    if (lIndex >= 0)
+                        drawnpolygon.Points.RemoveAt(lIndex);
+
+                    drawnpolygonsoverlay.Markers.Remove(item);
+                    gMapControl1.Invalidate();
+                }
             }
             else // still indicate that it was clicked so that we can delete it if they so choose
                 mMeasureModeFirstClick = item;
