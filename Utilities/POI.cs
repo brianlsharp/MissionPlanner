@@ -33,17 +33,24 @@ namespace MissionPlanner.Utilities
                 POIModified(null, null);
         }
 
-        public static void POIAdd(PointLatLngAlt Point, string tag)
+        public static void POIAdd(PointLatLngAlt Point, string tag, bool aSuspectReading )
         {
             // local copy
             PointLatLngAlt pnt = Point;
             pnt.color = Point.color;
             pnt.Tag = tag + "\n" + pnt.ToString();
+            pnt.suspectReading = aSuspectReading;
 
             POI.POIs.Add(pnt);
 
             if (POIModified != null)
                 POIModified(null, null);
+        }
+
+
+        public static void POIAdd(PointLatLngAlt Point, string tag)
+        {
+            POIAdd( Point, tag, false );
         }
 
         public static void POIAdd(PointLatLngAlt Point)
@@ -141,7 +148,7 @@ namespace MissionPlanner.Utilities
                 }
             }
         }
-        //
+
         public static void UpdateOverlay(GMap.NET.WindowsForms.GMapOverlay poioverlay)
         {
             if (poioverlay == null)
@@ -153,13 +160,15 @@ namespace MissionPlanner.Utilities
             {
                 GMarkerGoogle marker = null;
                 if (pnt.export)
-                    marker = new GMarkerGoogle(pnt, GMarkerGoogleType.red_dot);
+                    marker = new GMarkerGoogle(pnt, GMarkerGoogleType.red_small);
                 else // not exporting this poi
                 {
-                    if (pnt.color == System.Drawing.Color.Yellow)
-                        marker = new GMarkerGoogle(pnt, GMarkerGoogleType.yellow_dot);
-                    else
-                        marker = new GMarkerGoogle(pnt, GMarkerGoogleType.blue_dot);
+                    if ( pnt.groundTruth )
+                        marker = new GMarkerGoogle(pnt, GMarkerGoogleType.green_dot);
+                    else if( pnt.suspectReading )
+                        marker = new GMarkerGoogle( pnt, GMarkerGoogleType.blue_small );
+                    else 
+                        marker = new GMarkerGoogle(pnt, GMarkerGoogleType.yellow_small );
                 }
 
                 marker.ToolTipMode = MarkerTooltipMode.OnMouseOver;

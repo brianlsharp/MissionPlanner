@@ -22,6 +22,8 @@ namespace MissionPlanner.Utilities
         public string Tag2 = "";
         public Color color = Color.White;
         public bool export = false;
+        public bool suspectReading = false;
+        public bool groundTruth = false;
         const float rad2deg = (float)(180 / Math.PI);
         const float deg2rad = (float)(1.0 / rad2deg);
 

@@ -126,8 +126,13 @@ namespace MissionPlanner.GCSViews
             ADD_GROUND_TRUTH,
             MULTI_DELETE
         }
-
         MainWindowMode mMode = MainWindowMode.UNKNOWN;
+
+        private bool SuspectReadings
+        {
+            set;
+            get;
+        }
 
         GridExporter mGridExporter;
 
@@ -617,7 +622,7 @@ namespace MissionPlanner.GCSViews
         public void addPOIatLoc( double aLat, double aLon, string aLabel )
         {
             PointLatLng lLoc = new PointLatLng(aLat, aLon);
-            POI.POIAdd( lLoc, aLabel );
+            POI.POIAdd( lLoc, aLabel, SuspectReadings );
         }
 
         private void btn_addGroundTruth_Click(object sender, EventArgs e)
@@ -663,6 +668,10 @@ namespace MissionPlanner.GCSViews
             {
                 setMode(MainWindowMode.MEASURE);
             }
+            else if( e.KeyChar.ToString().ToUpper() == "S")
+            {
+                chk_SuspectReadings.Checked = !chk_SuspectReadings.Checked;
+            }
             else if( e.KeyChar == (char)27 )
             {
                 setMode(MainWindowMode.UNKNOWN);
@@ -674,8 +683,7 @@ namespace MissionPlanner.GCSViews
             try
             {
                 PointLatLng point = new PointLatLng(lat, lng);
-                GMarkerGoogle m = new GMarkerGoogle(point, GMarkerGoogleType.green);
-                //m.ToolTipMode = MarkerTooltipMode.Never;
+                GMarkerGoogle m = new GMarkerGoogle(point, GMarkerGoogleType.green_pushpin);
                 m.ToolTipText = tag + ":\n" + lat.ToString() + "\n" + lng.ToString() ;
                 m.Tag = m.ToolTipText; 
 
@@ -4462,7 +4470,11 @@ namespace MissionPlanner.GCSViews
                 setMode(MainWindowMode.MULTI_DELETE);
             else
                 setMode(MainWindowMode.UNKNOWN);
+        }
 
+        private void chk_SuspectReadings_CheckedChanged(object sender, EventArgs e)
+        {
+            SuspectReadings = chk_SuspectReadings.Checked;
         }
     }
 }
