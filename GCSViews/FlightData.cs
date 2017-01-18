@@ -1633,8 +1633,9 @@ namespace MissionPlanner.GCSViews
                                     }
                                     else if (MAV.cs.firmware == MainV2.Firmwares.ArduRover)
                                     {
-                                        routes.Markers.Add(new GMapMarkerRover(portlocation, MAV.cs.yaw,
-                                            MAV.cs.groundcourse, MAV.cs.nav_bearing, MAV.cs.target_bearing));
+                                        routes.Markers.Add( new GMarkerCross( portlocation ) );
+                                        //routes.Markers.Add( new GMapMarkerRover( portlocation, MAV.cs.yaw,
+                                        //    MAV.cs.groundcourse, MAV.cs.nav_bearing, MAV.cs.target_bearing ) );
                                     }
                                     else if (MAV.aptype == MAVLink.MAV_TYPE.HELICOPTER)
                                     {

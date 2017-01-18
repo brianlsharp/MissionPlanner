@@ -1,8 +1,7 @@
+- add a way to toggle between the GMarkerCross and the old rover icon.
 - when exporting, be able to choose if you want to export suspected readings.
 - prompt for confirmation on deleting all polys, markers.
-- "suspect readings" button
 - Bug: after the popup to select the other reference point, it was immediatly moving on to the next step. Wouldn't give you a chance to select it. Happened for ground truth and export, trackpad and external mouse.
-- when detecting mines, have the color indicate the GPS fix quality or the strength of the measurement
 - keep measuring distances until the user exits that mode.
 - work on cheat sheet doc
 - some way to indicate scale
@@ -27,6 +26,7 @@
 - try a build in release mode. don't want to be running it in debugger on competition day
 
 
++ "suspect readings" button
 + accept ground truth inputs in feet
 + when loading ground truth, be able to do multiple points at the same time without selecting new origin and ref
 + what if we screw up making the polygon? Way to delete them? or individual points of it?
