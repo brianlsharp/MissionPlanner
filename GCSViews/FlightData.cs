@@ -423,99 +423,107 @@ namespace MissionPlanner.GCSViews
             setMode(MainWindowMode.MEASURE);
         }
 
-        void gMapControl1_OnMarkerClick(GMapMarker item, MouseEventArgs e)
+        DateTime mLastTimeMarkerClicked = DateTime.MinValue;
+        void gMapControl1_OnMarkerClick( GMapMarker item, MouseEventArgs e )
         {
-            if (mode() == MainWindowMode.MEASURE)
+            TimeSpan lDiff = DateTime.Now - mLastTimeMarkerClicked;
+            if(lDiff < new TimeSpan( 0, 0, 1 ))
+                Debug.WriteLine( "avoiding registering two marker clicks simultaneously" );
+            else
             {
-                if (mMeasureModeFirstClick == null) // then it's the first point we're selecting
-                    mMeasureModeFirstClick = item;
-                else // show the distance
+                if(mode() == MainWindowMode.MEASURE)
                 {
-                    List<PointLatLng> polygonPoints = new List<PointLatLng>();
-                    polygonPoints.Add(mMeasureModeFirstClick.Position);
-                    polygonPoints.Add(item.Position);
-
-                    GMapPolygon line = new GMapPolygon(polygonPoints, "measure dist");
-                    line.Stroke.Color = Color.Green;
-
-                    drawnpolygonsoverlay.Polygons.Add(line);
-                    gMapControl1.Invalidate();
-
-                    CustomMessageBox.Show("Distance: " +
-                                          FlightPlanner.FormatDistance(
-                                              gMapControl1.MapProvider.Projection.GetDistance( mMeasureModeFirstClick.Position, item.Position), true) +
-                                          " AZ: " +
-                                          (gMapControl1.MapProvider.Projection.GetBearing(mMeasureModeFirstClick.Position, item.Position)
-                                              .ToString("0")));
-
-                    drawnpolygonsoverlay.Polygons.Remove(line);
-
-                    // transition out of this mode
-                    setMode(MainWindowMode.UNKNOWN);
-                }
-            }
-            else if( mode() == MainWindowMode.EXPORT )
-            {
-                if (mGridExporter == null)
-                {
-                    mGridExporter = new GridExporter(gMapControl1.MapProvider.Projection );
-                    mGridExporter.OriginMarker = item;
-
-                    // now that they've selected the first ref point, prompt them for the other one
-                    CustomMessageBox.Show("Please select other reference point.");
-                }
-                else // second click
-                {
-                    mGridExporter.OtherReferencePoint = item;
-
-                    mGridExporter.export( );
-
-                    // they've selected them both. now reset
-                    setMode(MainWindowMode.UNKNOWN);
-                }
-
-            }
-            else if (mode() == MainWindowMode.ADD_GROUND_TRUTH )
-            {
-                // pick the origin
-                if( mGroundTruthImporter == null )
-                {
-                    mGroundTruthImporter = new GroundTruthImporter(gMapControl1.MapProvider.Projection);
-                    mGroundTruthImporter.OriginMarker = item;
-                    // now that they've selected the first ref point, prompt them for the other one
-                    CustomMessageBox.Show("Please select other reference point for ground truth.");
-                }
-                // pick the other ref point
-                else if( mGroundTruthImporter.OtherReferencePoint == null )
-                {
-                    mGroundTruthImporter.OtherReferencePoint = item;
-
-                    while( mGroundTruthImporter.promptAndGetDistances() )
+                    if(mMeasureModeFirstClick == null) // then it's the first point we're selecting
+                        mMeasureModeFirstClick = item;
+                    else // show the distance
                     {
-                        List<PointLatLngAlt> lMineLocations = mGroundTruthImporter.mineLocations();
-                        for (int i = 0; i < lMineLocations.Count(); i++)
-                            POI.POIAdd(lMineLocations[i], "mine " + i.ToString());
+                        List<PointLatLng> polygonPoints = new List<PointLatLng>();
+                        polygonPoints.Add( mMeasureModeFirstClick.Position );
+                        polygonPoints.Add( item.Position );
+
+                        GMapPolygon line = new GMapPolygon( polygonPoints, "measure dist" );
+                        line.Stroke.Color = Color.Green;
+
+                        drawnpolygonsoverlay.Polygons.Add( line );
+                        gMapControl1.Invalidate();
+
+                        CustomMessageBox.Show( "Distance: " +
+                                              FlightPlanner.FormatDistance(
+                                                  gMapControl1.MapProvider.Projection.GetDistance( mMeasureModeFirstClick.Position, item.Position ), true ) +
+                                              " AZ: " +
+                                              ( gMapControl1.MapProvider.Projection.GetBearing( mMeasureModeFirstClick.Position, item.Position )
+                                                  .ToString( "0" ) ) );
+
+                        drawnpolygonsoverlay.Polygons.Remove( line );
+
+                        // transition out of this mode
+                        setMode( MainWindowMode.UNKNOWN );
+                    }
+                }
+                else if(mode() == MainWindowMode.EXPORT)
+                {
+                    if(mGridExporter == null)
+                    {
+                        mGridExporter = new GridExporter( gMapControl1.MapProvider.Projection );
+                        mGridExporter.OriginMarker = item;
+
+                        // now that they've selected the first ref point, prompt them for the other one
+                        CustomMessageBox.Show( "Please select other reference point." );
+                    }
+                    else // second click
+                    {
+                        mGridExporter.OtherReferencePoint = item;
+
+                        mGridExporter.export();
+
+                        // they've selected them both. now reset
+                        setMode( MainWindowMode.UNKNOWN );
                     }
 
-                    // delete everything
-                    setMode(MainWindowMode.UNKNOWN);
                 }
-            }
-            else if( mode() == MainWindowMode.MULTI_DELETE)
-            {
-                if (!POI.POIDelete(item.Position))
+                else if(mode() == MainWindowMode.ADD_GROUND_TRUTH)
                 {
-                    int lIndex = drawnpolygon.Points.FindIndex(x => x.Lat == item.Position.Lat && x.Lng == item.Position.Lng);
-                    if (lIndex >= 0)
-                        drawnpolygon.Points.RemoveAt(lIndex);
+                    // pick the origin
+                    if(mGroundTruthImporter == null)
+                    {
+                        mGroundTruthImporter = new GroundTruthImporter( gMapControl1.MapProvider.Projection );
+                        mGroundTruthImporter.OriginMarker = item;
+                        // now that they've selected the first ref point, prompt them for the other one
+                        CustomMessageBox.Show( "Please select other reference point for ground truth." );
+                    }
+                    // pick the other ref point
+                    else if(mGroundTruthImporter.OtherReferencePoint == null)
+                    {
+                        mGroundTruthImporter.OtherReferencePoint = item;
 
-                    drawnpolygonsoverlay.Markers.Remove(item);
-                    gMapControl1.Invalidate();
+                        while(mGroundTruthImporter.promptAndGetDistances())
+                        {
+                            List<PointLatLngAlt> lMineLocations = mGroundTruthImporter.mineLocations();
+                            for(int i = 0; i < lMineLocations.Count(); i++)
+                                POI.POIAdd( lMineLocations[ i ], "mine " + i.ToString() );
+                        }
+
+                        // delete everything
+                        setMode( MainWindowMode.UNKNOWN );
+                    }
                 }
-            }
-            else // still indicate that it was clicked so that we can delete it if they so choose
-                mMeasureModeFirstClick = item;
+                else if(mode() == MainWindowMode.MULTI_DELETE)
+                {
+                    if(!POI.POIDelete( item.Position ))
+                    {
+                        int lIndex = drawnpolygon.Points.FindIndex( x => x.Lat == item.Position.Lat && x.Lng == item.Position.Lng );
+                        if(lIndex >= 0)
+                            drawnpolygon.Points.RemoveAt( lIndex );
 
+                        drawnpolygonsoverlay.Markers.Remove( item );
+                        gMapControl1.Invalidate();
+                    }
+                }
+                else // still indicate that it was clicked so that we can delete it if they so choose
+                    mMeasureModeFirstClick = item;
+            }
+
+            mLastTimeMarkerClicked = DateTime.Now;
         }
 
         GroundTruthImporter mGroundTruthImporter = null;
