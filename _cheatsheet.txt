@@ -7,10 +7,15 @@ Note that focus has to be on the map to make use of these
 "M" enters measuring mode
 "escape" exits current mode
 
-===== Colors ==== 
+===== Map Marker Color Meanings ==== 
+blue dot - suspect reading
+Yellow dot - good reading
 Red dot - marked for export
-Yellow dot - ground truth
-blue dot - suspect data
+green dot - ground truth
+green pushpin - corner point
+
+
+====== Brian's notes ==========
 green dot - corner point
 light blue dot
 pink dot - real bad

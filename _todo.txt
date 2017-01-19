@@ -1,3 +1,5 @@
+- Remove cross that always stays in the middle of the screen. Says "Debug build"
+- Rearrange button / checkboxes to be more intutitive. Maybe have all the "clear..." buttons and show/ hide toggles beside each other.
 - add a way to toggle between the GMarkerCross and the old rover icon.
 - when exporting, be able to choose if you want to export suspected readings.
 - prompt for confirmation on deleting all polys, markers.

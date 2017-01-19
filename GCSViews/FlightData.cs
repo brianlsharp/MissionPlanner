@@ -134,6 +134,12 @@ namespace MissionPlanner.GCSViews
             get;
         }
 
+        private bool UseRoverIcon
+        {
+            get;
+            set;
+        } 
+
         GridExporter mGridExporter;
 
         private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
@@ -245,6 +251,8 @@ namespace MissionPlanner.GCSViews
             //    _serializer.SavePath = Application.StartupPath + Path.DirectorySeparatorChar + "FDscreen.xml";
             //    dockContainer1.PreviewRenderer = new PreviewRenderer();
             //
+            SuspectReadings = chk_SuspectReadings.Checked;
+
             mymap = gMapControl1;
             myhud = hud1;
             MainHcopy = MainH;
@@ -1633,9 +1641,13 @@ namespace MissionPlanner.GCSViews
                                     }
                                     else if (MAV.cs.firmware == MainV2.Firmwares.ArduRover)
                                     {
-                                        routes.Markers.Add( new GMarkerCross( portlocation ) );
-                                        //routes.Markers.Add( new GMapMarkerRover( portlocation, MAV.cs.yaw,
-                                        //    MAV.cs.groundcourse, MAV.cs.nav_bearing, MAV.cs.target_bearing ) );
+                                        if(UseRoverIcon)
+                                        {
+                                            routes.Markers.Add( new GMapMarkerRover( portlocation, MAV.cs.yaw,
+                                                MAV.cs.groundcourse, MAV.cs.nav_bearing, MAV.cs.target_bearing ) );
+                                        }
+                                        else
+                                            routes.Markers.Add( new GMarkerCross( portlocation ) );
                                     }
                                     else if (MAV.aptype == MAVLink.MAV_TYPE.HELICOPTER)
                                     {
@@ -4484,6 +4496,11 @@ namespace MissionPlanner.GCSViews
         private void chk_SuspectReadings_CheckedChanged(object sender, EventArgs e)
         {
             SuspectReadings = chk_SuspectReadings.Checked;
+        }
+
+        private void chk_RoverIcon_CheckedChanged( object sender, EventArgs e )
+        {
+            UseRoverIcon = chk_RoverIcon.Checked;
         }
     }
 }
