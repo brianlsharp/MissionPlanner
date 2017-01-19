@@ -1,3 +1,6 @@
+19 Jan
+End of day: Ready to start programming the radios, hoping that their firmware is set to something that is able to do the multicast. 
+
 18 Jan
 seems like we're having the issue with registering too many clicks whenever we try to select a marker that has multiple at that point. especially if you get the thing where multiple tool tips are up, then if that's the first marker you're trying to click, it'll think it's both of them.
 
