@@ -1,3 +1,13 @@
+20 Jan
+Plan moving forward: 
+1.  Get Evan to make another RFD900 - Piksi cable.
+2a. If the RFD900 - USB cable has not arrived, attempt to program all the radios using the Piksi console. There will be no way of being certain that the correct configuration string is on there (the Piksi console doesn't show you what's stored in the flash). Will just have to program them and hope that it takes correctly. Can power both of the remote radios from one piksi by making use of both UART ports. THen we can look at the flashing lights and determine if they are all connected.
+
+2b. If the RFD900 - USB cable has arrived, program the radios by the modem tool that I downloaded to DIrectorsCup\Radios. Verify that they are working via lights also.
+
+ABout to start programming radios. RIght now, have the default setup string which is AT&F,ATS1=57,ATS2=64,ATS5=0,AT&W,ATZ. Both radios are showing a solid green light meaning that they can communicate with each other. Entered a new config string for the base station piksi and saved that to flash. Power cycled it, but the old string showed up. Maybe it displays the default string? Unsure. Well, I could program the other 2, but I only have cables for one of the remotes. There would be no way of telling if they were all connected to each other. Need Evan to make me a cable so that we can connect the other one to the other piksi.
+
+
 19 Jan
 End of day: Ready to start programming the radios, hoping that their firmware is set to something that is able to do the multicast. 
 
