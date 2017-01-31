@@ -4484,15 +4484,6 @@ namespace MissionPlanner.GCSViews
                 setMode(MainWindowMode.UNKNOWN);
         }
 
-        private void btn_MultiDelete_CheckedChanged_1(object sender, EventArgs e)
-        {
-            Debug.WriteLine("multi delet check changed = " + btn_MultiDelete.Checked);
-            if (btn_MultiDelete.Checked)
-                setMode(MainWindowMode.MULTI_DELETE);
-            else
-                setMode(MainWindowMode.UNKNOWN);
-        }
-
         private void chk_SuspectReadings_CheckedChanged(object sender, EventArgs e)
         {
             SuspectReadings = chk_SuspectReadings.Checked;
@@ -4501,6 +4492,11 @@ namespace MissionPlanner.GCSViews
         private void chk_RoverIcon_CheckedChanged( object sender, EventArgs e )
         {
             UseRoverIcon = chk_RoverIcon.Checked;
+        }
+
+        private void btn_Fuse_Click( object sender, EventArgs e )
+        {
+
         }
     }
 }

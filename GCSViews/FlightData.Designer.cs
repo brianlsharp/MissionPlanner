@@ -132,6 +132,7 @@ namespace MissionPlanner.GCSViews
             this.gMapControl1 = new MissionPlanner.Controls.myGMAP();
             this.TRK_zoom = new MissionPlanner.Controls.MyTrackBar();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.chk_RoverIcon = new System.Windows.Forms.CheckBox();
             this.chk_SuspectReadings = new System.Windows.Forms.CheckBox();
             this.btn_MultiDelete = new System.Windows.Forms.CheckBox();
             this.btn_addGroundTruth = new System.Windows.Forms.Button();
@@ -153,7 +154,7 @@ namespace MissionPlanner.GCSViews
             this.dataGridViewImageColumn1 = new System.Windows.Forms.DataGridViewImageColumn();
             this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
             this.Messagetabtimer = new System.Windows.Forms.Timer(this.components);
-            this.chk_RoverIcon = new System.Windows.Forms.CheckBox();
+            this.btn_Fuse = new System.Windows.Forms.Button();
             this.bindingSourceHud = new System.Windows.Forms.BindingSource(this.components);
             this.bindingSourceQuickTab = new System.Windows.Forms.BindingSource(this.components);
             this.modifyandSetSpeed = new MissionPlanner.Controls.ModifyandSet();
@@ -1726,6 +1727,7 @@ namespace MissionPlanner.GCSViews
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.btn_Fuse);
             this.panel1.Controls.Add(this.chk_RoverIcon);
             this.panel1.Controls.Add(this.chk_SuspectReadings);
             this.panel1.Controls.Add(this.btn_MultiDelete);
@@ -1744,6 +1746,13 @@ namespace MissionPlanner.GCSViews
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             this.tableMap.SetRowSpan(this.panel1, 3);
+            // 
+            // chk_RoverIcon
+            // 
+            resources.ApplyResources(this.chk_RoverIcon, "chk_RoverIcon");
+            this.chk_RoverIcon.Name = "chk_RoverIcon";
+            this.chk_RoverIcon.UseVisualStyleBackColor = true;
+            this.chk_RoverIcon.CheckedChanged += new System.EventHandler(this.chk_RoverIcon_CheckedChanged);
             // 
             // chk_SuspectReadings
             // 
@@ -1911,12 +1920,12 @@ namespace MissionPlanner.GCSViews
             this.Messagetabtimer.Interval = 200;
             this.Messagetabtimer.Tick += new System.EventHandler(this.Messagetabtimer_Tick);
             // 
-            // chk_RoverIcon
+            // btn_Fuse
             // 
-            resources.ApplyResources(this.chk_RoverIcon, "chk_RoverIcon");
-            this.chk_RoverIcon.Name = "chk_RoverIcon";
-            this.chk_RoverIcon.UseVisualStyleBackColor = true;
-            this.chk_RoverIcon.CheckedChanged += new System.EventHandler(this.chk_RoverIcon_CheckedChanged);
+            resources.ApplyResources(this.btn_Fuse, "btn_Fuse");
+            this.btn_Fuse.Name = "btn_Fuse";
+            this.btn_Fuse.UseVisualStyleBackColor = true;
+            this.btn_Fuse.Click += new System.EventHandler(this.btn_Fuse_Click);
             // 
             // bindingSourceHud
             // 
@@ -2237,5 +2246,6 @@ namespace MissionPlanner.GCSViews
         private System.Windows.Forms.CheckBox btn_MultiDelete;
         private System.Windows.Forms.CheckBox chk_SuspectReadings;
         private System.Windows.Forms.CheckBox chk_RoverIcon;
+        private System.Windows.Forms.Button btn_Fuse;
     }
 }
