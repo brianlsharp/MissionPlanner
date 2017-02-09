@@ -177,5 +177,14 @@ namespace MissionPlanner.Utilities
             }
         }
 
+
+        internal static void setPOIs( ObservableCollection<PointLatLngAlt> lFused )
+        {
+            POIDeleteAll();
+            POIs = lFused;
+            if(POIModified != null)
+                POIModified( null, null );
+
+        }
     }
 }

@@ -1766,7 +1766,7 @@ namespace MissionPlanner.GCSViews
             resources.ApplyResources(this.btn_MultiDelete, "btn_MultiDelete");
             this.btn_MultiDelete.Name = "btn_MultiDelete";
             this.btn_MultiDelete.UseVisualStyleBackColor = true;
-            this.btn_MultiDelete.CheckedChanged += new System.EventHandler(this.btn_MultiDelete_CheckedChanged_1);
+            this.btn_MultiDelete.CheckedChanged += new System.EventHandler(this.btn_MultiDelete_CheckedChanged);
             // 
             // btn_addGroundTruth
             // 

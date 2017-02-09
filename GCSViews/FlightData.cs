@@ -27,6 +27,8 @@ using WebCamService;
 using ZedGraph;
 using LogAnalyzer = MissionPlanner.Utilities.LogAnalyzer;
 using TerrainFollow = MissionPlanner.Utilities.TerrainFollow;
+using System.Collections.ObjectModel;
+using System.Collections.Generic;
 
 // written by michael oborne
 
@@ -4496,7 +4498,10 @@ namespace MissionPlanner.GCSViews
 
         private void btn_Fuse_Click( object sender, EventArgs e )
         {
-
+            ContactFuser lFuser = new ContactFuser( gMapControl1.MapProvider.Projection );
+            ObservableCollection<PointLatLngAlt> lFused = lFuser.fuse( POI.pois() );
+            POI.setPOIs( lFused );
+            POI.pois();
         }
     }
 }
