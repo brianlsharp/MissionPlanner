@@ -6,3 +6,30 @@ Note that focus has to be on the map to make use of these
 "W" drops a pin at the current location
 "M" enters measuring mode
 "escape" exits current mode
+
+===== Map Marker Color Meanings ==== 
+blue dot - suspect reading
+Yellow dot - good reading
+Red dot - marked for export
+green dot - ground truth
+green pushpin - corner point
+
+
+====== Brian's notes ==========
+green dot - corner point
+light blue dot
+pink dot - real bad
+purple dot
+
+what are the best ones? 
+Green, red, yellow, blue
+
+what options are there?
+Red dot 
+Yellow dot
+blue dot 
+green dot
+light blue dot - pretty bad
+pink dot - real bad
+purple dot
+orange dot - real bad

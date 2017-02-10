@@ -88,7 +88,7 @@ namespace MissionPlanner.GCSViews
 
         public bool promptAndGetDistances()
         {
-            // they will enter the number in Meters, but we want it in km
+            // they will enter the number in feet, but we want it in km
             DistanceFromOriginToMarker = 0.0003048 * getDoubleFromMessageBox("Enter distance (in decimal feet) from origin to marker ");
             if (double.IsNaN(DistanceFromOriginToMarker))
                 return false;
@@ -114,12 +114,14 @@ namespace MissionPlanner.GCSViews
                 PointLatLngAlt lNewPoint = OriginMarker.Position;
                 lNewPoint = lNewPoint.newpos(bearingFromOriginToOtherRef - internalAngleOfTriangle, DistanceFromOriginToMarker * 1000);
                 lRet.Add(lNewPoint);
-                lNewPoint.color = System.Drawing.Color.Yellow;
+                lNewPoint.groundTruth = true;
+//                lNewPoint.color = System.Drawing.Color.Yellow;
 
                 PointLatLngAlt lNewPoint2 = OriginMarker.Position;
                 lNewPoint2 = lNewPoint2.newpos(bearingFromOriginToOtherRef + internalAngleOfTriangle, DistanceFromOriginToMarker * 1000);
                 lRet.Add(lNewPoint2);
-                lNewPoint2.color = System.Drawing.Color.Yellow;
+                lNewPoint2.groundTruth = true;
+//                lNewPoint2.color = System.Drawing.Color.Yellow;
 
             }
 

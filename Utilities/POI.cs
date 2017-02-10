@@ -33,17 +33,24 @@ namespace MissionPlanner.Utilities
                 POIModified(null, null);
         }
 
-        public static void POIAdd(PointLatLngAlt Point, string tag)
+        public static void POIAdd(PointLatLngAlt Point, string tag, bool aSuspectReading )
         {
             // local copy
             PointLatLngAlt pnt = Point;
             pnt.color = Point.color;
             pnt.Tag = tag + "\n" + pnt.ToString();
+            pnt.suspectReading = aSuspectReading;
 
             POI.POIs.Add(pnt);
 
             if (POIModified != null)
                 POIModified(null, null);
+        }
+
+
+        public static void POIAdd(PointLatLngAlt Point, string tag)
+        {
+            POIAdd( Point, tag, false );
         }
 
         public static void POIAdd(PointLatLngAlt Point)
@@ -61,10 +68,10 @@ namespace MissionPlanner.Utilities
             POIAdd(Point, output);
         }
 
-        public static void POIDelete(PointLatLngAlt Point)
+        public static bool POIDelete(PointLatLngAlt Point)
         {
             if (Point == null)
-                return;
+                return false;
 
             for (int a = 0; a < POI.POIs.Count; a++)
             {
@@ -73,9 +80,11 @@ namespace MissionPlanner.Utilities
                     POI.POIs.RemoveAt(a);
                     if (POIModified != null)
                         POIModified(null, null);
-                    return;
+                    return true;
                 }
             }
+
+            return false;
         }
 
         public static void POIEdit(PointLatLngAlt Point)
@@ -139,7 +148,7 @@ namespace MissionPlanner.Utilities
                 }
             }
         }
-        //
+
         public static void UpdateOverlay(GMap.NET.WindowsForms.GMapOverlay poioverlay)
         {
             if (poioverlay == null)
@@ -149,40 +158,33 @@ namespace MissionPlanner.Utilities
 
             foreach (var pnt in POIs)
             {
+                GMarkerGoogle marker = null;
                 if (pnt.export)
-                {
-                    GMarkerGoogle marker = new GMarkerGoogle(pnt, GMarkerGoogleType.red_dot)
-                    {
-                        ToolTipMode = MarkerTooltipMode.OnMouseOver,
-                        ToolTipText = pnt.Tag
-                    };
-                    poioverlay.Markers.Add(marker);
-                }
+                    marker = new GMarkerGoogle(pnt, GMarkerGoogleType.red_small);
                 else // not exporting this poi
                 {
-                    if (pnt.color == System.Drawing.Color.Yellow)
-                    {
-                        GMarkerGoogle marker = new GMarkerGoogle(pnt, GMarkerGoogleType.yellow_dot)
-                        {
-                            ToolTipMode = MarkerTooltipMode.OnMouseOver,
-                            ToolTipText = pnt.Tag
-                        };
-                        poioverlay.Markers.Add(marker);
-
-                    }
-                    else
-                    {
-                        GMarkerGoogle marker = new GMarkerGoogle(pnt, GMarkerGoogleType.blue_dot)
-                        {
-                            ToolTipMode = MarkerTooltipMode.OnMouseOver,
-                            ToolTipText = pnt.Tag
-                        };
-                        poioverlay.Markers.Add(marker);
-                    }
+                    if ( pnt.groundTruth )
+                        marker = new GMarkerGoogle(pnt, GMarkerGoogleType.green_dot);
+                    else if( pnt.suspectReading )
+                        marker = new GMarkerGoogle( pnt, GMarkerGoogleType.blue_small );
+                    else 
+                        marker = new GMarkerGoogle(pnt, GMarkerGoogleType.yellow_small );
                 }
 
+                marker.ToolTipMode = MarkerTooltipMode.OnMouseOver;
+                marker.ToolTipText = pnt.Tag;
+                poioverlay.Markers.Add(marker);                              
             }
         }
 
+
+        internal static void setPOIs( ObservableCollection<PointLatLngAlt> lFused )
+        {
+            POIDeleteAll();
+            POIs = lFused;
+            if(POIModified != null)
+                POIModified( null, null );
+
+        }
     }
 }

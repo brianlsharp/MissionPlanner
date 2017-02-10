@@ -1,3 +1,6 @@
+18 Jan
+seems like we're having the issue with registering too many clicks whenever we try to select a marker that has multiple at that point. especially if you get the thing where multiple tool tips are up, then if that's the first marker you're trying to click, it'll think it's both of them.
+
 8 Jan
 69.1 @ 21, 66.32
 68.8, 43.77

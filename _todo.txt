@@ -1,10 +1,13 @@
+- fuse contacts, mark them for export.
+- change report file name to end in .csv
+- Remove cross that always stays in the middle of the screen. Says "Debug build"
+- Rearrange button / checkboxes to be more intutitive. Maybe have all the "clear..." buttons and show/ hide toggles beside each other.
+- add a way to toggle between the GMarkerCross and the old rover icon.
+- when exporting, be able to choose if you want to export suspected readings.
+- prompt for confirmation on deleting all polys, markers.
 - Bug: after the popup to select the other reference point, it was immediatly moving on to the next step. Wouldn't give you a chance to select it. Happened for ground truth and export, trackpad and external mouse.
-- when detecting mines, have the color indicate the GPS fix quality
 - keep measuring distances until the user exits that mode.
-- accept ground truth inputs in feet
-- when loading ground truth, be able to do multiple points at the same time without selecting new origin and ref
 - work on cheat sheet doc
-- what if we screw up making the polygon? Way to delete them? or individual points of it?
 - some way to indicate scale
 - shorten context menu by adding buttons
 - perhaps the "Create Report" dialog should feature a series of checkboxes that allows the user to select which things they want to export. Options would be "marked for export", "suspect readings", "not suspect, not marked for export"(regular)
@@ -12,7 +15,6 @@
 - edit label for existing pin
 - MOve the items in the "Add POI" menu item into the top level menu - no longer as a subitem of "Add POI".
 - be able to read in a BadgerReport so that we can get ground truth data, read it in, and compare on screen.
-- "suspect readings" button
 - toggle rover icon
 - generate reports in decimal feet, or at least with a column in decimal feet
 - record the name of the logfile in the polygon file
@@ -28,6 +30,10 @@
 - try a build in release mode. don't want to be running it in debugger on competition day
 
 
++ "suspect readings" button
++ accept ground truth inputs in feet
++ when loading ground truth, be able to do multiple points at the same time without selecting new origin and ref
++ what if we screw up making the polygon? Way to delete them? or individual points of it?
 + faster way to delete pins
 + right click exits current mode
 + button that enters "Multi-delete" button mode where you click to delete pin
