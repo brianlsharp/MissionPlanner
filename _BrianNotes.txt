@@ -1,3 +1,7 @@
+21 Feb
+Reviewing logs of the square sprial and metal detector interference tests on 13 Feb... trying to recognize when metal detector interference is happening... The metal detector interference seems to have lower average readings and much lower max readings. While some of the interference's averages are in the same range as the actual detections' averages, the max values for actual detections is much higher than the max value for the metal detector interference. Perhaps looking at the max reading is the best way to tell them apart? Or maybe it's because that other metal detector was so far away when we were doing the test? No data about how it looked if the other metal detector was much closer.
+
+
 18 Jan
 seems like we're having the issue with registering too many clicks whenever we try to select a marker that has multiple at that point. especially if you get the thing where multiple tool tips are up, then if that's the first marker you're trying to click, it'll think it's both of them.
 
