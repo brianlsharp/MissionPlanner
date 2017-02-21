@@ -65,14 +65,16 @@ namespace MissionPlanner.Utilities
                 {
                     short lDataVal = lData[i];
                     lSum += lDataVal;
+
+                    if(lDataVal < lMin)
+                        lMin = lDataVal;
+                    if(lDataVal > lMax)
+                        lMax = lDataVal;
+
                     if (lDataVal > 100)
                     {
                         Debug.WriteLine("value {0} = {1} ", i, lDataVal);
                         lNeedToAddPoint = true;
-                        if (lDataVal < lMin)
-                            lMin = lDataVal;
-                        if (lDataVal > lMax)
-                            lMax = lDataVal;
                     }
                 }
                 if (lNeedToAddPoint)
