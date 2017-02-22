@@ -26,9 +26,14 @@ namespace MissionPlanner.Utilities
 
         public static event EventHandler POIModified;
 
-        public static void POIDeleteAll()
+        public static void POIDeleteAllContacts()
         {
-            POIs.Clear();
+            for(int i = POIs.Count() - 1; i >= 0; i-- )
+            {
+                if(!POIs[ i ].groundTruth)
+                    POIs.RemoveAt( i );
+            }
+
             if (POIModified != null)
                 POIModified(null, null);
         }
@@ -180,11 +185,10 @@ namespace MissionPlanner.Utilities
 
         internal static void setPOIs( ObservableCollection<PointLatLngAlt> lFused )
         {
-            POIDeleteAll();
+            POIDeleteAllContacts();
             POIs = lFused;
             if(POIModified != null)
                 POIModified( null, null );
-
         }
     }
 }

@@ -610,7 +610,7 @@ namespace MissionPlanner.GCSViews
             if ( CustomMessageBox.Show("Are you sure you want to do delete all Markers?", "Action", MessageBoxButtons.YesNo)
                 == DialogResult.Yes)
             {
-                POI.POIDeleteAll();
+                POI.POIDeleteAllContacts();
             }
         }
 

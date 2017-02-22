@@ -1,25 +1,18 @@
-- the generated report filename needs to end in ".csv" not ".txt"
+- "clear markers" will remove ground truth data also. Don't want that.
+- user definable range for contact fusion radius
 - fuse contacts, mark them for export.
-- change report file name to end in .csv
 - Remove cross that always stays in the middle of the screen. Says "Debug build"
 - Rearrange button / checkboxes to be more intutitive. Maybe have all the "clear..." buttons and show/ hide toggles beside each other.
-- add a way to toggle between the GMarkerCross and the old rover icon.
 - when exporting, be able to choose if you want to export suspected readings.
 - prompt for confirmation on deleting all polys, markers.
-- Bug: after the popup to select the other reference point, it was immediatly moving on to the next step. Wouldn't give you a chance to select it. Happened for ground truth and export, trackpad and external mouse.
 - keep measuring distances until the user exits that mode.
 - work on cheat sheet doc
 - some way to indicate scale
 - shorten context menu by adding buttons
 - perhaps the "Create Report" dialog should feature a series of checkboxes that allows the user to select which things they want to export. Options would be "marked for export", "suspect readings", "not suspect, not marked for export"(regular)
-- "suspect readings" button and mode
 - edit label for existing pin
 - MOve the items in the "Add POI" menu item into the top level menu - no longer as a subitem of "Add POI".
-- be able to read in a BadgerReport so that we can get ground truth data, read it in, and compare on screen.
-- toggle rover icon
-- generate reports in decimal feet, or at least with a column in decimal feet
 - record the name of the logfile in the polygon file
-- if you get a message with readings at the exact same location, don't put another pin there. go with what's higher or something. Had trouble selecting individual ones for export. Always show ones for export on top?
 - create a README file that explains the basics. Like which color contacts will be exported. What the unknown hotkeys are (like using R to make the corners of the poly) and some pitfalls (like remember that you have to save the poly).
 - have some other way to know if a marker is set for export. Edit tooltip text or menu item (but when the menu pops up, don't know which marker we're over top. That is determined after ).
 - remove some tabs in the lower left pane
@@ -31,6 +24,12 @@
 - try a build in release mode. don't want to be running it in debugger on competition day
 
 
++ Bug: after the popup to select the other reference point, it was immediatly moving on to the next step. Wouldn't give you a chance to select it. Happened for ground truth and export, trackpad and external mouse.+ "suspect readings" button and mode
++ toggle rover icon
++ generate reports in decimal feet, or at least with a column in decimal feet
++ the generated report filename needs to end in ".csv" not ".txt"
++ change report file name to end in .csv
++ add a way to toggle between the GMarkerCross and the old rover icon.
 + "suspect readings" button
 + accept ground truth inputs in feet
 + when loading ground truth, be able to do multiple points at the same time without selecting new origin and ref
@@ -43,3 +42,5 @@
 + Add Button to clear pins.
 + Add Button to show/hide pins.
 + record the name of the logfile in exported report
+
+x be able to read in a BadgerReport so that we can get ground truth data, read it in, and compare on screen.
