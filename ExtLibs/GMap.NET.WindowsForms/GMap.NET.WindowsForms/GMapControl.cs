@@ -1631,13 +1631,13 @@ namespace GMap.NET.WindowsForms
 
          // center in virtual spcace...
 #if DEBUG
-         g.DrawLine(ScalePen, -20, 0, 20, 0);
-         g.DrawLine(ScalePen, 0, -20, 0, 20);
+         //g.DrawLine(ScalePen, -20, 0, 20, 0);
+         //g.DrawLine(ScalePen, 0, -20, 0, 20);
 
 #if PocketPC
          g.DrawString("debug build", CopyrightFont, CopyrightBrush, 2, CopyrightFont.Size);
 #else
-         g.DrawString("debug build", CopyrightFont, Brushes.Blue, 2, CopyrightFont.Height);
+         //g.DrawString("debug build", CopyrightFont, Brushes.Blue, 2, CopyrightFont.Height);
 #endif
 
 #endif
@@ -1671,11 +1671,11 @@ namespace GMap.NET.WindowsForms
             g.DrawLine(HelperLinePen, 0, p.Y, Width, p.Y);
          }
 #endif
-         if(ShowCenter)
-         {
-            g.DrawLine(CenterPen, Width / 2 - 5, Height / 2, Width / 2 + 5, Height / 2);
-            g.DrawLine(CenterPen, Width / 2, Height / 2 - 5, Width / 2, Height / 2 + 5);
-         }
+         //if(ShowCenter)
+         //{
+         //   g.DrawLine(CenterPen, Width / 2 - 5, Height / 2, Width / 2 + 5, Height / 2);
+         //   g.DrawLine(CenterPen, Width / 2, Height / 2 - 5, Width / 2, Height / 2 + 5);
+         //}
 
          #region -- copyright --
 
@@ -1692,6 +1692,7 @@ namespace GMap.NET.WindowsForms
 
          #region -- draw scale --
 #if !PocketPC
+         MapScaleInfoEnabled = true;
          if(MapScaleInfoEnabled)
          {
              var brush = new SolidBrush(ScalePen.Color);

@@ -2,7 +2,7 @@
 - "clear markers" will remove ground truth data also. Don't want that.
 - user definable range for contact fusion radius
 - fuse contacts, mark them for export.
-- Remove cross that always stays in the middle of the screen. Says "Debug build"
++ Remove cross that always stays in the middle of the screen. Says "Debug build"
 - Rearrange button / checkboxes to be more intutitive. Maybe have all the "clear..." buttons and show/ hide toggles beside each other.
 - when exporting, be able to choose if you want to export suspected readings.
 - prompt for confirmation on deleting all polys, markers.
