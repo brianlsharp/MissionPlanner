@@ -1,3 +1,4 @@
+- sort exported contacts by signal strength.
 - "clear markers" will remove ground truth data also. Don't want that.
 - user definable range for contact fusion radius
 - fuse contacts, mark them for export.
