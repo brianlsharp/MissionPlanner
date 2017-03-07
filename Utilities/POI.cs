@@ -58,6 +58,21 @@ namespace MissionPlanner.Utilities
             POIAdd( Point, tag, false );
         }
 
+        public static void POIAddNeutralized(PointLatLngAlt Point )
+        {
+            if(Point == null)
+                return;
+
+            PointLatLngAlt pnt = Point;
+            pnt.color = Point.color;
+            pnt.Tag = "";
+            pnt.neutralized = true;
+
+            POI.POIs.Add(pnt);
+            if(POIModified != null)
+                POIModified( null, null );
+        }
+
         public static void POIAdd(PointLatLngAlt Point)
         {
             if (Point == null)
@@ -172,6 +187,8 @@ namespace MissionPlanner.Utilities
                         marker = new GMarkerGoogle(pnt, GMarkerGoogleType.green_dot);
                     else if( pnt.suspectReading )
                         marker = new GMarkerGoogle( pnt, GMarkerGoogleType.blue_small );
+                    else if ( pnt.neutralized)
+                        marker = new GMarkerGoogle( pnt, GMarkerGoogleType.red_pushpin );
                     else 
                         marker = new GMarkerGoogle(pnt, GMarkerGoogleType.yellow_small );
                 }

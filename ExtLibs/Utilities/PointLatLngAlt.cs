@@ -24,6 +24,7 @@ namespace MissionPlanner.Utilities
         public bool export = false;
         public bool suspectReading = false;
         public bool groundTruth = false;
+        public bool neutralized = false;
         const float rad2deg = (float)(180 / Math.PI);
         const float deg2rad = (float)(1.0 / rad2deg);
 

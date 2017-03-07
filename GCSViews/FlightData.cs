@@ -376,6 +376,7 @@ namespace MissionPlanner.GCSViews
             chk_ShowMarkers.CheckedChanged += Chk_ShowMarkers_CheckedChanged;
             btn_clearMarkers.Click += Btn_clearMarkers_Click;
 
+            addNeutralizedMenuItem1.Click += addNeutralizedMenuItem1_Click;
             measureToolStripMenuItem.Click += measureToolStripMenuItem_Click;
 
             savePolygonToolStripMenuItem.Click += savePolygonToolStripMenuItem_Click;
@@ -423,6 +424,7 @@ namespace MissionPlanner.GCSViews
             TerrainFollow lFollow = new TerrainFollow(MainV2.comPort);
         }
 
+
         private void ExportToolStripMenuItem_Click(object sender, EventArgs e)
         {
             setMode(MainWindowMode.EXPORT);
@@ -432,6 +434,12 @@ namespace MissionPlanner.GCSViews
         {
             setMode(MainWindowMode.MEASURE);
         }
+
+        void addNeutralizedMenuItem1_Click( object sender, EventArgs e )
+        {
+            POI.POIAddNeutralized( MouseDownStart );
+        }
+
 
         DateTime mLastTimeMarkerClicked = DateTime.MinValue;
         void gMapControl1_OnMarkerClick( GMapMarker item, MouseEventArgs e )
