@@ -78,11 +78,17 @@ namespace MissionPlanner.GCSViews
                         titleLine += "\r\n";
 
                         double Bx = distanceFromOriginToRef();
-                        titleLine += "Origin Marker: " + OriginMarker.Tag.ToString().Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None).First().Trim(':');
-                        titleLine += "\r\n";
+                        if(OriginMarker.Tag != null)
+                        {
+                            titleLine += "Origin Marker: " + OriginMarker.Tag.ToString();//.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None).First().Trim(':');
+                            titleLine += "\r\n";
+                        }
 
-                        titleLine += "Other reference Marker: " + OtherReferencePoint.Tag.ToString().Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None).First().Trim(':');
-                        titleLine += "\r\n";
+                        if(OtherReferencePoint.Tag != null)
+                        {
+                            titleLine += "Other reference Marker: " + OtherReferencePoint.Tag.ToString();//.Split(new string[] { "\r\n", "\n" }, StringSplitOptions.None).First().Trim(':');
+                            titleLine += "\r\n";
+                        }
 
                         titleLine += "Scaling Factor" + "\t" + "1.0";
                         titleLine += "\r\n";
