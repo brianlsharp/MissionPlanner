@@ -1,3 +1,8 @@
+- length of multi-delete timeout.
+- "no new contacts" checkbox
+- show / hide markers that are "suspect"
+- a "Reac mode" where new contacts are in a different color.
++ "Add Neutralized" marker
 - sort exported contacts by signal strength.
 - "clear markers" will remove ground truth data also. Don't want that.
 - user definable range for contact fusion radius
