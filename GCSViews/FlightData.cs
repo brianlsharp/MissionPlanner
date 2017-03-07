@@ -445,8 +445,11 @@ namespace MissionPlanner.GCSViews
         void gMapControl1_OnMarkerClick( GMapMarker item, MouseEventArgs e )
         {
             TimeSpan lDiff = DateTime.Now - mLastTimeMarkerClicked;
-            if(lDiff < new TimeSpan( 0, 0, 1 ))
+            if(lDiff < new TimeSpan( 0, 0, 0, 0,  100 ))
+            {
                 Debug.WriteLine( "avoiding registering two marker clicks simultaneously" );
+                Debug.WriteLine( "diff was " + lDiff.ToString() );
+            }
             else
             {
                 if(mode() == MainWindowMode.MEASURE)
