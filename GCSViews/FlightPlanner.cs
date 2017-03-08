@@ -756,7 +756,7 @@ namespace MissionPlanner.GCSViews
 
         void POI_POIModified(object sender, EventArgs e)
         {
-            POI.UpdateOverlay(poioverlay, true);
+            POI.UpdateOverlay(poioverlay, true, true);
         }
 
         void parser_ElementAdded(object sender, ElementEventArgs e)

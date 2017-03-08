@@ -38,13 +38,14 @@ namespace MissionPlanner.Utilities
                 POIModified(null, null);
         }
 
-        public static void POIAdd(PointLatLngAlt Point, string tag, bool aSuspectReading )
+        public static void POIAdd(PointLatLngAlt Point, string tag, bool aSuspectReading, bool isReac )
         {
             // local copy
             PointLatLngAlt pnt = Point;
             pnt.color = Point.color;
             pnt.Tag = tag + "\n" + pnt.ToString();
             pnt.suspectReading = aSuspectReading;
+            pnt.isReac = isReac;
 
             POI.POIs.Add(pnt);
 
@@ -55,7 +56,7 @@ namespace MissionPlanner.Utilities
 
         public static void POIAdd(PointLatLngAlt Point, string tag)
         {
-            POIAdd( Point, tag, false );
+            POIAdd( Point, tag, false, false );
         }
 
         public static void POIAddNeutralized(PointLatLngAlt Point )
@@ -169,7 +170,7 @@ namespace MissionPlanner.Utilities
             }
         }
 
-        public static void UpdateOverlay(GMap.NET.WindowsForms.GMapOverlay poioverlay, bool showSuspectReadings)
+        public static void UpdateOverlay(GMap.NET.WindowsForms.GMapOverlay poioverlay, bool showSuspectReadings, bool showReacs )
         {
             if (poioverlay == null)
                 return;
@@ -189,6 +190,11 @@ namespace MissionPlanner.Utilities
                     {
                         if(showSuspectReadings)
                             marker = new GMarkerGoogle( pnt, GMarkerGoogleType.blue_small );
+                    }
+                    else if(pnt.isReac)
+                    {
+                        if( showReacs )
+                            marker = new GMarkerGoogle( pnt, GMarkerGoogleType.green_small );
                     }
                     else if(pnt.neutralized)
                         marker = new GMarkerGoogle( pnt, GMarkerGoogleType.red_pushpin );

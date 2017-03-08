@@ -136,11 +136,18 @@ namespace MissionPlanner.GCSViews
             get;
         }
 
+        private bool ReacMode
+        {
+            set;
+            get;
+        }
+
         private bool UseRoverIcon
         {
             get;
             set;
-        } 
+        }
+ 
 
         GridExporter mGridExporter;
 
@@ -254,6 +261,7 @@ namespace MissionPlanner.GCSViews
             //    dockContainer1.PreviewRenderer = new PreviewRenderer();
             //
             SuspectReadings = chk_SuspectReadings.Checked;
+            ReacMode = chk_reacMode.Checked;
 
             mymap = gMapControl1;
             myhud = hud1;
@@ -650,16 +658,20 @@ namespace MissionPlanner.GCSViews
 
         void chk_showSuspectReadings_CheckedChanged( object sender, EventArgs e )
         {
-            POI.UpdateOverlay( poioverlay, chk_showSuspectReadings.Checked );
-
+            POI.UpdateOverlay( poioverlay, chk_showSuspectReadings.Checked, chk_ShowReac.Checked );
             gMapControl1.Refresh();
         }
 
+        private void chk_ShowReac_CheckedChanged( object sender, EventArgs e )
+        {
+            POI.UpdateOverlay( poioverlay, chk_showSuspectReadings.Checked, chk_ShowReac.Checked );
+            gMapControl1.Refresh();
+        }
 
         public void addPOIatLoc( double aLat, double aLon, string aLabel )
         {
             PointLatLng lLoc = new PointLatLng(aLat, aLon);
-            POI.POIAdd( lLoc, aLabel, SuspectReadings );
+            POI.POIAdd( lLoc, aLabel, SuspectReadings, ReacMode );
         }
 
         private void btn_addGroundTruth_Click(object sender, EventArgs e)
@@ -1152,7 +1164,7 @@ namespace MissionPlanner.GCSViews
 
         void POI_POIModified(object sender, EventArgs e)
         {
-            POI.UpdateOverlay(poioverlay, chk_showSuspectReadings.Checked );
+            POI.UpdateOverlay(poioverlay, chk_showSuspectReadings.Checked, chk_ShowReac.Checked );
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -4508,6 +4520,9 @@ namespace MissionPlanner.GCSViews
         private void chk_SuspectReadings_CheckedChanged(object sender, EventArgs e)
         {
             SuspectReadings = chk_SuspectReadings.Checked;
+            // can't have suspect readings and reac mode at the same time
+            if(chk_SuspectReadings.Checked)
+                chk_reacMode.Checked = false;
         }
 
         private void chk_RoverIcon_CheckedChanged( object sender, EventArgs e )
@@ -4521,6 +4536,14 @@ namespace MissionPlanner.GCSViews
             ObservableCollection<PointLatLngAlt> lFused = lFuser.fuse( POI.pois() );
             POI.setPOIs( lFused );
             POI.pois();
+        }
+
+        private void chk_reacMode_CheckedChanged( object sender, EventArgs e )
+        {
+            ReacMode = chk_reacMode.Checked;
+            // can't have suspect readings and reac mode at the same time
+            if(chk_reacMode.Checked)
+                chk_SuspectReadings.Checked = false;
         }
     }
 }

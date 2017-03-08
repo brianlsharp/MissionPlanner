@@ -148,6 +148,9 @@ namespace MissionPlanner.GCSViews
             this.gMapControl1 = new MissionPlanner.Controls.myGMAP();
             this.TRK_zoom = new MissionPlanner.Controls.MyTrackBar();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.chk_ShowReac = new System.Windows.Forms.CheckBox();
+            this.chk_reacMode = new System.Windows.Forms.CheckBox();
+            this.chk_showSuspectReadings = new System.Windows.Forms.CheckBox();
             this.btn_Fuse = new System.Windows.Forms.Button();
             this.chk_RoverIcon = new System.Windows.Forms.CheckBox();
             this.chk_SuspectReadings = new System.Windows.Forms.CheckBox();
@@ -171,7 +174,6 @@ namespace MissionPlanner.GCSViews
             this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
             this.Messagetabtimer = new System.Windows.Forms.Timer(this.components);
             this.bindingSourceStatusTab = new System.Windows.Forms.BindingSource(this.components);
-            this.chk_showSuspectReadings = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.MainH)).BeginInit();
             this.MainH.Panel1.SuspendLayout();
             this.MainH.Panel2.SuspendLayout();
@@ -1830,6 +1832,8 @@ namespace MissionPlanner.GCSViews
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.chk_ShowReac);
+            this.panel1.Controls.Add(this.chk_reacMode);
             this.panel1.Controls.Add(this.chk_showSuspectReadings);
             this.panel1.Controls.Add(this.btn_Fuse);
             this.panel1.Controls.Add(this.chk_RoverIcon);
@@ -1849,6 +1853,30 @@ namespace MissionPlanner.GCSViews
             resources.ApplyResources(this.panel1, "panel1");
             this.panel1.Name = "panel1";
             this.tableMap.SetRowSpan(this.panel1, 3);
+            // 
+            // chk_ShowReac
+            // 
+            resources.ApplyResources(this.chk_ShowReac, "chk_ShowReac");
+            this.chk_ShowReac.Checked = true;
+            this.chk_ShowReac.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chk_ShowReac.Name = "chk_ShowReac";
+            this.chk_ShowReac.UseVisualStyleBackColor = true;
+            this.chk_ShowReac.CheckedChanged += new System.EventHandler(this.chk_ShowReac_CheckedChanged);
+            // 
+            // chk_reacMode
+            // 
+            resources.ApplyResources(this.chk_reacMode, "chk_reacMode");
+            this.chk_reacMode.Name = "chk_reacMode";
+            this.chk_reacMode.UseVisualStyleBackColor = true;
+            this.chk_reacMode.CheckedChanged += new System.EventHandler(this.chk_reacMode_CheckedChanged);
+            // 
+            // chk_showSuspectReadings
+            // 
+            resources.ApplyResources(this.chk_showSuspectReadings, "chk_showSuspectReadings");
+            this.chk_showSuspectReadings.Checked = true;
+            this.chk_showSuspectReadings.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chk_showSuspectReadings.Name = "chk_showSuspectReadings";
+            this.chk_showSuspectReadings.UseVisualStyleBackColor = true;
             // 
             // btn_Fuse
             // 
@@ -2028,12 +2056,6 @@ namespace MissionPlanner.GCSViews
             // bindingSourceStatusTab
             // 
             this.bindingSourceStatusTab.DataSource = typeof(MissionPlanner.CurrentState);
-            // 
-            // chk_showSuspectReadings
-            // 
-            resources.ApplyResources(this.chk_showSuspectReadings, "chk_showSuspectReadings");
-            this.chk_showSuspectReadings.Name = "chk_showSuspectReadings";
-            this.chk_showSuspectReadings.UseVisualStyleBackColor = true;
             // 
             // FlightData
             // 
@@ -2256,5 +2278,7 @@ namespace MissionPlanner.GCSViews
         private System.Windows.Forms.Button btn_Fuse;
         private System.Windows.Forms.ToolStripMenuItem addNeutralizedMenuItem1;
         private System.Windows.Forms.CheckBox chk_showSuspectReadings;
+        private System.Windows.Forms.CheckBox chk_ShowReac;
+        private System.Windows.Forms.CheckBox chk_reacMode;
     }
 }
