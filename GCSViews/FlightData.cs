@@ -375,6 +375,7 @@ namespace MissionPlanner.GCSViews
             btn_clearRoute.Click += Btn_clearRoute_Click;
             chk_ShowMarkers.CheckedChanged += Chk_ShowMarkers_CheckedChanged;
             btn_clearMarkers.Click += Btn_clearMarkers_Click;
+            chk_showSuspectReadings.CheckedChanged += chk_showSuspectReadings_CheckedChanged;
 
             addNeutralizedMenuItem1.Click += addNeutralizedMenuItem1_Click;
             measureToolStripMenuItem.Click += measureToolStripMenuItem_Click;
@@ -423,7 +424,6 @@ namespace MissionPlanner.GCSViews
 
             TerrainFollow lFollow = new TerrainFollow(MainV2.comPort);
         }
-
 
         private void ExportToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -647,6 +647,14 @@ namespace MissionPlanner.GCSViews
             gMapControl1.RoutesEnabled = chk_ShowRoute.Checked;
             gMapControl1.Refresh();
         }
+
+        void chk_showSuspectReadings_CheckedChanged( object sender, EventArgs e )
+        {
+            POI.UpdateOverlay( poioverlay, chk_showSuspectReadings.Checked );
+
+            gMapControl1.Refresh();
+        }
+
 
         public void addPOIatLoc( double aLat, double aLon, string aLabel )
         {
@@ -1144,7 +1152,7 @@ namespace MissionPlanner.GCSViews
 
         void POI_POIModified(object sender, EventArgs e)
         {
-            POI.UpdateOverlay(poioverlay);
+            POI.UpdateOverlay(poioverlay, chk_showSuspectReadings.Checked );
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)

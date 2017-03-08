@@ -124,6 +124,7 @@ namespace MissionPlanner.GCSViews
             this.addPoiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveFileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addNeutralizedMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.exportPoiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.savePolygonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.loadPolygonToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -153,7 +154,6 @@ namespace MissionPlanner.GCSViews
             this.btn_MultiDelete = new System.Windows.Forms.CheckBox();
             this.btn_addGroundTruth = new System.Windows.Forms.Button();
             this.btn_ClearPolys = new System.Windows.Forms.Button();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.btn_clearRoute = new System.Windows.Forms.Button();
             this.btn_clearMarkers = new System.Windows.Forms.Button();
             this.chk_ShowMarkers = new System.Windows.Forms.CheckBox();
@@ -171,7 +171,7 @@ namespace MissionPlanner.GCSViews
             this.dataGridViewImageColumn2 = new System.Windows.Forms.DataGridViewImageColumn();
             this.Messagetabtimer = new System.Windows.Forms.Timer(this.components);
             this.bindingSourceStatusTab = new System.Windows.Forms.BindingSource(this.components);
-            this.addNeutralizedMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.chk_showSuspectReadings = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.MainH)).BeginInit();
             this.MainH.Panel1.SuspendLayout();
             this.MainH.Panel2.SuspendLayout();
@@ -1655,6 +1655,11 @@ namespace MissionPlanner.GCSViews
             resources.ApplyResources(this.saveFileToolStripMenuItem, "saveFileToolStripMenuItem");
             this.saveFileToolStripMenuItem.Click += new System.EventHandler(this.saveFileToolStripMenuItem_Click);
             // 
+            // addNeutralizedMenuItem1
+            // 
+            this.addNeutralizedMenuItem1.Name = "addNeutralizedMenuItem1";
+            resources.ApplyResources(this.addNeutralizedMenuItem1, "addNeutralizedMenuItem1");
+            // 
             // exportPoiToolStripMenuItem
             // 
             this.exportPoiToolStripMenuItem.Name = "exportPoiToolStripMenuItem";
@@ -1731,7 +1736,7 @@ namespace MissionPlanner.GCSViews
             this.windDir1.BackColor = System.Drawing.Color.Transparent;
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Direction", this.bindingSource1, "wind_dir", true, System.Windows.Forms.DataSourceUpdateMode.Never));
             this.windDir1.DataBindings.Add(new System.Windows.Forms.Binding("Speed", this.bindingSource1, "wind_vel", true, System.Windows.Forms.DataSourceUpdateMode.Never));
-            this.windDir1.Direction = 180D;
+            this.windDir1.Direction = 360D;
             resources.ApplyResources(this.windDir1, "windDir1");
             this.windDir1.Name = "windDir1";
             this.windDir1.Speed = 0D;
@@ -1825,13 +1830,13 @@ namespace MissionPlanner.GCSViews
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.chk_showSuspectReadings);
             this.panel1.Controls.Add(this.btn_Fuse);
             this.panel1.Controls.Add(this.chk_RoverIcon);
             this.panel1.Controls.Add(this.chk_SuspectReadings);
             this.panel1.Controls.Add(this.btn_MultiDelete);
             this.panel1.Controls.Add(this.btn_addGroundTruth);
             this.panel1.Controls.Add(this.btn_ClearPolys);
-            this.panel1.Controls.Add(this.progressBar1);
             this.panel1.Controls.Add(this.btn_clearRoute);
             this.panel1.Controls.Add(this.btn_clearMarkers);
             this.panel1.Controls.Add(this.chk_ShowMarkers);
@@ -1886,11 +1891,6 @@ namespace MissionPlanner.GCSViews
             this.btn_ClearPolys.Name = "btn_ClearPolys";
             this.btn_ClearPolys.UseVisualStyleBackColor = true;
             this.btn_ClearPolys.Click += new System.EventHandler(this.btn_ClearPolys_Click);
-            // 
-            // progressBar1
-            // 
-            resources.ApplyResources(this.progressBar1, "progressBar1");
-            this.progressBar1.Name = "progressBar1";
             // 
             // btn_clearRoute
             // 
@@ -2029,10 +2029,11 @@ namespace MissionPlanner.GCSViews
             // 
             this.bindingSourceStatusTab.DataSource = typeof(MissionPlanner.CurrentState);
             // 
-            // addNeutralizedMenuItem1
+            // chk_showSuspectReadings
             // 
-            this.addNeutralizedMenuItem1.Name = "addNeutralizedMenuItem1";
-            resources.ApplyResources(this.addNeutralizedMenuItem1, "addNeutralizedMenuItem1");
+            resources.ApplyResources(this.chk_showSuspectReadings, "chk_showSuspectReadings");
+            this.chk_showSuspectReadings.Name = "chk_showSuspectReadings";
+            this.chk_showSuspectReadings.UseVisualStyleBackColor = true;
             // 
             // FlightData
             // 
@@ -2246,7 +2247,6 @@ namespace MissionPlanner.GCSViews
         private System.Windows.Forms.ToolStripMenuItem measureToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportPoiToolStripMenuItem;
-        private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Button btn_ClearPolys;
         private System.Windows.Forms.Label lbl_mode;
         private System.Windows.Forms.Button btn_addGroundTruth;
@@ -2255,5 +2255,6 @@ namespace MissionPlanner.GCSViews
         private System.Windows.Forms.CheckBox chk_RoverIcon;
         private System.Windows.Forms.Button btn_Fuse;
         private System.Windows.Forms.ToolStripMenuItem addNeutralizedMenuItem1;
+        private System.Windows.Forms.CheckBox chk_showSuspectReadings;
     }
 }

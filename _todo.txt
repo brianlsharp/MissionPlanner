@@ -1,6 +1,6 @@
-- length of multi-delete timeout.
++ length of multi-delete timeout.
 - "no new contacts" checkbox
-- show / hide markers that are "suspect"
++ show / hide markers that are "suspect"
 - a "Reac mode" where new contacts are in a different color.
 + "Add Neutralized" marker
 - sort exported contacts by signal strength.

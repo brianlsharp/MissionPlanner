@@ -169,7 +169,7 @@ namespace MissionPlanner.Utilities
             }
         }
 
-        public static void UpdateOverlay(GMap.NET.WindowsForms.GMapOverlay poioverlay)
+        public static void UpdateOverlay(GMap.NET.WindowsForms.GMapOverlay poioverlay, bool showSuspectReadings)
         {
             if (poioverlay == null)
                 return;
@@ -185,17 +185,23 @@ namespace MissionPlanner.Utilities
                 {
                     if ( pnt.groundTruth )
                         marker = new GMarkerGoogle(pnt, GMarkerGoogleType.green_dot);
-                    else if( pnt.suspectReading )
-                        marker = new GMarkerGoogle( pnt, GMarkerGoogleType.blue_small );
-                    else if ( pnt.neutralized)
+                    else if(pnt.suspectReading)
+                    {
+                        if(showSuspectReadings)
+                            marker = new GMarkerGoogle( pnt, GMarkerGoogleType.blue_small );
+                    }
+                    else if(pnt.neutralized)
                         marker = new GMarkerGoogle( pnt, GMarkerGoogleType.red_pushpin );
-                    else 
-                        marker = new GMarkerGoogle(pnt, GMarkerGoogleType.yellow_small );
+                    else
+                        marker = new GMarkerGoogle( pnt, GMarkerGoogleType.yellow_small );
                 }
 
-                marker.ToolTipMode = MarkerTooltipMode.OnMouseOver;
-                marker.ToolTipText = pnt.Tag;
-                poioverlay.Markers.Add(marker);                              
+                if(marker != null)
+                {
+                    marker.ToolTipMode = MarkerTooltipMode.OnMouseOver;
+                    marker.ToolTipText = pnt.Tag;
+                    poioverlay.Markers.Add( marker );
+                }
             }
         }
 
